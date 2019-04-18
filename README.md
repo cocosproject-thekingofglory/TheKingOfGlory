@@ -1,4 +1,4 @@
-# The King Of Glory
+# The King Of Glory（2D)
 ---
 ## 项目规范
 ### Git使用注意事项
@@ -11,3 +11,11 @@
  
  4.及时pull，检查自己修改的版本是不是基于远程仓库上的最新版本.
  + 其他详细见[Git Flow工作流程](https://www.jianshu.com/p/9a76e9aa9534)
+### 命名规范
+class以大写开头，大写分割单词，比如Bubbles, OpenScene
+
+private变量小写，以_分割，例如my_private_var
+
+public小写 以_分割，例如my_public
+
+函数尽量用驼峰命名法
