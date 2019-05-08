@@ -36,10 +36,9 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 //	spriteSheets.push_back(Value("animation.plist"));
 
-//	effects.push_back(Value("effect.wav"));
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
-
+	effects.push_back(Value("Sounds/LoginClick.wav"));
 
 
 	sourceCount = spriteSheets.size() + effects.size() + musics.size();
@@ -47,7 +46,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	progress_Interval = 100 / sourceCount;
 	
 	loadMusic(musics);
-//	loadEffect(effects);
+	loadEffect(effects);
 //	loadSpriteSheets(spriteSheets);
 	
 
@@ -55,7 +54,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 void LoadingScene::createBackground()
 {
-	//Ìí¼Ó±³¾°
+	//Ìí¼Ó±³¾°Í¼
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
