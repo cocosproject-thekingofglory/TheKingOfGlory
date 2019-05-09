@@ -9,6 +9,8 @@ private:
 	cocos2d::Color3B label_Color;
 	float text_Size;
 
+
+	void onEnter();
 	void createBackground();
 	void createPlayButton();
 	void createSettingButton();

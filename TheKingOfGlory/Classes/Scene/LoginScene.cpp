@@ -34,8 +34,8 @@ void LoginScene::onEnter()
 	Layer::onEnter();
 
 	//²¥·Å±³¾°ÒôÀÖ
-	//GameAudio::getInstance()->playBgm("Sounds/StartBgm.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/StartBgm.mp3", true);
+	//GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
+	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/LoginBgm.mp3", true);
 
 }
 
