@@ -1,7 +1,8 @@
 #include "StartScene.h"
 #include "ui/CocosGUI.h"
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
-
+using namespace CocosDenshion;
 
 
 void StartScene::createBackground()
@@ -17,6 +18,7 @@ void StartScene::createPlayButton()
 	//创建开始游戏按钮
 	auto PlayButton=MenuItemLabel::create(Label::createWithTTF("Play",text_Font, text_Size),
 		[](Ref* pSender) {
+		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
 	//	Director::getInstance()->pushScene(TransitionFade::create(1, GameScene::createScene()));
 		});
 	PlayButton->setColor(label_Color);
@@ -30,6 +32,7 @@ void StartScene::createSettingButton()
 	//创建游戏设置按钮
 	auto SettingButton= MenuItemLabel::create(Label::createWithTTF("Setting", text_Font, text_Size),
 		[](Ref* pSender) {
+		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
 	//	Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
 	});
 	SettingButton->setColor(label_Color);
@@ -43,6 +46,7 @@ void StartScene::createHelpButton()
 	//创建游戏帮助按钮
 	auto HelpButton = MenuItemLabel::create(Label::createWithTTF("Help", text_Font, text_Size),
 		[](Ref* pSender) {
+		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
 	//	Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
 	});
 	HelpButton->setColor(label_Color);
