@@ -6,10 +6,6 @@ class GameScene:public cocos2d::Layer
 private:
 	cocos2d::Size visible_Size;
 	cocos2d::Sprite* menu;
-	cocos2d::Sprite* continueButton;
-	cocos2d::Sprite* settingButton;
-	cocos2d::Sprite* restartButton;
-	cocos2d::Sprite* returnButton;
 	cocos2d::Label* continueLabel;
 	cocos2d::Label* settingLabel;
 	cocos2d::Label* restartLabel;
@@ -22,7 +18,7 @@ private:
 	void createMenu();
 	void menuCallback(cocos2d::Ref* pSender);
 	void menuOnTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
-	cocos2d::Rect rectOfSprite(cocos2d::Sprite* sprite);
+	cocos2d::Rect rectOfLabel(cocos2d::Label* label);
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();

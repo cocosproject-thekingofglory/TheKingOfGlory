@@ -44,59 +44,39 @@ void GameScene::createMenu()
 
 void GameScene::menuCallback(cocos2d::Ref * pSender)
 {
-	menu = Sprite::create("Pictures/UI/Menu.png");
+	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu);
 
-	Color4B text_Color= Color4B(0,0,0,100);
+	Color4B text_Color= Color4B(255,255,255,255);
 	std::string text_Font = "fonts/UnifrakturCook-Bold.ttf";
 	float text_Size = 28;
 	//添加菜单图片
 	Size menuSize = menu->getContentSize();
 	float menuBottom = visible_Size.height / 2 - menuSize.height / 2;
 
-	//添加继续游戏按钮
-	continueButton = Sprite::create("Pictures/UI/button.png");
-	continueButton->setPosition(Vec2(visible_Size.width/2,menuBottom+menuSize.height*0.8));
-	this->addChild(continueButton);
-
 	//添加继续游戏文字
 	continueLabel = Label::createWithTTF("Continue", text_Font, text_Size);
 	continueLabel->setTextColor(text_Color);
-	continueLabel->setPosition(continueButton->getPosition());
+	continueLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.8));
 	this->addChild(continueLabel);
-
-	//添加游戏设置按钮
-	settingButton = Sprite::create("Pictures/UI/button.png");
-	settingButton->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
-	this->addChild(settingButton);
 
 	//添加游戏设置文字
 	settingLabel = Label::createWithTTF("Setting", text_Font, text_Size);
 	settingLabel->setTextColor(text_Color);
-	settingLabel->setPosition(settingButton->getPosition());
+	settingLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
 	this->addChild(settingLabel);
-
-	//添加重新开始按钮
-	restartButton = Sprite::create("Pictures/UI/button.png");
-	restartButton->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
-	this->addChild(restartButton);
 
 	//添加重新开始文字
 	restartLabel = Label::createWithTTF("Restart", text_Font, text_Size);
 	restartLabel->setTextColor(text_Color);
-	restartLabel->setPosition(restartButton->getPosition());
+	restartLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
 	this->addChild(restartLabel);
 
-	//添加返回主菜单按钮
-	returnButton = Sprite::create("Pictures/UI/button.png");
-	returnButton->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
-	this->addChild(returnButton);
-
 	//添加返回主菜单文字
-	returnLabel = Label::createWithTTF("Return", text_Font, text_Size);
+	returnLabel = Label::createWithTTF("Main Menu", text_Font, text_Size);
 	returnLabel->setTextColor(text_Color);
-	returnLabel->setPosition(returnButton->getPosition());
+	returnLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
 	this->addChild(returnLabel);
 
 	menuListener->setEnabled(true);
@@ -108,41 +88,48 @@ void GameScene::menuOnTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	auto touchLocation = touch->getLocation();
 	auto nodeLocation = this->convertToNodeSpace(touchLocation);
 
-	if (this->rectOfSprite(continueButton).containsPoint(nodeLocation)||
+	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation)||
 		menuRect.containsPoint(nodeLocation))
 	{
+		//停用菜单事件监听器，删除菜单
 		menuListener->setEnabled(false);
 		this->removeChild(menu,true);
-		this->removeChild(continueButton, true);
-		this->removeChild(settingButton, true);
-		this->removeChild(restartButton, true);
-		this->removeChild(returnButton, true);
 		this->removeChild(continueLabel, true);
 		this->removeChild(settingLabel, true);
 		this->removeChild(restartLabel, true);
 		this->removeChild(returnLabel, true);
 	}
-	else if (this->rectOfSprite(settingButton).containsPoint(nodeLocation))
+	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
 	{
+		//停用菜单事件监听器，删除菜单,进入游戏设置界面
+		//menuListener->setEnabled(false);
+		//this->removeChild(menu, true);
+		//this->removeChild(continueLabel, true);
+		//this->removeChild(settingLabel, true);
+		//this->removeChild(restartLabel, true);
+		//this->removeChild(returnLabel, true);
+		//Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
 	}
-	else if (this->rectOfSprite(restartButton).containsPoint(nodeLocation))
+	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
+		//停用菜单事件监听器，重新开始游戏
 		menuListener->setEnabled(false);
 		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 	}
-	else if (this->rectOfSprite(returnButton).containsPoint(nodeLocation))
+	else if (this->rectOfLabel(returnLabel).containsPoint(nodeLocation))
 	{
+		//停用菜单事件监听器，返回主菜单
 		menuListener->setEnabled(false);
 		Director::getInstance()->replaceScene(TransitionFade::create(1,	StartScene::createScene()));
 	}
 }
 
-cocos2d::Rect GameScene::rectOfSprite(cocos2d::Sprite * sprite)
+cocos2d::Rect GameScene::rectOfLabel(cocos2d::Label * label)
 {
-	return Rect(sprite->getPosition().x - sprite->getContentSize().width / 2,
-		sprite->getPosition().y - sprite->getContentSize().height / 2,
-		sprite->getContentSize().width ,
-		sprite->getContentSize().height );
+	return Rect(label->getPosition().x - label->getContentSize().width / 2,
+		label->getPosition().y - label->getContentSize().height / 2,
+		label->getContentSize().width,
+		label->getContentSize().height);
 }
 
 cocos2d::Scene * GameScene::createScene()
@@ -159,6 +146,7 @@ bool GameScene::init()
 		return false;
 	visible_Size = Director::getInstance()->getVisibleSize();
 
+	//创建菜单事件监听器，先不启用
 	menuListener = EventListenerTouchOneByOne::create();
 	menuListener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
 	menuListener->onTouchEnded = CC_CALLBACK_2(GameScene::menuOnTouchEnded, this);
