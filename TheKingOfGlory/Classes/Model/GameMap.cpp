@@ -1,20 +1,6 @@
 #include "GameMap.h"
 USING_NS_CC;
 
-GameMap * GameMap::create()
-{
-	GameMap *gameMap = new (std::nothrow) GameMap();
-	if ( gameMap&& gameMap->init())
-	{
-		gameMap->autorelease();
-		return gameMap;
-	}
-	else
-	{
-		CC_SAFE_DELETE(gameMap);
-		return nullptr;
-	}
-}
 
 bool GameMap::init()
 {
@@ -29,7 +15,15 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
+	collidable->setVisible(false);
 	objectLayer = tileMap->getObjectGroup("objects");
+
+	player_red = objectLayer->getObject("player_red");
+	player_blue = objectLayer->getObject("player_blue");
+	tower_red = objectLayer->getObject("tower_red");
+	tower_blue = objectLayer->getObject("tower_blue");
+	store_red = objectLayer->getObject("store_red");
+	store_blue = objectLayer->getObject("store_blue");
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -86,11 +80,6 @@ Vec2 GameMap::centrePos(const Vec2 & pos)
 	return tileCoordToPosition(positionToTileCoord(pos));
 }
 
-cocos2d::TMXTiledMap * GameMap::getCurrentMap()
-{
-	return this->tileMap;
-}
-
 cocos2d::Size GameMap::getMapSize()
 {
 	return tileMap->getMapSize();
@@ -103,7 +92,32 @@ cocos2d::Size GameMap::getTileSize()
 
 bool GameMap::isCanAssess(const cocos2d::Vec2 & coord)
 {
+	log("%d", mapInfo.at(coord.x).at(coord.y));
 	return coord.x >= 0 && coord.x < getMapSize().width
 		&&coord.y >= 0 && coord.y < getMapSize().height
 		&& ((mapInfo.at(coord.x).at(coord.y) == 1) ? false : true);
+}
+
+void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
+{
+	if(tileMap)
+		tileMap->addChild(sprite);
+	if (type == Player_Red)
+	{
+		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
+	}
+	else if (type == Player_Blue)
+	{
+		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
+	}
+}
+
+GameMap * GameMap::getCurrentMap()
+{
+	auto map = dynamic_cast<GameMap*>(cocos2d::Director::getInstance()->getRunningScene()->getChildByName("root")->getChildByName("map"));
+	if (map)
+	{
+		return map;
+	}
+	return nullptr;
 }

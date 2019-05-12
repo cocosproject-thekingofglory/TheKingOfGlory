@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "StartScene.h"
 #include "../Model/GameMap.h"
+#include "../Controller/GameController.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -14,18 +15,6 @@ void GameScene::onEnter()
 	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/GameBgm.mp3", true);
 }
 
-void GameScene::createMap()
-{
-	//添加地图
-	auto map = GameMap::create();
-	map->setMap("1v1");
-	map->setAnchorPoint(Vec2::ZERO);
-	map->setPosition(Vec2::ZERO);
-	map->setScale(0.5f);
-	//map->setPosition(Vec2(visible_Size.width / 2-512, visible_Size.height / 2-3052));
-	this->addChild(map,-1);
-	
-}
 
 void GameScene::createMenu()
 {
@@ -156,8 +145,18 @@ bool GameScene::init()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(menuListener, -1);
 
 
+	//添加地图
+	auto map = GameMap::create();
+	map->setMap("1v1");
+	map->setPosition(Vec2::ZERO);
+	map->setScale(0.5f);
+	//map->setPosition(Vec2(visible_Size.width / 2-512, visible_Size.height / 2-3052));
+	this->addChild(map, -1);
 
-	createMap();
+	auto gameController = GameController::create();
+	gameController->setMap(map);
+	this->addChild(gameController, -1);
+
 	createMenu();
 
 	return true;

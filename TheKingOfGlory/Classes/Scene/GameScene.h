@@ -14,7 +14,6 @@ private:
 	cocos2d::Rect menuRect;
 
 	void onEnter();
-	void createMap();
 	void createMenu();
 	void menuCallback(cocos2d::Ref* pSender);
 	void menuOnTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);

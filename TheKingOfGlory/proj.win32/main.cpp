@@ -1,7 +1,7 @@
 #include "main.h"
 #include "AppDelegate.h"
 #include "cocos2d.h"
-#define USE_WIN32_CONSOLE
+#undef USE_WIN32_CONSOLE
 
 USING_NS_CC;
 

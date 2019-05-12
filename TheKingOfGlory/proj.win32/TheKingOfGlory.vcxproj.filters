@@ -51,6 +51,9 @@
     <ClCompile Include="..\Classes\Model\GameMap.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Controller\GameController.cpp">
+      <Filter>src\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -76,6 +79,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Model\GameMap.h">
       <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\GameController.h">
+      <Filter>src\Controller</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
