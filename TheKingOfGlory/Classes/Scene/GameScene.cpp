@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "StartScene.h"
+#include "../Model/GameMap.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -16,14 +17,14 @@ void GameScene::onEnter()
 void GameScene::createMap()
 {
 	//Ìí¼ÓµØÍ¼
-/*	auto map = GameMap::create();
-	map->setMap("town_10");
-	map->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(map, -1);
-	*/
-	auto background = Sprite::create("Pictures/Background/WhiteBackground.png");
-	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(background, -1);
+	auto map = GameMap::create();
+	map->setMap("1v1");
+	map->setAnchorPoint(Vec2::ZERO);
+	map->setPosition(Vec2::ZERO);
+	map->setScale(0.5f);
+	//map->setPosition(Vec2(visible_Size.width / 2-512, visible_Size.height / 2-3052));
+	this->addChild(map,-1);
+	
 }
 
 void GameScene::createMenu()
