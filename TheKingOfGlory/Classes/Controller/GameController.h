@@ -17,6 +17,9 @@ private:
 	void createTouchListener();
 	void createKeyListener();
 	void onEnter();
+	void update(float delta);
+	void isResult(float delta);
+	void toOver(bool isWin);
 
 };
 

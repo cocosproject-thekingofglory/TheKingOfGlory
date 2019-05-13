@@ -1,5 +1,7 @@
 #include "GameController.h"
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
+using namespace CocosDenshion;
 
 bool GameController::init()
 {
@@ -11,7 +13,7 @@ bool GameController::init()
 	createTouchListener();
 	createKeyListener();
 
-	
+	this->scheduleUpdate();
 
 	return true;
 }
@@ -19,6 +21,7 @@ bool GameController::init()
 void GameController::setMap(GameMap * map)
 {
 	if(map) this->map = map;
+	map->setScale(1.0 / 11.0);
 }
 
 void GameController::createTouchListener()
@@ -69,6 +72,10 @@ void GameController::createKeyListener()
 		{
 			map->setScale(map->getScale()/1.1);
 		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
+		{
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
+		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
@@ -77,6 +84,21 @@ void GameController::onEnter()
 {
 	Layer::onEnter();
 	initGame();
+}
+
+void GameController::update(float delta)
+{
+	isResult(delta);
+}
+
+void GameController::isResult(float delta)
+{
+}
+
+void GameController::toOver(bool isWin)
+{
+	SimpleAudioEngine::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 
 void GameController::initGame()

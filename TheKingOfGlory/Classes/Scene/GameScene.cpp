@@ -16,13 +16,13 @@ void GameScene::onEnter()
 }
 
 
-void GameScene::createMenu()
+void GameScene::createMenuButton()
 {
-	//添加菜单
+	//添加菜单按钮
 	auto menuItem = MenuItemImage::create(
 		"Pictures/UI/SettingNormal.png",
 		"Pictures/UI/SettingSelected.png",
-		CC_CALLBACK_1(GameScene::menuCallback, this));
+		CC_CALLBACK_0(GameScene::createMenu,this));
 	auto menu = Menu::create(menuItem, NULL);
 	menu->setPosition(Vec2(visible_Size.width*0.95, visible_Size.height*0.95));
 	this->addChild(menu);
@@ -32,8 +32,20 @@ void GameScene::createMenu()
 		menuItem->getContentSize().height + menuItem->getContentSize().height / 2);
 }
 
-void GameScene::menuCallback(cocos2d::Ref * pSender)
+void GameScene::updateMenu()
 {
+	//更新菜单，接收到UpdateMenu事件是响应
+	if (hasMenu)
+		removeMenu();
+	else
+		createMenu();
+}
+
+void GameScene::createMenu()
+{
+	if (hasMenu)
+		return;
+
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu);
@@ -70,10 +82,29 @@ void GameScene::menuCallback(cocos2d::Ref * pSender)
 	this->addChild(returnLabel);
 
 	menuListener->setEnabled(true);
+	hasMenu = true;
 
 }
 
-void GameScene::menuOnTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
+void GameScene::removeMenu()
+{
+	if (!hasMenu)
+		return;
+	//停用菜单事件监听器，删除菜单
+	menuListener->setEnabled(false);
+	this->removeChild(menu, true);
+	this->removeChild(continueLabel, true);
+	this->removeChild(settingLabel, true);
+	this->removeChild(restartLabel, true);
+	this->removeChild(returnLabel, true);
+	hasMenu = false;
+}
+
+void GameScene::createResultBox(bool isWin)
+{
+}
+
+void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 {
 	auto touchLocation = touch->getLocation();
 	auto nodeLocation = this->convertToNodeSpace(touchLocation);
@@ -81,35 +112,26 @@ void GameScene::menuOnTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation)||
 		menuRect.containsPoint(nodeLocation))
 	{
-		//停用菜单事件监听器，删除菜单
-		menuListener->setEnabled(false);
-		this->removeChild(menu,true);
-		this->removeChild(continueLabel, true);
-		this->removeChild(settingLabel, true);
-		this->removeChild(restartLabel, true);
-		this->removeChild(returnLabel, true);
+		removeMenu();
 	}
 	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，删除菜单,进入游戏设置界面
-		//menuListener->setEnabled(false);
-		//this->removeChild(menu, true);
-		//this->removeChild(continueLabel, true);
-		//this->removeChild(settingLabel, true);
-		//this->removeChild(restartLabel, true);
-		//this->removeChild(returnLabel, true);
+		//removeMenu();
 		//Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
 	}
 	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，重新开始游戏
 		menuListener->setEnabled(false);
+		hasMenu = false;
 		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 	}
 	else if (this->rectOfLabel(returnLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，返回主菜单
 		menuListener->setEnabled(false);
+		hasMenu = false;
 		Director::getInstance()->replaceScene(TransitionFade::create(1,	StartScene::createScene()));
 	}
 }
@@ -139,11 +161,18 @@ bool GameScene::init()
 	//创建菜单事件监听器，先不启用
 	menuListener = EventListenerTouchOneByOne::create();
 	menuListener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
-	menuListener->onTouchEnded = CC_CALLBACK_2(GameScene::menuOnTouchEnded, this);
+	menuListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
 	menuListener->setSwallowTouches(true);
 	menuListener->setEnabled(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(menuListener, -1);
 
+	//创建自定义事件监听器，用于打开关闭菜单
+	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener,1);
+
+	//创建自定义事件监听器，游戏结束时弹出对话框
+	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
 
 	//添加地图
 	auto map = GameMap::create();
@@ -157,7 +186,7 @@ bool GameScene::init()
 	gameController->setMap(map);
 	this->addChild(gameController, -1);
 
-	createMenu();
+	createMenuButton();
 
 	return true;
 }
