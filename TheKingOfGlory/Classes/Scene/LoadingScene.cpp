@@ -38,8 +38,13 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
+	musics.push_back(Value("Sounds/GameBgm.mp3"));
+	musics.push_back(Value("Sounds/LoginBgm.mp3"));
+
 	effects.push_back(Value("Sounds/LoginClick.wav"));
 	effects.push_back(Value("Sounds/ButtonClick.wav"));
+	effects.push_back(Value("Sounds/Win.wav"));
+	effects.push_back(Value("Sounds/Lose.wav"));
 
 	sourceCount = spriteSheets.size() + effects.size() + musics.size();
 
