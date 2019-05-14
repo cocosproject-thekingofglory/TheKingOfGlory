@@ -8,51 +8,68 @@
 USING_NS_CC;
 using namespace ui;
 
-const int RED = 0, BULE = 1;
+//红蓝方基地（及商店）所在位置
+const Vec2 RED_STORE = Vec2(10.0, 10.0);
+const Vec2 BLUE_STORE = Vec2(150.0, 150.0);
+
+const int RED = 0, BLUE = 1;
 
 //被攻击对象的优先级
-const int attackGrade = 4;
-const int SOLDIER = 2, HERO = 1, ACTIVE_HERO = 3;
+const int attackGrade = 3;
+const int SOLDIER = 1, HERO = 0, ACTIVE_HERO = 2;
 
 class SpriteBase :public cocos2d::Sprite, public AnimationLoader
 {
 public:
 	virtual bool init();
-
+	//阵营
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
-
+	//伤害
 	int getDamage() { return _damage; }
 	void setDamage(float damage) { _damage = damage; }
-
+	//血条
 	LoadingBar* getHPBar() { return _HPBar; }
 	virtual void setHPBar() {};
-
+	//攻击范围
 	void setAttackRadius(float radius) { _attackRadius = radius; }
 	int getAttackRadius() { return _attackRadius; }
-
+	//当前血量
 	void setNowHPValue(float nowHPValue) { _nowHPValue = nowHPValue; }
 	float getNowHPValue() { return _nowHPValue; }
-
+	//总血量
 	float getHPValue() { return _HPValue; }
 	void setHPValue(float HPValue) { _HPValue = HPValue; }
-
-	void setVec2(Vec2 vec2) { _position = vec2; }
-	Vec2 getVec2() { return _position; }
+	//位置
+	void setPosition(Vec2 vec2) { _position = vec2; }
+	Vec2 getPosition() { return _position; }
+	//两次攻击的间隔(/帧)
+	void setAttackInterval(int attackInterval) { _attackInterval = attackInterval; }
+	int getAttackInterval() { return _attackInterval; }
 
 	static SpriteBase* createWithSpriteFrameName(const std::string& filename);
 
-	virtual void attack() {}
+	virtual bool attack() { return true; }
 
-	bool insideAttack(Vec2 enemyPosition);
+	virtual void addBeAttackTarget(SpriteBase*enemy) {}
 
-	virtual void initAnimation();
+	Vector<SpriteBase*> getBeAttackTarget() { return _beAttackTargetList; }
+
+	virtual void addAttackTarget(SpriteBase* attackTarget) {}
+
+	Vector<SpriteBase*> getAttackTarget() { return _attackTargetList; }
+
+	virtual float beAttack(const float damage) { return 0.0; }
+
+	virtual void initAnimation() {};
 
 	CREATE_FUNC(SpriteBase);
 
 protected:
 
 	LoadingBar* _HPBar=NULL;
+	Vector<SpriteBase*> _beAttackTargetList;
+	Vector<SpriteBase*> _attackTargetList;
 
 private:
 
@@ -62,6 +79,8 @@ private:
 	int _color;
 	float _damage;
 	float _attackRadius;
+
+	int _attackInterval;
 
 	Vec2 _position;
 };

@@ -9,6 +9,7 @@ USING_NS_CC;
 const float SOLDIER_ATTACK_RADIUS = 3.0;
 const float SOLDIER_DAMAGE = 1.0;
 const float SOLDIER_HPVALUE = 5.0;
+const int SOLDIER_ATTACK_INTERVAL = 180;
 
 
 class Soldier :public SpriteBase
@@ -18,16 +19,18 @@ public:
 
 	CREATE_FUNC(Soldier);
 
-	bool _isMove;
-	bool _isAttack;
+	bool _isMove = 1;
+	bool _isAttack = 0;
 
-	void move(Vec2 toPosition);
+	void startMove();
 	void stopMove();
 
-	void attack(const void* enemy);
+	virtual bool attack();//返回是否进行了攻击
 	void stopAttack();
 
-	//static Soldier* createWithSpriteFrameName(const std::string& filename);
+	virtual float beAttack(const float damage);
+
+	static Soldier* createWithSpriteFrameName(const std::string& filename);
 
 	void setSpeed(float speed) { _speed = speed; }
 	float getSpeed() { return _speed; }

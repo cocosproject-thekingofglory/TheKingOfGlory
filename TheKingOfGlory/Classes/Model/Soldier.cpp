@@ -11,9 +11,8 @@ bool Soldier::init()
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
 	setDamage(SOLDIER_DAMAGE);
+	setAttackInterval(SOLDIER_ATTACK_INTERVAL);
 
-	_isMove = false;
-	_isAttack = false;
 
 	initAnimation();
 	setHPBar();
@@ -39,10 +38,13 @@ void Soldier::initAnimation()
 	*/
 }
 
-void Soldier::move(Vec2 toPosition)
+void Soldier::startMove()
 {
 	if (_isMove)
 	{
+		Vec2 toPosition;
+		if (this->getColor() == RED)toPosition = BLUE_STORE;
+		else toPosition = RED_STORE;
 		//runAnimation("soldierMove", this);
 		auto _position = getPosition();
 		float dx = toPosition.x - _position.x;
@@ -59,32 +61,47 @@ void Soldier::move(Vec2 toPosition)
 
 void Soldier::stopMove()
 {
-	if (_isMove)
-	{
-		//stopAnimation("soldierMove",this);
-		_isMove = false;
-		this->stopActionByTag(1);
-		LoadingBar *HP = getHPBar();
-		HP->stopActionByTag(1);
-	}
+	//stopAnimation("soldierMove",this);
+	this->stopActionByTag(1);
+	LoadingBar *HP = getHPBar();
+	HP->stopActionByTag(1);
 }
 
-void Soldier::attack(const void*enemy)
+bool Soldier::attack()
 {
-	if (_isAttack)
+	//runAnimation("soldierAttack", this);
+	for (unsigned int i = _attackTargetList.size() - 1; i >= 0; i--)
 	{
-		//runAnimation("soldierAttack", this);
-		_isAttack = false;
+		if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+		{
+			_attackTargetList.at(i)->beAttack(this->getDamage());
+			return true;
+		}
+		//else _attackTargetList.popBack();
 	}
+	return false;
 }
 
 void Soldier::stopAttack()
 {
-	if (_isAttack)
+	//stopAnimation("soldierAttack",this);
+}
+
+float Soldier::beAttack(const float damage)
+{
+	float nowHP = getNowHPValue();
+	nowHP -= damage;
+	if (nowHP <= 0.0)
 	{
-		//stopAnimation("soldierAttack",this);
-		_isAttack = false;
+		//停止动画，并在能攻击它的小兵的列表中删除它
+		stopMove();
+		for (int i = 0; i < _beAttackTargetList.size(); i++)
+		{
+			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this,false);
+		}
 	}
+	setNowHPValue(nowHP);
+	return nowHP;
 }
 
 void Soldier::setHPBar()
@@ -98,4 +115,16 @@ void Soldier::setHPBar()
 	Vec2 pos = _soldier->getPosition();
 	_HPBar->setPosition(Vec2(pos.x, pos.y + 30.0));
 
+}
+
+Soldier* Soldier::createWithSpriteFrameName(const std::string& filename)
+{
+	auto sprite = new Soldier();
+	if (sprite&&sprite->initWithSpriteFrameName(filename))
+	{
+		sprite->autorelease();
+		return sprite;
+	}
+	CC_SAFE_DELETE(sprite);
+	return nullptr;
 }
