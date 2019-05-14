@@ -11,6 +11,7 @@ const float SOLDIER_DAMAGE = 1.0;
 const float SOLDIER_HPVALUE = 5.0;
 const int SOLDIER_ATTACK_INTERVAL = 180;
 
+const int SOLDIER_MOVE_ACTION = 1;
 
 class Soldier :public SpriteBase
 {
@@ -36,6 +37,7 @@ public:
 	float getSpeed() { return _speed; }
 
 	void setHPBar();
+	void updateHPBar();
 
 	void initAnimation();
 
@@ -43,6 +45,5 @@ private:
 
 	float _speed;
 
-	Sprite* _soldier;
 	Sprite* _bullet;
 };

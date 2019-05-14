@@ -1,4 +1,4 @@
-#include "tower.h"
+#include "Tower.h"
 
 Tower* Tower::createWithSpriteFrameName(const std::string& filename)
 {
@@ -22,18 +22,54 @@ void Tower::initAnimation()
 {
 	/*
 	const float delay=
-	loadAnimation("   ", delay, 3);
+	loadAnimation("Tower_Destory", delay, 3);
+
 	*/
 }
 
-void Tower::attack()
+bool Tower::attack()
 {
 
 }
 
-bool Tower::insideAttack(Vec2 enemyPosition)
+float Tower::beAttack(const float damage)
 {
-	float dx = enemyPosition.x - _towerPosition.x;
-	float dy = enemyPosition.y - _towerPosition.y;
-	return dx * dx + dy * dy <= _attackRadius * _attackRadius;
+	float nowHP = getNowHPValue();
+	nowHP -= damage;
+	if (nowHP <= 0.0)
+	{
+		for (int i = 0; i < _beAttackTargetList.size(); i++)
+		{
+			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
+		}
+	}
+	setNowHPValue(nowHP);
+	if (nowHP > 0)updateHPBar();
+	return nowHP;
+}
+
+bool Tower::beDestory()
+{
+	//runAnimation("Tower_Destory", this);
+}
+
+void Tower::setHPBar()
+{
+	_HPBar = LoadingBar::create("hpBg1.png");
+
+	_HPBar->setScale(0.1);
+	_HPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_HPBar->setPercent(100);
+	Vec2 pos = this->getPosition();
+	_HPBar->setPosition(Vec2(pos.x, pos.y + 30.0));
+
+}
+
+void Tower::updateHPBar()
+{
+	if (_HPBar != NULL)
+	{
+		_HPBar->setPercent(getNowHPValue() / getHPValue());
+	}
 }

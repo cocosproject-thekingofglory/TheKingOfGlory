@@ -52,7 +52,7 @@ void Soldier::startMove()
 		float dist = sqrt(dx*dx + dy * dy);
 		float interval = dist / (getSpeed());
 		auto moveTo = MoveTo::create(interval, toPosition);
-		moveTo->setTag(1);
+		moveTo->setTag(SOLDIER_MOVE_ACTION);
 		this->runAction(moveTo);
 		LoadingBar *HP = getHPBar();
 		HP->runAction(moveTo);
@@ -64,7 +64,7 @@ void Soldier::stopMove()
 	//stopAnimation("soldierMove",this);
 	this->stopActionByTag(1);
 	LoadingBar *HP = getHPBar();
-	HP->stopActionByTag(1);
+	HP->stopActionByTag(SOLDIER_MOVE_ACTION);
 }
 
 bool Soldier::attack()
@@ -101,21 +101,31 @@ float Soldier::beAttack(const float damage)
 		}
 	}
 	setNowHPValue(nowHP);
+	if (nowHP > 0)updateHPBar();
 	return nowHP;
 }
 
 void Soldier::setHPBar()
 {
-	_HPBar = LoadingBar::create("hpBg1.png");
+	_HPBar = LoadingBar::create("planeHP.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 	
 	_HPBar->setPercent(100);
-	Vec2 pos = _soldier->getPosition();
+	Vec2 pos = this->getPosition();
 	_HPBar->setPosition(Vec2(pos.x, pos.y + 30.0));
 
 }
+
+void Soldier::updateHPBar()
+{
+	if (_HPBar != NULL)
+	{
+		_HPBar->setPercent(getNowHPValue() / getHPValue());
+	}
+}
+
 
 Soldier* Soldier::createWithSpriteFrameName(const std::string& filename)
 {

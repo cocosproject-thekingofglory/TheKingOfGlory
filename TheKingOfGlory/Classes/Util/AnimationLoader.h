@@ -1,5 +1,4 @@
-#ifndef __UTIL_ANIMATIONLOADER_H__
-#define __UTIL_ANIMATIONLOADER_H__
+#pragma once
 
 #include "cocos2d.h"
 
@@ -41,5 +40,3 @@ private:
      */
     unsigned int getFlag(const std::string & animationName);
 };
-
-#endif

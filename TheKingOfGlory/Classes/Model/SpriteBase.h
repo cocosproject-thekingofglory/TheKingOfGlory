@@ -8,7 +8,7 @@
 USING_NS_CC;
 using namespace ui;
 
-//红蓝方基地（及商店）所在位置
+//红蓝方基地（即商店）所在位置
 const Vec2 RED_STORE = Vec2(10.0, 10.0);
 const Vec2 BLUE_STORE = Vec2(150.0, 150.0);
 
@@ -48,6 +48,8 @@ public:
 	int getAttackInterval() { return _attackInterval; }
 
 	static SpriteBase* createWithSpriteFrameName(const std::string& filename);
+
+	virtual void updateHPBar(){}
 
 	virtual bool attack() { return true; }
 
