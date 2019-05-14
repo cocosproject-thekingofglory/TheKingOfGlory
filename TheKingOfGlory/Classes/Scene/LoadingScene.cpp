@@ -34,7 +34,18 @@ void LoadingScene::onEnterTransitionDidFinish()
 	//将游戏资源文件名放入ValueVector中
 	ValueVector spriteSheets, effects, musics;
 
-//	spriteSheets.push_back(Value("animation.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_up.plist"));
 
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
@@ -50,9 +61,9 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 	progress_Interval = 100 / sourceCount;
 	
+	loadSpriteSheets(spriteSheets);
 	loadMusic(musics);
 	loadEffect(effects);
-//	loadSpriteSheets(spriteSheets);
 	
 
 }

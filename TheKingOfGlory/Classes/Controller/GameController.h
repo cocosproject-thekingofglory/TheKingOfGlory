@@ -1,10 +1,12 @@
 #pragma once
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
+#include "../Model/Soldier.h"
 
 class GameController:public cocos2d::Layer
 {
 public:
+	Soldier* soldier;
 	virtual bool init();
 	CREATE_FUNC(GameController);
 
@@ -13,6 +15,7 @@ public:
 
 private:
 	GameMap* map;
+
 
 	void createTouchListener();
 	void createKeyListener();

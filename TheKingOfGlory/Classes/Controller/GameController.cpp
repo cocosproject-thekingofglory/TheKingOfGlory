@@ -1,5 +1,6 @@
 #include "GameController.h"
 #include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -76,6 +77,35 @@ void GameController::createKeyListener()
 		{
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
 		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_T)
+		{
+			soldier->stopAnimation(soldier);
+			soldier->runAnimation("warrior_walk_up", soldier);
+			soldier->setPosition(soldier->getPositionX(), soldier->getPositionY() + 100);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_G)
+		{
+			soldier->stopAnimation(soldier);
+			soldier->runAnimation("warrior_walk_down", soldier);
+			soldier->setPosition(soldier->getPositionX(), soldier->getPositionY() -100);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_F)
+		{
+			soldier->stopAnimation(soldier);
+			soldier->runAnimation("warrior_walk_left", soldier);
+			soldier->setPosition(soldier->getPositionX()-100, soldier->getPositionY() );
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_H)
+		{
+			soldier->stopAnimation(soldier);
+			soldier->runAnimation("warrior_walk_right", soldier);
+			soldier->setPosition(soldier->getPositionX()+100, soldier->getPositionY() );
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_ENTER)
+		{
+			Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)true);
+		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
@@ -97,13 +127,15 @@ void GameController::isResult(float delta)
 
 void GameController::toOver(bool isWin)
 {
+	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
 	SimpleAudioEngine::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 
 void GameController::initGame()
 {
-	auto sprite = Sprite::create("Pictures/player.png");
-	sprite->setScale(10);
-	map->addSprite(sprite, GameMap::Type::Player_Blue);
+	soldier = Soldier::create();
+	soldier->setScale(5);
+	soldier->runAnimation("warrior_walk_down", soldier);
+	map->addSprite(soldier, GameMap::Type::Player_Red);
 }
