@@ -3,6 +3,7 @@
 
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
+
 #include"SpriteBase.h"
 #include"AnimationLoader.h"
 
@@ -12,7 +13,7 @@ using namespace ui;
 const float PLAYER_ATTACK_RADIUS = 5.0;
 const float PLAYER_DAMAGE = 5.0;
 const float PLAYER_HPVALUE = 50.0;
-
+const int PLAYER_ATTACK_INTERVAL = 200;
 
 class Player :public Sprite
 {
@@ -26,6 +27,7 @@ public:
 	{
 		STANDING,
 		MOVING,
+		ATTACKING,
 		DEAD,
 		BEINGHIT,
 		SKILL
@@ -43,6 +45,7 @@ public:
 	enum AnimationType {
 		STANDING,
 		MOVING,
+		ATTACKING,
 		DEAD,
 		BEINGHIT,
 		SKILL
@@ -65,8 +68,8 @@ public:
 	bool init(int role);//初始化一些条件
 	bool initWithRole(int role);//只是初始化名字
 
-	void setStatus(Status);
-	Status getStatus();
+	void setStatus(Status);//设置状态
+	Status getStatus();//获取五种状态
 
 	void isLocal(bool a);//？
 	bool isLocal();
@@ -74,39 +77,49 @@ public:
 	void setLifeValue(int lifeValue) { _lifeValue = lifeValue; }
 	int getLifeValue() { return _lifeValue; }
 
-	void setHP(LoadingBar* HP) { _HP = HP; }
+	void setHP();
 	LoadingBar* getHP() { return _HP; }
 
 	void setHPInterval(float HPInterval) { _HPInterval = HPInterval; }//血条更新值
 	int getHPInterval() { return _HPInterval; }
 
-	void setMove(bool move) { _move = move; }
+	void setAttackRadius(float radius) { _attackRadius = radius; }
+	int getAttackRadius() { return _attackRadius; }
+
+	void setAttackInterval(int attackInterval) { _attackInterval = attackInterval; }
+	int getAttackInterval() { return _attackInterval; }
+
+	int getDamage() { return _damage; }
+	void setDamage(float damage) { _damage = damage; }
+
+	void setMove(bool move) { _move = move; }//是否移动
 	bool isMove() { return _move; }
 
-	void setCanAttack(bool canAttack) { _isCanAttack = canAttack; }
-	bool isCanAttack() { return _isCanAttack; }
-
-	void setMoveCount(int moveCount) { _moveCount = moveCount; }
+	void setMoveCount(int moveCount) { _moveCount = moveCount; }//移动次数计数
 	int getMoveCount() { return _moveCount; }
 
-	Animate* getAnimateByType(AnimationType type);
+	void setCanAttack(bool canAttack) { _isCanAttack = canAttack; }//是否攻击
+	bool isCanAttack() { return _isCanAttack; }
 
-	void Player::addAnimation(const std::string & animationName, float delay, int animationFrameNum);
-	// load animation only when it's not loaded
+	uint8_t getSpeed() { return _speed; }
+	float getRealSpeed() { return 0.8f + _speed * 0.3f; }
+	void setSpeed(uint8_t speed) {this->_speed; }
 
-	void Player::playAnimation(const std::string& animationName, int index);//参数待补充，Repeat the selected animation forever
+	Animate* getAnimateByType(AnimationType type);//通过类型获取到动作
 
-	void Player::initStatus(Player::Status status);
+	/*void addAnimation(const std::string & animationName, float delay, int animationFrameNum);
+	// load animation only when it's not loaded，通过动作名字，对应动作名字的帧数，缓存添加动作
 
-	bool _isMove;
-	bool _isAttack;
+	void playAnimation(const std::string& animationName, int index);//参数待补充，Repeat the selected animation forever*/
 
 	void moveTo(Vec2 toPosition);
-	void onWalk(Vec2 position);
+	void onMove(Vec2 position);
 	void stopMove();
 
 	void attack(const void* enemy);//参数待补充
 	void stopAttack();
+
+	void skill(const void* enemy);
 
 	void beHit(int attack);
 	int getAttack() { return _attack; }
@@ -125,8 +138,14 @@ private:
 	int _lifeValue;
 	LoadingBar* _HP;
 	float _HPInterval;// 血条的更新量
+	float _damage;
+	float _attackRadius;
+	int _attackInterval;
 
 	bool _isLocal;
+	bool _isMove;
+	bool _isAttack;
+	bool _isSkill;
 
 	bool _move;
 	int _moveCount;
@@ -134,10 +153,9 @@ private:
 	bool _isCanAttack;
 	int _attack;
 
-	int _animationNum;
+	int _animationNum = 5;//动作次数？同动作帧数，需分别定义？
 	std::vector<int> _animationFrameNum;
 	std::vector<std::string> _animationNames;
 
-	EventListenerTouchOneByOne* _listener;
 };
 #endif

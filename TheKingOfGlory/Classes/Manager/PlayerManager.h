@@ -5,13 +5,14 @@
 #include"Player.h"
 
 USING_NS_CC;
-using namespace std;
+
 
 class PlayerManager :public cocos2d::Layer
 {
 public:
 	virtual bool init();
 
+	//role 定义为英雄的顺序
 	Player* createPlayer(const std::string& id, int role);
 	Player* createLocalPlayer(const std::string& id, int role);
 

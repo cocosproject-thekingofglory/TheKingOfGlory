@@ -1,5 +1,4 @@
 #include"PlayerManager.h"
-#include<ctime>
 
 USING_NS_CC;
 
@@ -26,12 +25,13 @@ Player* PlayerManager::createPlayer(const std::string& id, int role)
 		this->_playerList.insert(id, player);
 		return player;
 	}
+	CC_SAFE_DELETE(player);
 	return nullptr;
 }
 
 Player* PlayerManager::createLocalPlayer(const std::string& id, int role)
 {
-	localPlayer = createPlayer(id, role);
+	auto localPlayer = Player::createPlayer(id, role);
 	if (localPlayer)
 	{
 		localPlayer->isLocal(true);
@@ -63,7 +63,6 @@ Player * PlayerManager::getLocalPlayer()
 {
 	return localPlayer;
 }
-
 
 void PlayerManager::addCustomEvent()
 {

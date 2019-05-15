@@ -1,10 +1,11 @@
 #include"Player.h"
+#include"AnimationLoader.h"
 #include<ctime>
 #include<cmath>
 
 USING_NS_CC;
 
-//role值同enum分类
+//role值同enum分类，为0，1,2
 Player* Player::createPlayer(const std::string& id, int role) 
 {
 	auto player = new (std::nothrow) Player();
@@ -18,12 +19,13 @@ Player* Player::createPlayer(const std::string& id, int role)
 	return nullptr;
 }
 
-//初始化信息
+//初始化信息，对这个角色初始化信息
 bool Player::init(int role)
 {
 	_status = Status::STANDING;
 	_direction = Direction::NONE;
 	_speed = 100;
+	_lifeValue = PLAYER_HPVALUE;
 
 	cocos2d::Size size = this->getContentSize();
 	log("size: %f,%f", size.width, size.height);
@@ -31,23 +33,32 @@ bool Player::init(int role)
 	initWithRole(role);
 	std::string curName = _roleName;
 
-
+	setLifeValue(PLAYER_HPVALUE);
 	setAttackRadius(PLAYER_ATTACK_RADIUS);
-	setHPValue(PLAYER_HPVALUE);
 	setDamage(PLAYER_DAMAGE);
+	setAttackInterval(PLAYER_ATTACK_INTERVAL);
+
+	_isMove = false;
+	_isAttack = false;
+	_isSkill = false;
+
+	setHP();
 
 	this->initWithSpriteFrameName(_roleName);
 	//帧缓存,使用plist
 	SpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("GameItem/Player/" + _roleName + "/default.plist");
 	Sprite* sprite = Sprite::createWithSpriteFrameName("GameItem/Player/" + _roleName + "/default.plist");
-	sprite->setPosition(ccp(100, 100));//***
+	sprite->setPosition(ccp(100, 100));
 	this->addChild(sprite);
 
-	std::string animationNames[] = { "standing","moving","dead","beinghit","skill" };
+	std::string animationNames[] = { "standing","moving","attacking","dead","beinghit","skill" };
 	_animationNames.assign(animationNames, animationNames + 5);
 
-	//对某一个动作
-	this->addAnimation(animationNames[0],0.2f,_animationNum);
+	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
+	for (int i = 0; i < 6; i++)
+	{
+		AnimationLoader::loadAnimation(animationNames[i], 0.2f, _animationNum);
+	}
 
 	return true;
 }
@@ -62,88 +73,60 @@ bool Player::initWithRole(int role)
 	if (this->initWithFile(file) && this->init(role))
 	{
 		// do something here
+
 		return true;
 	}
 	return false;
 }
 
-void Player::addAnimation(const std::string& animationName, float delay, int num)
-{
-
-	/*AnimationLoader::loadAnimation(animationName, delay, num);*/
-	//check if already loaded
-	auto animation = AnimationCache::getInstance()->getAnimation(String::createWithFormat("%s-%s", _roleName.c_str(),animationName)->getCString());
-	if (animation)
-		return;
-
-	auto animation = Animation::create();
-	for (int i = 0; i < num; i++)
-	{
-		std::string name = animationName;
-		name.append(StringUtils::format("_%02d", i)).append(".png");//名称
-		animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
-	}
-	animation->setDelayPerUnit(delay);
-	animation->setRestoreOriginalFrame(true);
-
-	animationCache->addAnimation(animation, animationName);
-}
-
-void Player::playAnimation(const std::string& animationName, int index)
-{
-	auto action = this->getActionByTag(index);
-	if (action)
-		return;
-
-	auto animation = AnimationLoader::getAnimation(animationName);
-	if (animation != nullptr)
-	{
-		auto animate = Animate::create(animation);
-		auto repeat = RepeatForever::create(animate);
-
-		auto flag = AnimationLoader::getFlag(animationName);
-		repeat->setFlags(flag);
-
-		this->runAction(repeat);
-	}
-}
-
-//与动作有关,待修...***
+//与动作有关,设置状态，传入状态，初始化动画,状态读取
 void Player::setStatus(Player::Status status)
 {
 	this->_status = status;
+	Animation*animation = nullptr;
 	//Or do animation here:
 	switch (_status)
 	{
 	case Player::Status::STANDING:
 	{
-
+		animation = AnimationLoader::getAnimation(_animationNames[STANDING]);
 	}
 		break;
 	case Player::Status::MOVING:
+	{
+		animation = AnimationLoader::getAnimation(_animationNames[MOVING]);
+	}
 		break;
+	case Player::Status::ATTACKING:
+	{
+		animation = AnimationLoader::getAnimation(_animationNames[ATTACKING]);
+	}
 	case Player::Status::DEAD:
+	{
+		animation = AnimationLoader::getAnimation(_animationNames[DEAD]);
+	}
 		break;
 	case Player::Status::BEINGHIT:
 	{
-		log("onBeingHit: Enter BeingHit");
-		auto func = [&]()
-		{
-			
-		}
-		auto animate = getAnimateByType(BEINGHIT);
-		auto wait = DelayTime::create(0.6f);
-		auto callback = CallFunc::create(func);
-		auto seq = Sequence::create(wait, animate, callback, nullptr);
+		animation = AnimationLoader::getAnimation(_animationNames[BEINGHIT]);
 	}
 		break;
 	case Player::Status::SKILL:
+	{
+		animation = AnimationLoader::getAnimation(_animationNames[SKILL]);
+	}
 		break;
 	default:
 		break;
 	}
-
+	if (animation)
+	{
+		AnimationLoader::stopAnimation(this);
+		animation->setRestoreOriginalFrame(false);
+		runAction(Animate::create(animation));
+	}
 }
+
 
 Player::Status Player::getStatus()
 {
@@ -152,6 +135,8 @@ Player::Status Player::getStatus()
 
 void Player::moveTo(Vec2 toPosition)
 {
+	_status = (Status)MOVING;
+	_isMove = true;
 	if (_isMove)
 	{
 		auto _position = getPosition();
@@ -160,30 +145,102 @@ void Player::moveTo(Vec2 toPosition)
 		float dist = sqrt(dx*dx + dy * dy);
 		float interval = dist / (getSpeed());
 		auto moveTo = MoveTo::create(interval, toPosition);
-		moveTo->setTag(1);
+		moveTo->setTag(1);//锚点要考虑
 		this->runAction(moveTo);
+
 		LoadingBar *HP = getHP();
 		HP->runAction(moveTo);
 	}
+}
+
+//用于是否翻转
+void Player::onMove(Vec2 toPosition)
+{
 }
 
 void Player::stopMove()
 {
 	if (_isMove)
 	{
+		_status = (Status)STANDING;
 		_isMove = false;
 		this->stopActionByTag(1);
+
 		LoadingBar *HP = getHP();
 		HP->stopActionByTag(1);
 	}
 }
+
+
+//血条问题仍要讨论
+void Player::attack(const void* enemy)
+{
+	_status = (Status)ATTACKING;
+	_isAttack = true;
+	if (_isAttack)
+	{
+		AnimationLoader::runAnimation("attacking", this);
+	}
+}
+
+void Player::stopAttack()
+{
+	_status = (Status)STANDING;
+	if (_isAttack)
+	{
+		_isAttack = false;
+		AnimationLoader::stopAnimation(this); //stange，此处貌似停掉所有动作
+	}
+}
+
+void Player::skill(const void* enemy)
+{
+	_status = (Status)SKILL;
+	_isSkill = true;
+	if (_isSkill)
+	{
+		AnimationLoader::runAnimation("skill", this);
+		_isSkill = false;
+	}
+}
+
+void Player::beHit(int attack)
+{
+	_lifeValue -= attack;
+	if (_lifeValue <= 0)
+	{
+		_lifeValue = 0;
+		_status = (Status)DEAD;
+		AnimationLoader::runAnimation("dead", this);
+
+		return;
+	}
+	else
+	{
+		_status = (Status)BEINGHIT;
+		AnimationLoader::runAnimation("behit", this);
+	}
+}
+
+void Player::setHP()
+{
+	_HP = LoadingBar::create("hpBg1.png");
+
+	_HP->setScale(0.1);
+	_HP->setDirection(LoadingBar::Direction::LEFT);
+
+	_HP->setPercent(100);
+	Vec2 pos = this->getPosition();
+	_HP->setPosition(Vec2(pos.x, pos.y + 30.0));
+}
+
 
 void Player::isLocal(bool a)
 {
 	this->_isLocal = a;
 	if (a)
 	{
-		//待补充
+		//待补充???
 	}
 }
 
