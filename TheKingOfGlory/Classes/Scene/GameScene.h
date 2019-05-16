@@ -19,10 +19,10 @@ private:
 	void updateMenu();
 	void createMenu();
 	void removeMenu();
+	void createResultBox(cocos2d::EventCustom* event);
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 	cocos2d::Rect rectOfLabel(cocos2d::Label* label);
 public:
-	void createResultBox(bool isWin);
 	static cocos2d::Scene* createScene();
 	virtual bool init();
 	CREATE_FUNC(GameScene);
