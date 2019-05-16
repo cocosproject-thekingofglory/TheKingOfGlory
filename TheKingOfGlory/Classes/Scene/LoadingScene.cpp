@@ -1,6 +1,7 @@
 #include "LoadingScene.h"
 #include "SimpleAudioEngine.h"
 #include "LoginScene.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -34,20 +35,38 @@ void LoadingScene::onEnterTransitionDidFinish()
 	//将游戏资源文件名放入ValueVector中
 	ValueVector spriteSheets, effects, musics;
 
-//	spriteSheets.push_back(Value("animation.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_walk_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
 
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
+	musics.push_back(Value("Sounds/GameBgm.mp3"));
+	musics.push_back(Value("Sounds/LoginBgm.mp3"));
+
 	effects.push_back(Value("Sounds/LoginClick.wav"));
 	effects.push_back(Value("Sounds/ButtonClick.wav"));
+	effects.push_back(Value("Sounds/Win.wav"));
+	effects.push_back(Value("Sounds/Lose.wav"));
 
 	sourceCount = spriteSheets.size() + effects.size() + musics.size();
 
 	progress_Interval = 100 / sourceCount;
 	
+	loadSpriteSheets(spriteSheets);
 	loadMusic(musics);
 	loadEffect(effects);
-//	loadSpriteSheets(spriteSheets);
 	
 
 }
@@ -114,7 +133,8 @@ void LoadingScene::progressUpdate()
 		auto callFunc = CallFunc::create([=] {
 
 			auto delay = DelayTime::create(2.0f);
-			const auto transition = TransitionFade::create(1, LoginScene::createScene());
+			//const auto transition = TransitionFade::create(1, LoginScene::createScene());
+			const auto transition = TransitionFade::create(1, GameScene::createScene());
 			auto action = Sequence::create(delay, transition, NULL);
 			Director::getInstance()->replaceScene(transition);
 		});

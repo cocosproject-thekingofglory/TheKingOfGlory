@@ -26,7 +26,7 @@
       <UniqueIdentifier>{a8809144-f7af-46eb-a469-f457e2eb91ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Util">
-      <UniqueIdentifier>{e03fc14d-eb10-438b-bd6a-a8a26683c539}</UniqueIdentifier>
+      <UniqueIdentifier>{84110667-fe1d-4551-897a-31c2f2ee4e35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -48,8 +48,14 @@
     <ClCompile Include="..\Classes\Scene\StartScene.cpp">
       <Filter>src\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
-      <Filter>src\Util</Filter>
+    <ClCompile Include="..\Classes\Scene\GameScene.cpp">
+      <Filter>src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\GameMap.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controller\GameController.cpp">
+      <Filter>src\Controller</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\Soldier.cpp">
       <Filter>src\Model</Filter>
@@ -57,14 +63,14 @@
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\tower.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
+      <Filter>src\Util</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Manager\Manager.cpp">
       <Filter>src\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Model\GameMap.cpp">
-      <Filter>src\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Model\Tower.cpp">
-      <Filter>src\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,8 +92,14 @@
     <ClInclude Include="..\Classes\Scene\StartScene.h">
       <Filter>src\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
-      <Filter>src\Util</Filter>
+    <ClInclude Include="..\Classes\Scene\GameScene.h">
+      <Filter>src\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\GameMap.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controller\GameController.h">
+      <Filter>src\Controller</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\Soldier.h">
       <Filter>src\Model</Filter>
@@ -95,14 +107,14 @@
     <ClInclude Include="..\Classes\Model\SpriteBase.h">
       <Filter>src\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Model\tower.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
+      <Filter>src\Util</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\Manager\Manager.h">
       <Filter>src\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\GameMap.h">
-      <Filter>src\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\Tower.h">
-      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

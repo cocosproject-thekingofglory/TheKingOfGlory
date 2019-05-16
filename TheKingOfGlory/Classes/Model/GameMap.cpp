@@ -15,7 +15,6 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
-	collidable->setVisible(false);
 	objectLayer = tileMap->getObjectGroup("objects");
 
 	player_red = objectLayer->getObject("player_red");
@@ -92,7 +91,6 @@ cocos2d::Size GameMap::getTileSize()
 
 bool GameMap::isCanAssess(const cocos2d::Vec2 & coord)
 {
-	log("%d", mapInfo.at(coord.x).at(coord.y));
 	return coord.x >= 0 && coord.x < getMapSize().width
 		&&coord.y >= 0 && coord.y < getMapSize().height
 		&& ((mapInfo.at(coord.x).at(coord.y) == 1) ? false : true);
@@ -105,6 +103,7 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 	if (type == Player_Red)
 	{
 		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
+
 	}
 	else if (type == Player_Blue)
 	{
@@ -114,7 +113,7 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 
 GameMap * GameMap::getCurrentMap()
 {
-	auto map = dynamic_cast<GameMap*>(cocos2d::Director::getInstance()->getRunningScene()->getChildByName("root")->getChildByName("map"));
+	auto map = dynamic_cast<GameMap*>(cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->getChildByName("map"));
 	if (map)
 	{
 		return map;
