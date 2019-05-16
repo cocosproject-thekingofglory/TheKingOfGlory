@@ -1,4 +1,5 @@
 #include "Manager.h"
+#include "Controller/GameController.h"
 
 USING_NS_CC;
 
@@ -33,22 +34,30 @@ void Manager::update(float dt)
 	if (count_AppearSoldier%SOLDIER_APPEAR_INTERVAL == 0)
 	{
 		count_AppearSoldier = 0;
-		auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
-		soldier_red->init();
-		soldier_red->startMove();
-		soldier_red->setPosition(RED_BIRTH_POINT);
-		//soldier_red->setScale(2.0);
-		this->addChild(soldier_red);
+		if (_soldierList[RED].size() < 1)
+		{
+			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
+			soldier_red->init();
+			soldier_red->startMove();
+			soldier_red->setScale(10);
+			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Player_Red);
 
-		auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
-		soldier_blue->init();
-		soldier_blue->startMove();
-		soldier_blue->setPosition(BLUE_BIRTH_POINT);
-		//soldier_blue->setScale(2.0);
-		this->addChild(soldier_blue);
+		}
+
+		if (_soldierList[BLUE].size() < 1)
+		{
+			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
+			soldier_blue->init();
+			soldier_blue->startMove();
+			soldier_blue->setScale(10);
+			GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Player_Blue);
+
+		}
+
+
 	}
 
-
+	
 	static int count_AttackSoldier = 0;
 	count_AttackSoldier++;
 	if (count_AttackSoldier%SOLDIER_UPDATE_INTERVAL == 0)
@@ -64,7 +73,7 @@ void Manager::update(float dt)
 				_soldierList[i].at(j)->getBeAttackTarget().clear();
 			}
 		}
-
+		
 		//Ñ°ÕÒ¹¥»÷ºÍ±»¹¥»÷Ä¿±ê
 		for (int i = 0; i < 2; i++)
 		{
@@ -82,7 +91,23 @@ void Manager::update(float dt)
 			}
 		}
 
-
+		//ÒÆ³ýÀë¿ª¹¥»÷·¶Î§µÄ¹¥»÷Ä¿±ê
+		for (int i = 0; i < 2; i++)
+		{
+			for (int j = 0; j < _soldierList[i].size(); j++)
+			{
+				Vector<SpriteBase *>& attackTarget = _soldierList[i].at(j)->getAttackTarget();
+				for (auto target : _soldierList[i].at(j)->getAttackTarget())
+				{
+					if (!insideAttack(target, _soldierList[i].at(j)))
+					{
+						attackTarget.eraseObject(target);
+						target->getBeAttackTarget().eraseObject(_soldierList[i].at(j));
+					}
+				}
+			}
+		}
+		
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
@@ -98,15 +123,15 @@ void Manager::update(float dt)
 				}
 			}
 		}
-
+		
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
 			{
 				if (_soldierList[i].at(j)->getNowHPValue() <= 0.0)
 				{
+					_soldierList[i].at(j)->removeFromParentAndCleanup(true);
 					_soldierList[i].eraseObject(_soldierList[i].at(j));
-
 				}
 			}
 		}
@@ -114,13 +139,13 @@ void Manager::update(float dt)
 
 
 	}
-
+	
 }
 
 bool Manager::insideAttack(SpriteBase* beAttack,SpriteBase* attack)
 {
-	float dx = beAttack->getPosition().x -attack->getPosition().x;
-	float dy = beAttack->getPosition().y - attack->getPosition().y;
-	float attackRadius = attack->getAttackRadius();
-	return dx * dx + dy * dy <= attackRadius * attackRadius;
+	auto rect = attack->getBoundingBox();
+	auto attackRect = Rect(rect.getMinX(), rect.getMinY(),
+		rect.size.width + attack->getAttackRadius(), rect.size.height + attack->getAttackRadius());
+	return attackRect.intersectsRect(beAttack->getBoundingBox());
 }

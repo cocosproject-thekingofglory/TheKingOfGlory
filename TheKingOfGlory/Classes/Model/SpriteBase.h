@@ -21,7 +21,15 @@ const int SOLDIER = 1, HERO = 0, ACTIVE_HERO = 2;
 class SpriteBase :public cocos2d::Sprite, public AnimationLoader
 {
 public:
+	enum Type
+	{
+		Player, Soldier
+	};
+
 	virtual bool init();
+	//类型
+	void setType(Type type) { _type = type; };
+	Type getType() { return _type; };
 	//阵营
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
@@ -41,8 +49,6 @@ public:
 	float getHPValue() { return _HPValue; }
 	void setHPValue(float HPValue) { _HPValue = HPValue; }
 	//位置
-	void setPosition(Vec2 vec2) { _position = vec2; }
-	Vec2 getPosition() { return _position; }
 	//两次攻击的间隔(/帧)
 	void setAttackInterval(int attackInterval) { _attackInterval = attackInterval; }
 	int getAttackInterval() { return _attackInterval; }
@@ -53,11 +59,11 @@ public:
 
 	virtual bool attack() { return true; }
 
-	virtual void addBeAttackTarget(SpriteBase*enemy) {}
+	virtual void addBeAttackTarget(SpriteBase*enemy) { _beAttackTargetList.pushBack(enemy); };
 
 	Vector<SpriteBase*> getBeAttackTarget() { return _beAttackTargetList; }
 
-	virtual void addAttackTarget(SpriteBase* attackTarget) {}
+	virtual void addAttackTarget(SpriteBase* attackTarget) { _attackTargetList.pushBack(attackTarget); }
 
 	Vector<SpriteBase*> getAttackTarget() { return _attackTargetList; }
 
@@ -74,6 +80,7 @@ protected:
 	Vector<SpriteBase*> _attackTargetList;
 
 private:
+	Type _type;
 
 	float _HPValue;
 	

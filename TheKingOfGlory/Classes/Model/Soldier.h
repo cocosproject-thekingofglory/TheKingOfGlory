@@ -7,9 +7,10 @@ USING_NS_CC;
 
 //小兵的初始属性值
 const float SOLDIER_ATTACK_RADIUS = 3.0;
-const float SOLDIER_DAMAGE = 1.0;
-const float SOLDIER_HPVALUE = 5.0;
+const float SOLDIER_DAMAGE = 10.0;
+const float SOLDIER_HPVALUE = 100.0;
 const int SOLDIER_ATTACK_INTERVAL = 180;
+const float SOLDIER_MOVE_SPEED = 10;
 
 const int SOLDIER_MOVE_ACTION = 1;
 
@@ -17,11 +18,21 @@ class Soldier :public SpriteBase
 {
 public:
 	virtual bool init();
-
 	CREATE_FUNC(Soldier);
 
 	bool _isMove = 1;
 	bool _isAttack = 0;
+
+	enum class Status : std::int8_t
+	{
+		STANDING,
+		MOVING,
+		ATTACKING,
+		DEAD,
+	};
+
+	void setStatus(Status status) { _status = status; }
+	Status getStatus() { return _status; }
 
 	void startMove();
 	void stopMove();
@@ -39,11 +50,18 @@ public:
 	void setHPBar();
 	void updateHPBar();
 
+	void setDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getDestination() { return _destination; }
+
 	void initAnimation();
+	void move();
+
+	void randomDestination();
 
 private:
-
 	float _speed;
-
-	Sprite* _bullet;
+	Vec2 _destination;
+	Status _status;
+	//Sprite* _bullet;
+	//Sprite* _soldier;
 };
