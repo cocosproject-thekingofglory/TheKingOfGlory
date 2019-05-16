@@ -1,17 +1,17 @@
 #pragma once
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
-#include "../Model/Soldier.h"
+#include "../Manager/Manager.h"
 
 class GameController:public cocos2d::Layer
 {
 public:
-	Soldier* soldier;
+	Manager* manager;
 	virtual bool init();
 	CREATE_FUNC(GameController);
 
 	void setMap(GameMap* map);
-	void initGame();
+	void initGame(float delta);
 
 private:
 	GameMap* map;

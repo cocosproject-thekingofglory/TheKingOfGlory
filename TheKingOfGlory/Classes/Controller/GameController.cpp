@@ -13,8 +13,8 @@ bool GameController::init()
 
 	createTouchListener();
 	createKeyListener();
+	scheduleOnce(schedule_selector(GameController::initGame), 0.1f);
 
-	this->scheduleUpdate();
 
 	return true;
 }
@@ -23,6 +23,7 @@ void GameController::setMap(GameMap * map)
 {
 	if(map) this->map = map;
 	map->setScale(1.0 / 11.0);
+
 }
 
 void GameController::createTouchListener()
@@ -77,35 +78,6 @@ void GameController::createKeyListener()
 		{
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
 		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_T)
-		{
-			soldier->stopAnimation(soldier);
-			soldier->runAnimation("warrior_walk_up", soldier);
-			soldier->setPosition(soldier->getPositionX(), soldier->getPositionY() + 100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_G)
-		{
-			soldier->stopAnimation(soldier);
-			soldier->runAnimation("warrior_walk_down", soldier);
-			soldier->setPosition(soldier->getPositionX(), soldier->getPositionY() -100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_F)
-		{
-			soldier->stopAnimation(soldier);
-			soldier->runAnimation("warrior_walk_left", soldier);
-			soldier->setPosition(soldier->getPositionX()-100, soldier->getPositionY() );
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_H)
-		{
-			soldier->stopAnimation(soldier);
-			soldier->runAnimation("warrior_walk_right", soldier);
-			soldier->setPosition(soldier->getPositionX()+100, soldier->getPositionY() );
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_ENTER)
-		{
-			Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
-			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)true);
-		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
@@ -113,7 +85,6 @@ void GameController::createKeyListener()
 void GameController::onEnter()
 {
 	Layer::onEnter();
-	initGame();
 }
 
 void GameController::update(float delta)
@@ -132,10 +103,9 @@ void GameController::toOver(bool isWin)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 
-void GameController::initGame()
+void GameController::initGame(float delta)
 {
-	soldier = Soldier::create();
-	soldier->setScale(5);
-	soldier->runAnimation("warrior_walk_down", soldier);
-	map->addSprite(soldier, GameMap::Type::Player_Red);
+	manager = Manager::create();
+	this->addChild(manager, -1);
+
 }

@@ -150,11 +150,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
-    <ClCompile Include="..\Classes\Manager\PlayerManager.cpp" />
-    <ClCompile Include="..\Classes\Manager\SoldierManager.cpp" />
-    <ClCompile Include="..\Classes\Manager\towerManager.cpp" />
+    <ClCompile Include="..\Classes\Manager\Manager.cpp" />
     <ClCompile Include="..\Classes\Model\GameMap.cpp" />
-    <ClCompile Include="..\Classes\Model\Player.cpp" />
     <ClCompile Include="..\Classes\Model\Soldier.cpp" />
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp" />
     <ClCompile Include="..\Classes\Model\tower.cpp" />
@@ -169,11 +166,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
-    <ClInclude Include="..\Classes\Manager\PlayerManager.h" />
-    <ClInclude Include="..\Classes\Manager\SoldierManager.h" />
-    <ClInclude Include="..\Classes\Manager\towerManager.h" />
+    <ClInclude Include="..\Classes\Manager\Manager.h" />
     <ClInclude Include="..\Classes\Model\GameMap.h" />
-    <ClInclude Include="..\Classes\Model\Player.h" />
     <ClInclude Include="..\Classes\Model\Soldier.h" />
     <ClInclude Include="..\Classes\Model\SpriteBase.h" />
     <ClInclude Include="..\Classes\Model\tower.h" />

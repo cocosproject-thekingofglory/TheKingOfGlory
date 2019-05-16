@@ -195,6 +195,7 @@ cocos2d::Scene * GameScene::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = GameScene::create();
+	layer->setName("GameScene");
 	scene->addChild(layer);
 	return scene;
 }
@@ -203,6 +204,7 @@ bool GameScene::init()
 {
 	if (!Layer::init())
 		return false;
+
 	visible_Size = Director::getInstance()->getVisibleSize();
 
 	//创建菜单事件监听器，先不启用
@@ -221,17 +223,20 @@ bool GameScene::init()
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
 
+	auto bg = Sprite::create("Pictures/Background/WhiteBackground.png");
+	bg->setScale(100);
+	this->addChild(bg, -2);
+
 	//添加地图
 	auto map = GameMap::create();
 	map->setMap("1v1");
 	map->setPosition(Vec2::ZERO);
 	map->setScale(0.5f);
-	//map->setPosition(Vec2(visible_Size.width / 2-512, visible_Size.height / 2-3052));
 	this->addChild(map, -1);
 
 	auto gameController = GameController::create();
 	gameController->setMap(map);
-	this->addChild(gameController, -1);
+	this->addChild(gameController, -1,"GameController");
 
 	createMenuButton();
 

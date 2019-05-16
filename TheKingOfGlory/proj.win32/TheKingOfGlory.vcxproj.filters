@@ -57,18 +57,6 @@
     <ClCompile Include="..\Classes\Controller\GameController.cpp">
       <Filter>src\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Manager\PlayerManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Manager\SoldierManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Manager\towerManager.cpp">
-      <Filter>src\Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Model\Player.cpp">
-      <Filter>src\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Model\Soldier.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
@@ -80,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
       <Filter>src\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\Manager.cpp">
+      <Filter>src\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -110,18 +101,6 @@
     <ClInclude Include="..\Classes\Controller\GameController.h">
       <Filter>src\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Manager\PlayerManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Manager\SoldierManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Manager\towerManager.h">
-      <Filter>src\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\Player.h">
-      <Filter>src\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Model\Soldier.h">
       <Filter>src\Model</Filter>
     </ClInclude>
@@ -133,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Util\AnimationLoader.h">
       <Filter>src\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\Manager.h">
+      <Filter>src\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
