@@ -15,7 +15,6 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
-	//collidable->setVisible(false);
 	objectLayer = tileMap->getObjectGroup("objects");
 
 	player_red = objectLayer->getObject("player_red");
@@ -104,7 +103,7 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 	if (type == Player_Red)
 	{
 		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
-		
+
 	}
 	else if (type == Player_Blue)
 	{
