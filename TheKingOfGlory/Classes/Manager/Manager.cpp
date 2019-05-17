@@ -34,7 +34,7 @@ void Manager::update(float dt)
 {
 	static int count_AppearSoldier = 0;
 	count_AppearSoldier++;
-	//Éú³ÉĞ¡±ø
+	//ç”Ÿæˆå°å…µ
 	if (count_AppearSoldier%SOLDIER_APPEAR_INTERVAL == 0)
 	{
 		count_AppearSoldier = 0;
@@ -68,7 +68,7 @@ void Manager::update(float dt)
 	{
 		count_AttackSoldier = 0;
 
-		//Çå¿Õ¹¥»÷ºÍ±»¹¥»÷ÁĞ±í
+		//æ¸…ç©ºæ”»å‡»å’Œè¢«æ”»å‡»åˆ—è¡¨
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
@@ -84,7 +84,7 @@ void Manager::update(float dt)
 			player->getAttackTarget().clear();
 		}
 		
-		//Ñ°ÕÒ¹¥»÷ºÍ±»¹¥»÷Ä¿±ê
+		//å¯»æ‰¾æ”»å‡»å’Œè¢«æ”»å‡»ç›®æ ‡
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
@@ -122,7 +122,7 @@ void Manager::update(float dt)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
 			{
-				//½øĞĞ¹¥»÷¾ÍÍ£Ö¹ÒÆ¶¯
+				//è¿›è¡Œæ”»å‡»å°±åœæ­¢ç§»åŠ¨
 				if (_soldierList[i].at(j)->attack())
 				{
 					_soldierList[i].at(j)->stopMove();

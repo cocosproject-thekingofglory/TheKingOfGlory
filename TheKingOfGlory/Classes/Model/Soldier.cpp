@@ -30,7 +30,7 @@ bool Soldier::init()
 void Soldier::initAnimation()
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	åŠ¨ç”»å‘½åwei"move_01.png"
 	*/
 
 	const float delay = 0.1;
@@ -134,7 +134,7 @@ float Soldier::beAttack(const float damage)
 	nowHP -= damage;
 	if (nowHP <= 0.0)
 	{
-		//Í£Ö¹¶¯»­£¬²¢ÔÚÄÜ¹¥»÷ËüµÄĞ¡±øµÄÁĞ±íÖĞÉ¾³ıËü
+		//åœæ­¢åŠ¨ç”»ï¼Œå¹¶åœ¨èƒ½æ”»å‡»å®ƒçš„å°å…µçš„åˆ—è¡¨ä¸­åˆ é™¤å®ƒ
 		stopMove();
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{
