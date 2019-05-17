@@ -1,5 +1,5 @@
 #include"Player.h"
-#include"AnimationLoader.h"
+#include "GameMap.h"
 #include<ctime>
 #include<cmath>
 
@@ -17,48 +17,49 @@ Player* Player::createPlayer(const std::string& id, int role)
 	}
 	CC_SAFE_DELETE(player);
 	return nullptr;
+
 }
 
 //初始化信息，对这个角色初始化信息
 bool Player::init(int role)
 {
-	_status = Status::STANDING;
-	_direction = Direction::NONE;
-	_speed = 100;
-	_lifeValue = PLAYER_HPVALUE;
-
-	cocos2d::Size size = this->getContentSize();
-	log("size: %f,%f", size.width, size.height);
-
-	initWithRole(role);
-	std::string curName = _roleName;
-
-	setLifeValue(PLAYER_HPVALUE);
+	setSpeed(PLAYER_MOVE_SPEED);
+	setHPValue(PLAYER_HPVALUE);
+	setNowHPValue(PLAYER_HPVALUE);
 	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 
-	_isMove = false;
-	_isAttack = false;
+	_isMove = true;
+	_isAttack = true;
 	_isSkill = false;
 
-	setHP();
+	setHPBar();
 
-	this->initWithSpriteFrameName(_roleName);
-	//帧缓存,使用plist
-	SpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("GameItem/Player/" + _roleName + "/default.plist");
-	Sprite* sprite = Sprite::createWithSpriteFrameName("GameItem/Player/" + _roleName + "/default.plist");
-	sprite->setPosition(ccp(100, 100));
-	this->addChild(sprite);
+	this->setScale(10);
 
-	std::string animationNames[] = { "standing","moving","attacking","dead","beinghit","skill" };
+	std::string animationNames[] = { "stand","walk","attack","dead","beinghit","skill" };
 	_animationNames.assign(animationNames, animationNames + 5);
 
+	std::string directions[] = {"up","down","left","right"};
+
 	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 3; i++)
 	{
-		AnimationLoader::loadAnimation(animationNames[i], 0.2f, _animationNum);
+		if (i == 0 || i == 1)
+			_animationNum = 10;
+		else
+			_animationNum = 8;
+		for (int j = 0; j < 4; j++)
+		{
+			std::string animationName = _roleName +"_" +animationNames[i]+"_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
+		}
+
 	}
+
+	setDirection(Direction::DOWN);
+	setStatus(Player::Status::STANDING);
 
 	return true;
 }
@@ -68,12 +69,11 @@ bool Player::initWithRole(int role)
 {
 	//设置路径
 	_roleName = std::string(roleName[role]);
-	auto file = "GameItem/Player/" + _roleName + "/default.png";
+	auto file = _roleName + "_stand_down_01.png";
 
-	if (this->initWithFile(file) && this->init(role))
+	if (this->initWithSpriteFrameName(file) && this->init(role))
 	{
 		// do something here
-
 		return true;
 	}
 	return false;
@@ -83,48 +83,67 @@ bool Player::initWithRole(int role)
 void Player::setStatus(Player::Status status)
 {
 	this->_status = status;
-	Animation*animation = nullptr;
+	std::string animation=_roleName+"_";
 	//Or do animation here:
 	switch (_status)
 	{
 	case Player::Status::STANDING:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[STANDING]);
+		animation += "stand_";
 	}
 		break;
 	case Player::Status::MOVING:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[MOVING]);
+		animation += "walk_";
 	}
 		break;
 	case Player::Status::ATTACKING:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[ATTACKING]);
+		animation += "attack_";
 	}
+	break;
 	case Player::Status::DEAD:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[DEAD]);
+		animation += "dead_";
 	}
 		break;
 	case Player::Status::BEINGHIT:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[BEINGHIT]);
+		animation += "behight_";
 	}
 		break;
 	case Player::Status::SKILL:
 	{
-		animation = AnimationLoader::getAnimation(_animationNames[SKILL]);
+		animation += "skill_";
 	}
 		break;
 	default:
 		break;
 	}
-	if (animation)
+	switch (getDirection())
 	{
-		AnimationLoader::stopAnimation(this);
-		animation->setRestoreOriginalFrame(false);
-		runAction(Animate::create(animation));
+	case Direction::DOWN:
+	{
+		animation += "down";
 	}
+	break;
+	case Direction::UP:
+	{
+		animation += "up";
+	}
+	break;
+	case Direction::LEFT:
+	{
+		animation += "left";
+	}
+	break;
+	case Direction::RIGHT:
+	{
+		animation += "right";
+	}
+	break;
+	}
+	AnimationLoader::runAnimation(animation, this);
 }
 
 
@@ -133,63 +152,50 @@ Player::Status Player::getStatus()
 	return this->_status;
 }
 
-void Player::moveTo(Vec2 toPosition)
-{
-	_status = (Status)MOVING;
-	_isMove = true;
-	if (_isMove)
-	{
-		auto _position = getPosition();
-		float dx = toPosition.x - _position.x;
-		float dy = toPosition.y - _position.y;
-		float dist = sqrt(dx*dx + dy * dy);
-		float interval = dist / (getSpeed());
-		auto moveTo = MoveTo::create(interval, toPosition);
-		moveTo->setTag(1);//锚点要考虑
-		this->runAction(moveTo);
-
-		LoadingBar *HP = getHP();
-		HP->runAction(moveTo);
-	}
-}
-
-//用于是否翻转
-void Player::onMove(Vec2 toPosition)
-{
-}
 
 void Player::stopMove()
 {
 	if (_isMove)
 	{
-		_status = (Status)STANDING;
-		_isMove = false;
-		this->stopActionByTag(1);
-
-		LoadingBar *HP = getHP();
-		HP->stopActionByTag(1);
+		setStatus(Player::Status::STANDING);
+		unschedule("move");
 	}
 }
 
 
 //血条问题仍要讨论
-void Player::attack(const void* enemy)
+bool Player::attack()
 {
-	_status = (Status)ATTACKING;
-	_isAttack = true;
-	if (_isAttack)
+	if (_isAttack&&getStatus()!=Status::ATTACKING)
 	{
-		AnimationLoader::runAnimation("attacking", this);
+		stopMove();
+		setStatus(Status::ATTACKING);
+		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
+		{
+			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+			{
+				if (_attackTargetList.at(i)->getType() == SpriteBase::SOLDIER)
+				{
+					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
+					target->beAttack(this->getDamage());
+
+				}
+
+			}
+		}
+		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
 	}
+	return true;
 }
 
 void Player::stopAttack()
 {
-	_status = (Status)STANDING;
 	if (_isAttack)
 	{
-		_isAttack = false;
-		AnimationLoader::stopAnimation(this); //stange，此处貌似停掉所有动作
+		setStatus(Status::STANDING);
 	}
 }
 
@@ -199,49 +205,123 @@ void Player::skill(const void* enemy)
 	_isSkill = true;
 	if (_isSkill)
 	{
-		AnimationLoader::runAnimation("skill", this);
+		AnimationLoader::runAnimation(_roleName+"skill", this);
 		_isSkill = false;
 	}
 }
 
-void Player::beHit(int attack)
+float Player::beAttack(const float damage)
 {
-	_lifeValue -= attack;
-	if (_lifeValue <= 0)
-	{
-		_lifeValue = 0;
-		_status = (Status)DEAD;
-		AnimationLoader::runAnimation("dead", this);
 
-		return;
+	float nowHP = getNowHPValue();
+	nowHP -= damage;
+	setNowHPValue(MAX(nowHP, 0));
+	updateHPBar();
+	if (nowHP <= 0.0)
+	{
+		for (int i = 0; i < _beAttackTargetList.size(); i++)
+		{
+			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
+		}
+		setStatus(Status::DEAD);
+		auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]() {
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)false);
+		}), NULL);
+		this->runAction(sequence);
 	}
 	else
 	{
-		_status = (Status)BEINGHIT;
-		AnimationLoader::runAnimation("behit", this);
+		setStatus(Status::BEINGHIT);
+		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+	return nowHP;
+}
+
+void Player::startMove(Vec2 destination)
+{
+	if (_isMove)
+	{
+		log("move");
+		setDestination(destination);
+		setStatus(Status::MOVING);
+		schedule(CC_CALLBACK_0(Player::move, this), "move");
 	}
 }
 
-void Player::setHP()
+void Player::move()
 {
-	_HP = LoadingBar::create("hpBg1.png");
+	if (getStatus() == Status::MOVING)
+	{
+		auto position = this->getPosition();
 
-	_HP->setScale(0.1);
-	_HP->setDirection(LoadingBar::Direction::LEFT);
+		if (position.equals(getDestination()))
+		{
+			stopMove();
+			return;
+		}
 
-	_HP->setPercent(100);
-	Vec2 pos = this->getPosition();
-	_HP->setPosition(Vec2(pos.x, pos.y + 30.0));
+		int flagX = (position.x < _destination.x) ? 1 : -1, flagY = (position.y < _destination.y) ? 1 : -1;
+
+		float dx = flagX * MIN(getSpeed(), fabs(_destination.x - position.x));
+		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
+
+		if (dx < 0)
+			setDirection(Direction::LEFT);
+		else if (dx > 0)
+			setDirection(Direction::RIGHT);
+		else
+		{
+			if (dy <= 0)
+				setDirection(Direction::DOWN);
+			else
+				setDirection(Direction::UP);
+		}
+
+
+		Vec2 target = Vec2(position.x + dx, position.y + dy);
+
+		auto map = GameMap::getCurrentMap();
+
+		if (map->isCanAssess(map->positionToTileCoord(target)))
+			this->setPosition(target);
+		else
+			stopMove();
+	}
 }
 
+void Player::setHPBar()
+{
+	_HPBar = LoadingBar::create("Pictures/GameItem/planeHP.png");
+
+	_HPBar->setScale(0.1);
+	_HPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_HPBar->setPercent(100);
+
+	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
+		this->getPositionY() + this->getContentSize().height*1.1);
+
+	_HPBar->setPosition(HPpos);
+
+	this->addChild(_HPBar);
+}
+
+void Player::updateHPBar()
+{
+	if (_HPBar != NULL)
+	{
+		log("Percent:%f", 100.0*getNowHPValue() / getHPValue());
+		_HPBar->setPercent(100.0*getNowHPValue() / getHPValue());
+	}
+}
 
 void Player::isLocal(bool a)
 {
 	this->_isLocal = a;
-	if (a)
-	{
-		//待补充???
-	}
+
 }
 
 bool Player::isLocal()

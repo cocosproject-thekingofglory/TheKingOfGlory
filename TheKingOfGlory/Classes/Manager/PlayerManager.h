@@ -1,8 +1,8 @@
-#ifndef __MANAGER_PLAYER_H__
-#define __MANAGER_PLAYER_H__
+#pragma once
 
 #include"cocos2d.h"
-#include"Player.h"
+#include"Model/Player.h"
+#include "Model/GameMap.h"
 
 USING_NS_CC;
 
@@ -25,8 +25,8 @@ public:
 
 private:
 	cocos2d::Map<std::string, Player*> _playerList;
-	Player* localPlayer = nullptr;
+	Player* _localPlayer;
 	
 	void addCustomEvent();
+	void initPlayer(float delta);
 };
-#endif

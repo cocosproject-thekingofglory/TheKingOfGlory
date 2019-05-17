@@ -15,7 +15,7 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
-	collidable->setVisible(false);
+	//collidable->setVisible(false);
 	objectLayer = tileMap->getObjectGroup("objects");
 
 	player_red = objectLayer->getObject("player_red");
@@ -92,7 +92,6 @@ cocos2d::Size GameMap::getTileSize()
 
 bool GameMap::isCanAssess(const cocos2d::Vec2 & coord)
 {
-	log("%d", mapInfo.at(coord.x).at(coord.y));
 	return coord.x >= 0 && coord.x < getMapSize().width
 		&&coord.y >= 0 && coord.y < getMapSize().height
 		&& ((mapInfo.at(coord.x).at(coord.y) == 1) ? false : true);
@@ -102,19 +101,47 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 {
 	if(tileMap)
 		tileMap->addChild(sprite);
-	if (type == Player_Red)
+	log("\nHi\n");
+	switch (type)
 	{
-		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
-	}
-	else if (type == Player_Blue)
+	case Type::Player_Blue:
 	{
 		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
 	}
+	break;
+	case Type::Player_Red:
+	{
+		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
+
+	}
+	break;
+	case Type::Soldier_Red:
+	{
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(),store_red.at("y").asFloat()));
+	}
+	break;
+	case Type::Solider_Blue:
+	{
+		sprite->setPosition(Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat()));
+	}
+	break;
+	case Type::Tower_Blue:
+	{
+		sprite->setPosition(Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat()));
+	}
+	break;
+	case Type::Tower_Red:
+	{
+		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
+	}
+	break;
+	}
+
 }
 
 GameMap * GameMap::getCurrentMap()
 {
-	auto map = dynamic_cast<GameMap*>(cocos2d::Director::getInstance()->getRunningScene()->getChildByName("root")->getChildByName("map"));
+	auto map = dynamic_cast<GameMap*>(cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->getChildByName("map"));
 	if (map)
 	{
 		return map;
