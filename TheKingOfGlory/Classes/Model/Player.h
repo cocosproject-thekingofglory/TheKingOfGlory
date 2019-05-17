@@ -1,14 +1,22 @@
-#ifndef __MODEL_PLAYER_H__
-#define __MODEL_PLAYER_H__
+#pragma once
+
+
 
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
+#include"Model/SpriteBase.h"
+#include "Model/Soldier.h"
 
 USING_NS_CC;
 using namespace ui;
 
+const float PLAYER_ATTACK_RADIUS = 5.0;
+const float PLAYER_DAMAGE = 10.0;
+const float PLAYER_HPVALUE = 200.0;
+const float PLAYER_MOVE_SPEED = 10.0;
+const int PLAYER_ATTACK_INTERVAL = 200;
 
-class Player :public Sprite 
+class Player :public SpriteBase
 {
 public:
 	/**
@@ -19,8 +27,13 @@ public:
 	enum class Status : std::int8_t
 	{
 		STANDING,
-		WAKING,
-		RUNING
+
+		MOVING,
+		ATTACKING,
+		DEAD,
+		BEINGHIT,
+		SKILL
+
 	};
 
 	enum class Direction : std::int8_t
@@ -34,8 +47,11 @@ public:
 
 	enum AnimationType {
 		STANDING,
-		WALKING,
-		RUNING
+		MOVING,
+		ATTACKING,
+		DEAD,
+		BEINGHIT,
+		SKILL
 	};
 
 	enum PlayerType {
@@ -45,46 +61,51 @@ public:
 	};
 
 	char* roleName[3] = {
-		"Warrior",
+		"warrior",
 		"Mage",
 		"Archer"
 	};
 
 	static Player* createPlayer(const std::string& id, int role);
 
-	bool init(int role);
-	bool initWithRole(int role);
 
-	void setStatus(Status);
-	Status getStatus();
+	bool init(int role);//初始化一些条件
+	bool initWithRole(int role);//只是初始化名字
 
-	void isLocal(bool a);
+	void setStatus(Status);//设置状态
+	Status getStatus();//获取五种状态
+
+	void isLocal(bool a);//？
 	bool isLocal();
 
-	void setLifeValue(int lifeValue) { _lifeValue = lifeValue; }
-	int getLifeValue() { return _lifeValue; }
 
-	void setHP(LoadingBar* HP) { _HP = HP; }
-	LoadingBar* getHP() { return _HP; }
+	void setHPBar();
+	void updateHPBar();
 
-	//Ѫ������ֵ
-	void setHPInterval(float HPInterval) { _HPInterval = HPInterval; }
-	int getHPInterval() { return _HPInterval; }
-
-	void setMove(bool move) { _move = move; }
+	void setMove(bool move) { _move = move; }//是否能移动
 	bool isMove() { return _move; }
 
-	void setMoveCount(int moveCount) { _moveCount = moveCount; }
-	int getMoveCount() { return _moveCount; }
+	void setDirection(Direction direction) {
+		if (_direction != direction) _direction = direction,setStatus(getStatus());	}
+	Direction getDirection() { return _direction; }
 
-	bool onTouch(Touch* touch, Event* event);
 
-	Animate* getAnimateByType(AnimationType type);
+	float getSpeed() { return _speed; }
+	void setSpeed(float speed) {_speed=speed; }
 
-	void addAnimation();
+	void stopMove();
 
-	void playAnimation(int index);//����������
+	bool attack();//参数待补充
+	void stopAttack();
 
+	void skill(const void* enemy);
+
+	float beAttack(const float damage);
+
+	void setDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getDestination() { return _destination; }
+
+	void startMove(Vec2 destination);
 
 private:
 	std::string _id;
@@ -97,19 +118,21 @@ private:
 
 	float _speed;
 
-	int _lifeValue;
-	LoadingBar* _HP;
-	float _HPInterval;// Ѫ���ĸ�����
-
 	bool _isLocal;
+	bool _isMove;
+	bool _isAttack;
+	bool _isSkill;
 
 	bool _move;
-	int _moveCount;
 
-	int _animationNum;
+
+	Vec2 _destination;
+
+	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
 	std::vector<int> _animationFrameNum;
 	std::vector<std::string> _animationNames;
 
-	EventListenerTouchOneByOne* _listener;
+
+	void move();
+
 };
-#endif

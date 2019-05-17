@@ -1,9 +1,13 @@
 #include"Player.h"
+
+#include "GameMap.h"
 #include<ctime>
+#include<cmath>
 
 USING_NS_CC;
 
-//roleÖµÍ¬enum·ÖÀà
+//roleå€¼åŒenumåˆ†ç±»ï¼Œä¸º0ï¼Œ1,2
+
 Player* Player::createPlayer(const std::string& id, int role) 
 {
 	auto player = new (std::nothrow) Player();
@@ -15,79 +19,65 @@ Player* Player::createPlayer(const std::string& id, int role)
 	}
 	CC_SAFE_DELETE(player);
 	return nullptr;
+
+
 }
 
-//³õÊ¼»¯ĞÅÏ¢
+//åˆå§‹åŒ–ä¿¡æ¯ï¼Œå¯¹è¿™ä¸ªè§’è‰²åˆå§‹åŒ–ä¿¡æ¯
 bool Player::init(int role)
 {
-	_status = Status::STANDING;
-	_direction = Direction::NONE;
-	cocos2d::Size size = this->getContentSize();
+	setSpeed(PLAYER_MOVE_SPEED);
+	setHPValue(PLAYER_HPVALUE);
+	setNowHPValue(PLAYER_HPVALUE);
+	setAttackRadius(PLAYER_ATTACK_RADIUS);
+	setDamage(PLAYER_DAMAGE);
+	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 
-	//ÉèÖÃÃªµã? ´ıĞŞ******
-	this->setAnchorPoint(Vec2(0.5, 0.5));
+	_isMove = true;
+	_isAttack = true;
+	_isSkill = false;
 
-	initWithRole(role);
-	std::string curName = _roleName;
-	/*_type = type*/
+	setHPBar();
 
-	//ÔÚ´Ë¶¨Òå¶¯×÷Êı Ö¡Êı Ê¾Àı£º
-	int animationFrameNum[5] = { 4, 4, 4, 2, 4 };
-	int animationFrameNum2[5] = { 3, 3, 3, 2, 0 };
-	int animationFrameNum3[5] = { 1, 5, 4, 2, 0 };
+	this->setScale(10);
 
-	//setup according to PlayerType Çø±ğÖ°Òµ
-	switch (role)
+	std::string animationNames[] = { "stand","walk","attack","dead","beinghit","skill" };
+	_animationNames.assign(animationNames, animationNames + 5);
+
+	std::string directions[] = {"up","down","left","right"};
+
+	//å¯¹æŸä¸€ä¸ªåŠ¨ä½œ,åŠ è½½åŠ¨ä½œï¼Œdelayä¹Ÿéœ€è¦è€ƒè™‘ï¼Œä¸æ­¢0.2f
+	for (int i = 0; i < 3; i++)
 	{
-	case 0:
-		//ÔÚ´ËÉèÖÃ¶¯×÷Êı¡¢ËÙ¶ÈµÈ Ê¾Àı£º
-		_animationNum = 5;
-		_animationFrameNum.assign(animationFrameNum, animationFrameNum + 5);
-		_speed = 100;
-		break;
-	case 1:
-		_animationNum = 4;
-		_animationFrameNum.assign(animationFrameNum2, animationFrameNum2 + 5);
-		_speed = 100;
-		break;
-	case 2:
-		_animationNum = 4;
-		_animationFrameNum.assign(animationFrameNum3, animationFrameNum3 + 5);
-		_speed = 100;
-		break;
+		if (i == 0 || i == 1)
+			_animationNum = 10;
+		else
+			_animationNum = 8;
+		for (int j = 0; j < 4; j++)
+		{
+			std::string animationName = _roleName +"_" +animationNames[i]+"_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
+		}
+
 	}
 
-	//´´½¨sprite£¬Ê¹ÓÃplist
-	/*CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile("player1-1.plist");
-	CCSprite* sprite = CCSprite:createWithSpriteFrameName("player1-1.plist");*/     //Ê¹ÓÃÖ¡»º´æÊ±
-	CCSprite* sprite = CCSprite::create(curName);
-	sprite->setPosition(ccp(100, 100));  //***
-	this->addChild(sprite);
+	setDirection(Direction::DOWN);
+	setStatus(Player::Status::STANDING);
 
-	std::string animationNames[] = { "stand","walk","run" };
-	_animationNames.assign(animationNames, animationNames + 3);
-	this->addAnimation();
-
-	cocos2d::Size size = this->getContentSize();
-	log("size: %f,%f", size.width, size.height);
-
-	//µ¥µã´¥Ãş£¬Ñ°Â·
-	_listener = EventListenerTouchOneByOne::create();
-	_listener->setSwallowTouches(true);
-	_listener->onTouchBegan = CC_CALLBACK_2(Player::onTouch, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(_listener, this);
 
 	return true;
 }
 
-//Ö»ÊÇ»ñµÃÃû×Ö
+//åªæ˜¯è·å¾—åå­—
 bool Player::initWithRole(int role)
 {
-	//ÉèÖÃÂ·¾¶
+	//è®¾ç½®è·¯å¾„
 	_roleName = std::string(roleName[role]);
-	auto file = "GameItem/Player/" + _roleName + "/default.png";
 
-	if (this->initWithFile(file) && this->init())
+	auto file = _roleName + "_stand_down_01.png";
+
+	if (this->initWithSpriteFrameName(file) && this->init(role))
+
 	{
 		// do something here
 		return true;
@@ -95,118 +85,255 @@ bool Player::initWithRole(int role)
 	return false;
 }
 
-void Player::addAnimation()
-{
-	//check if already loaded, ¶¯»­Ö¡»º´æ
-	auto animation = AnimationCache::getInstance()->getAnimation(String::createWithFormat("%s-%s", _name.c_str(),
-		_animationNames[0])->getCString());
-	if (animation)
-		return;
 
-	for (int i = 0; i < _animationNum; i++)
-	{
-		auto animation = Animation::create();
-		animation->setDelayPerUnit(0.2f);  //´ı¶¨
-
-		//put frames into animation
-		for (int j = 0; j < _animationFrameNum[i]; j++) {
-			auto curName = String::createWithFormat("%s-%d-%d.png", _name.c_str(), i + 1, j + 1)->getCString;
-			auto cur = SpriteFrameCache::getInstance()->getSpriteFrameByName(curName);     //ÎÆÀí£¿Texture
-			animation->addSpriteFrame(curName);
-		}
-
-		//put the animation into cache
-		AnimationCache::getInstance()->addAnimation(animation, String::createWithFormat("%s-%s", _name.c_str(),
-			_animationNames[i].c_str())->getCString());
-	}
-}
-
-//ÖØ¸´²¥·Å
-void Player::playAnimation(int index)
-{
-	auto action = this->getActionByTag(index);
-	if (action)
-		return;
-
-	for (int i = 0; i < 5; i++) {    //´ÎÊı´ı¶¨
-		this->stopActionByTag(i);
-	}
-	if (index < 0 || index >= _animationNum)
-	{
-		log("illegal animation index!");
-		return;
-	}
-
-	//¿É¸´ÓÃ
-	auto str = String::createWithFormat("%s-%s", _name.c_str(), _animationNames[index].c_str())->getCString();
-	auto animation = AnimationCache::getInstance()->getAnimation(str);
-
-	auto animate = RepeatForever::create(Animate::create(animation));
-	animate->setTag(index);
-	this->runAction(animate);
-}
-
-//¸´ÓÃ
-Animate* Player::getAnimateByType(AnimationType type)
-{
-	if (type < 0 || type >= _animationNum)
-	{
-		return nullptr;
-	}
-	auto str = String::createWithFormat("%s-%s", _name.c_str(), _animationNames[type].c_str())->getCString();
-	auto animation = AnimationCache::getInstance()->getAnimation(str);
-
-	auto animate = Animate::create(animation);
-	animate->setTag(type);
-	return animate;
-}
-
-//Í¬Àí¸´ÓÃÏµÁĞ¶¯×÷£¬·­×ª
-
-//µ¥µã´¥Ãş,Ñ°Â·
-bool Player::onTouch(Touch* touch, Event* event)
-{
-	auto pos = this->convertToNodeSpace(touch->getLocation());
-	//log("Touching: *f, %f...", pos.x, pos.y);
-
-	auto size = this->getContentSize();
-	auto rect = Rect(size.width / 2, 0, size.width, size.height);
-
-	if (rect.containsPoint(pos))
-	{
-		NotificationCenter::getInstance()->postNotification("click", this);
-		//log("touched!");
-		return true;
-	}
-	//log("untouched!");
-	return false;
-}
-
-//Óë¶¯×÷ÓĞ¹Ø
+//ä¸åŠ¨ä½œæœ‰å…³,è®¾ç½®çŠ¶æ€ï¼Œä¼ å…¥çŠ¶æ€ï¼Œåˆå§‹åŒ–åŠ¨ç”»,çŠ¶æ€è¯»å–
 void Player::setStatus(Player::Status status)
 {
 	this->_status = status;
-
+	std::string animation=_roleName+"_";
 	//Or do animation here:
-
+	switch (_status)
+	{
+	case Player::Status::STANDING:
+	{
+		animation += "stand_";
+	}
+		break;
+	case Player::Status::MOVING:
+	{
+		animation += "walk_";
+	}
+		break;
+	case Player::Status::ATTACKING:
+	{
+		animation += "attack_";
+	}
+	break;
+	case Player::Status::DEAD:
+	{
+		animation += "dead_";
+	}
+		break;
+	case Player::Status::BEINGHIT:
+	{
+		animation += "behight_";
+	}
+		break;
+	case Player::Status::SKILL:
+	{
+		animation += "skill_";
+	}
+		break;
+	default:
+		break;
+	}
+	switch (getDirection())
+	{
+	case Direction::DOWN:
+	{
+		animation += "down";
+	}
+	break;
+	case Direction::UP:
+	{
+		animation += "up";
+	}
+	break;
+	case Direction::LEFT:
+	{
+		animation += "left";
+	}
+	break;
+	case Direction::RIGHT:
+	{
+		animation += "right";
+	}
+	break;
+	}
+	AnimationLoader::runAnimation(animation, this);
 }
+
 
 Player::Status Player::getStatus()
 {
 	return this->_status;
 }
 
+
+void Player::stopMove()
+{
+	if (_isMove)
+	{
+		setStatus(Player::Status::STANDING);
+		unschedule("move");
+	}
+}
+
+
+//è¡€æ¡é—®é¢˜ä»è¦è®¨è®º
+bool Player::attack()
+{
+	if (_isAttack&&getStatus()!=Status::ATTACKING)
+	{
+		stopMove();
+		setStatus(Status::ATTACKING);
+		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
+		{
+			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+			{
+				if (_attackTargetList.at(i)->getType() == SpriteBase::SOLDIER)
+				{
+					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
+					target->beAttack(this->getDamage());
+
+				}
+
+			}
+		}
+		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+	return true;
+}
+
+void Player::stopAttack()
+{
+	if (_isAttack)
+	{
+		setStatus(Status::STANDING);
+	}
+}
+
+void Player::skill(const void* enemy)
+{
+	_status = (Status)SKILL;
+	_isSkill = true;
+	if (_isSkill)
+	{
+		AnimationLoader::runAnimation(_roleName+"skill", this);
+		_isSkill = false;
+	}
+}
+
+float Player::beAttack(const float damage)
+{
+
+	float nowHP = getNowHPValue();
+	nowHP -= damage;
+	setNowHPValue(MAX(nowHP, 0));
+	updateHPBar();
+	if (nowHP <= 0.0)
+	{
+		for (int i = 0; i < _beAttackTargetList.size(); i++)
+		{
+			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
+		}
+		setStatus(Status::DEAD);
+		auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]() {
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)false);
+		}), NULL);
+		this->runAction(sequence);
+	}
+	else
+	{
+		setStatus(Status::BEINGHIT);
+		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+	return nowHP;
+}
+
+void Player::startMove(Vec2 destination)
+{
+	if (_isMove)
+	{
+		log("move");
+		setDestination(destination);
+		setStatus(Status::MOVING);
+		schedule(CC_CALLBACK_0(Player::move, this), "move");
+	}
+}
+
+void Player::move()
+{
+	if (getStatus() == Status::MOVING)
+	{
+		auto position = this->getPosition();
+
+		if (position.equals(getDestination()))
+		{
+			stopMove();
+			return;
+		}
+
+		int flagX = (position.x < _destination.x) ? 1 : -1, flagY = (position.y < _destination.y) ? 1 : -1;
+
+		float dx = flagX * MIN(getSpeed(), fabs(_destination.x - position.x));
+		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
+
+		if (dx < 0)
+			setDirection(Direction::LEFT);
+		else if (dx > 0)
+			setDirection(Direction::RIGHT);
+		else
+		{
+			if (dy <= 0)
+				setDirection(Direction::DOWN);
+			else
+				setDirection(Direction::UP);
+		}
+
+
+		Vec2 target = Vec2(position.x + dx, position.y + dy);
+
+		auto map = GameMap::getCurrentMap();
+
+		if (map->isCanAssess(map->positionToTileCoord(target)))
+			this->setPosition(target);
+		else
+			stopMove();
+	}
+}
+
+void Player::setHPBar()
+{
+	_HPBar = LoadingBar::create("Pictures/GameItem/planeHP.png");
+
+	_HPBar->setScale(0.1);
+	_HPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_HPBar->setPercent(100);
+
+	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
+		this->getPositionY() + this->getContentSize().height*1.1);
+
+	_HPBar->setPosition(HPpos);
+
+	this->addChild(_HPBar);
+}
+
+void Player::updateHPBar()
+{
+	if (_HPBar != NULL)
+	{
+		log("Percent:%f", 100.0*getNowHPValue() / getHPValue());
+		_HPBar->setPercent(100.0*getNowHPValue() / getHPValue());
+	}
+
+}
+
 void Player::isLocal(bool a)
 {
 	this->_isLocal = a;
-	if (a)
-	{
-		//´ı²¹³ä
-	}
+
+
 }
 
 bool Player::isLocal()
 {
 	return _isLocal;
 }
-

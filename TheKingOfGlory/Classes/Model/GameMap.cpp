@@ -15,6 +15,9 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
+
+	//collidable->setVisible(false);
+
 	objectLayer = tileMap->getObjectGroup("objects");
 
 	player_red = objectLayer->getObject("player_red");
@@ -100,15 +103,42 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 {
 	if(tileMap)
 		tileMap->addChild(sprite);
-	if (type == Player_Red)
+	log("\nHi\n");
+	switch (type)
+	{
+	case Type::Player_Blue:
+	{
+		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
+	}
+	break;
+	case Type::Player_Red:
 	{
 		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
 
 	}
-	else if (type == Player_Blue)
+	break;
+	case Type::Soldier_Red:
 	{
-		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(),store_red.at("y").asFloat()));
 	}
+	break;
+	case Type::Solider_Blue:
+	{
+		sprite->setPosition(Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat()));
+	}
+	break;
+	case Type::Tower_Blue:
+	{
+		sprite->setPosition(Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat()));
+	}
+	break;
+	case Type::Tower_Red:
+	{
+		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
+	}
+	break;
+	}
+
 }
 
 GameMap * GameMap::getCurrentMap()
