@@ -15,7 +15,9 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
+
 	//collidable->setVisible(false);
+
 	objectLayer = tileMap->getObjectGroup("objects");
 
 	player_red = objectLayer->getObject("player_red");

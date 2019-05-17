@@ -1,11 +1,13 @@
 #include"Player.h"
+
 #include "GameMap.h"
 #include<ctime>
 #include<cmath>
 
 USING_NS_CC;
 
-//roleÖµÍ¬enum·ÖÀà£¬Îª0£¬1,2
+//roleå€¼åŒenumåˆ†ç±»ï¼Œä¸º0ï¼Œ1,2
+
 Player* Player::createPlayer(const std::string& id, int role) 
 {
 	auto player = new (std::nothrow) Player();
@@ -18,9 +20,10 @@ Player* Player::createPlayer(const std::string& id, int role)
 	CC_SAFE_DELETE(player);
 	return nullptr;
 
+
 }
 
-//³õÊ¼»¯ĞÅÏ¢£¬¶ÔÕâ¸ö½ÇÉ«³õÊ¼»¯ĞÅÏ¢
+//åˆå§‹åŒ–ä¿¡æ¯ï¼Œå¯¹è¿™ä¸ªè§’è‰²åˆå§‹åŒ–ä¿¡æ¯
 bool Player::init(int role)
 {
 	setSpeed(PLAYER_MOVE_SPEED);
@@ -43,7 +46,7 @@ bool Player::init(int role)
 
 	std::string directions[] = {"up","down","left","right"};
 
-	//¶ÔÄ³Ò»¸ö¶¯×÷,¼ÓÔØ¶¯×÷£¬delayÒ²ĞèÒª¿¼ÂÇ£¬²»Ö¹0.2f
+	//å¯¹æŸä¸€ä¸ªåŠ¨ä½œ,åŠ è½½åŠ¨ä½œï¼Œdelayä¹Ÿéœ€è¦è€ƒè™‘ï¼Œä¸æ­¢0.2f
 	for (int i = 0; i < 3; i++)
 	{
 		if (i == 0 || i == 1)
@@ -61,17 +64,20 @@ bool Player::init(int role)
 	setDirection(Direction::DOWN);
 	setStatus(Player::Status::STANDING);
 
+
 	return true;
 }
 
-//Ö»ÊÇ»ñµÃÃû×Ö
+//åªæ˜¯è·å¾—åå­—
 bool Player::initWithRole(int role)
 {
-	//ÉèÖÃÂ·¾¶
+	//è®¾ç½®è·¯å¾„
 	_roleName = std::string(roleName[role]);
+
 	auto file = _roleName + "_stand_down_01.png";
 
 	if (this->initWithSpriteFrameName(file) && this->init(role))
+
 	{
 		// do something here
 		return true;
@@ -79,7 +85,8 @@ bool Player::initWithRole(int role)
 	return false;
 }
 
-//Óë¶¯×÷ÓĞ¹Ø,ÉèÖÃ×´Ì¬£¬´«Èë×´Ì¬£¬³õÊ¼»¯¶¯»­,×´Ì¬¶ÁÈ¡
+
+//ä¸åŠ¨ä½œæœ‰å…³,è®¾ç½®çŠ¶æ€ï¼Œä¼ å…¥çŠ¶æ€ï¼Œåˆå§‹åŒ–åŠ¨ç”»,çŠ¶æ€è¯»å–
 void Player::setStatus(Player::Status status)
 {
 	this->_status = status;
@@ -163,7 +170,7 @@ void Player::stopMove()
 }
 
 
-//ÑªÌõÎÊÌâÈÔÒªÌÖÂÛ
+//è¡€æ¡é—®é¢˜ä»è¦è®¨è®º
 bool Player::attack()
 {
 	if (_isAttack&&getStatus()!=Status::ATTACKING)
@@ -316,11 +323,13 @@ void Player::updateHPBar()
 		log("Percent:%f", 100.0*getNowHPValue() / getHPValue());
 		_HPBar->setPercent(100.0*getNowHPValue() / getHPValue());
 	}
+
 }
 
 void Player::isLocal(bool a)
 {
 	this->_isLocal = a;
+
 
 }
 

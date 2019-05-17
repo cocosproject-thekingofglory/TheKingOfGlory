@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
+#include "ui/CocosGUI.h"
 #include "StartScene.h"
 #include "../Model/GameMap.h"
 #include "../Controller/GameController.h"
@@ -45,7 +46,7 @@ void GameScene::createMenu()
 {
 	if (hasMenu)
 		return;
-
+	//添加菜单图片
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu);
@@ -53,7 +54,7 @@ void GameScene::createMenu()
 	Color4B text_Color= Color4B(255,255,255,255);
 	std::string text_Font = "fonts/UnifrakturCook-Bold.ttf";
 	float text_Size = 28;
-	//添加菜单图片
+
 	Size menuSize = menu->getContentSize();
 	float menuBottom = visible_Size.height / 2 - menuSize.height / 2;
 
@@ -100,8 +101,54 @@ void GameScene::removeMenu()
 	hasMenu = false;
 }
 
-void GameScene::createResultBox(bool isWin)
+void GameScene::createResultBox(EventCustom* event)
 {
+	bool isWin = static_cast<bool>(event->getUserData());
+	Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
+	auto box = Sprite::create("Pictures/UI/Resultbox.png");
+	box->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
+	this->addChild(box);
+
+	Size boxSize = box->getContentSize();
+
+	auto resultText = ui::Text::create((isWin?"You Win!":"You Lose!"), "fonts/Lobster-Regular.ttf", 48);
+	resultText->setColor(Color3B(0, 0, 255));
+	resultText->setPosition(Vec2(boxSize.width / 2, boxSize.height*0.7));
+
+	auto restartButton = ui::Button::create("Pictures/UI/button.png");
+	restartButton->setScale(1.2);
+	restartButton->setTitleFontName("fonts/Marker Felt.ttf");
+	restartButton->setTitleText("Restart");
+	restartButton->setTitleColor(Color3B(255, 250, 205));
+	restartButton->setTitleFontSize(20);
+	restartButton->setPosition(Vec2(boxSize.width*0.3, boxSize.height*0.3));
+	restartButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
+	{
+		if (type == Widget::TouchEventType::ENDED)
+		{
+			Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+		}
+	});
+
+	auto returnButton = ui::Button::create("Pictures/UI/button.png");
+	returnButton->setScale(1.2);
+	returnButton->setTitleFontName("fonts/Marker Felt.ttf");
+	returnButton->setTitleText("Main Menu");
+	returnButton->setTitleColor(Color3B(255, 250, 205));
+	returnButton->setTitleFontSize(18);
+	returnButton->setPosition(Vec2(boxSize.width*0.7, boxSize.height*0.3));
+	returnButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
+	{
+		if (type == Widget::TouchEventType::ENDED)
+		{
+			Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
+		}
+	});
+
+	box->addChild(resultText);
+	box->addChild(restartButton);
+	box->addChild(returnButton);
+
 }
 
 void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
@@ -148,6 +195,7 @@ cocos2d::Scene * GameScene::createScene()
 {
 	auto scene = Scene::create();
 	auto layer = GameScene::create();
+	layer->setName("GameScene");
 	scene->addChild(layer);
 	return scene;
 }
@@ -156,6 +204,7 @@ bool GameScene::init()
 {
 	if (!Layer::init())
 		return false;
+
 	visible_Size = Director::getInstance()->getVisibleSize();
 
 	//创建菜单事件监听器，先不启用
@@ -174,17 +223,20 @@ bool GameScene::init()
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
 
+	auto bg = Sprite::create("Pictures/Background/WhiteBackground.png");
+	bg->setScale(100);
+	this->addChild(bg, -2);
+
 	//添加地图
 	auto map = GameMap::create();
 	map->setMap("1v1");
 	map->setPosition(Vec2::ZERO);
 	map->setScale(0.5f);
-	//map->setPosition(Vec2(visible_Size.width / 2-512, visible_Size.height / 2-3052));
 	this->addChild(map, -1);
 
 	auto gameController = GameController::create();
 	gameController->setMap(map);
-	this->addChild(gameController, -1);
+	this->addChild(gameController, -1,"GameController");
 
 	createMenuButton();
 

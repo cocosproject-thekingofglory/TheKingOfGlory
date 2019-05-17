@@ -11,6 +11,7 @@ bool PlayerManager::init()
 
 	addCustomEvent();
 
+
 	scheduleOnce(schedule_selector(PlayerManager::initPlayer), 1.0f);
 
 	return true;
@@ -25,12 +26,14 @@ Player* PlayerManager::createPlayer(const std::string& id, int role)
 		this->_playerList.insert(id, player);
 		return player;
 	}
+
 	CC_SAFE_DELETE(player);
 	return nullptr;
 }
 
 Player* PlayerManager::createLocalPlayer(const std::string& id, int role)
 {
+
 	auto localPlayer = Player::createPlayer(id, role);
 	if (localPlayer)
 	{
@@ -55,6 +58,7 @@ Player * PlayerManager::getPlayer(const std::string& id)
 	return _playerList.at(id);
 }
 
+
 Map<std::string, Player*> PlayerManager::getPlayerList()
 {
 	return _playerList;
@@ -73,4 +77,5 @@ void PlayerManager::initPlayer(float delta)
 {
 	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0);
 	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Tower_Blue);
+
 }

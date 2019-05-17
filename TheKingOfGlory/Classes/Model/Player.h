@@ -1,9 +1,9 @@
 #pragma once
 
 
+
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
-
 #include"Model/SpriteBase.h"
 #include "Model/Soldier.h"
 
@@ -27,11 +27,13 @@ public:
 	enum class Status : std::int8_t
 	{
 		STANDING,
+
 		MOVING,
 		ATTACKING,
 		DEAD,
 		BEINGHIT,
 		SKILL
+
 	};
 
 	enum class Direction : std::int8_t
@@ -67,20 +69,20 @@ public:
 	static Player* createPlayer(const std::string& id, int role);
 
 
-	bool init(int role);//³õÊ¼»¯Ò»Ğ©Ìõ¼ş
-	bool initWithRole(int role);//Ö»ÊÇ³õÊ¼»¯Ãû×Ö
+	bool init(int role);//åˆå§‹åŒ–ä¸€äº›æ¡ä»¶
+	bool initWithRole(int role);//åªæ˜¯åˆå§‹åŒ–åå­—
 
-	void setStatus(Status);//ÉèÖÃ×´Ì¬
-	Status getStatus();//»ñÈ¡ÎåÖÖ×´Ì¬
+	void setStatus(Status);//è®¾ç½®çŠ¶æ€
+	Status getStatus();//è·å–äº”ç§çŠ¶æ€
 
-	void isLocal(bool a);//£¿
+	void isLocal(bool a);//ï¼Ÿ
 	bool isLocal();
 
 
 	void setHPBar();
 	void updateHPBar();
 
-	void setMove(bool move) { _move = move; }//ÊÇ·ñÄÜÒÆ¶¯
+	void setMove(bool move) { _move = move; }//æ˜¯å¦èƒ½ç§»åŠ¨
 	bool isMove() { return _move; }
 
 	void setDirection(Direction direction) {
@@ -93,7 +95,7 @@ public:
 
 	void stopMove();
 
-	bool attack();//²ÎÊı´ı²¹³ä
+	bool attack();//å‚æ•°å¾…è¡¥å……
 	void stopAttack();
 
 	void skill(const void* enemy);
@@ -126,7 +128,7 @@ private:
 
 	Vec2 _destination;
 
-	int _animationNum = 8;//¶¯×÷´ÎÊı£¿Í¬¶¯×÷Ö¡Êı£¬Ğè·Ö±ğ¶¨Òå£¿
+	int _animationNum = 8;//åŠ¨ä½œæ¬¡æ•°ï¼ŸåŒåŠ¨ä½œå¸§æ•°ï¼Œéœ€åˆ†åˆ«å®šä¹‰ï¼Ÿ
 	std::vector<int> _animationFrameNum;
 	std::vector<std::string> _animationNames;
 

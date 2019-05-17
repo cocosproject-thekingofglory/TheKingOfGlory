@@ -1,5 +1,6 @@
 #include "GameController.h"
 #include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -12,8 +13,8 @@ bool GameController::init()
 
 	createTouchListener();
 	createKeyListener();
+	scheduleOnce(schedule_selector(GameController::initGame), 0.1f);
 
-	this->scheduleUpdate();
 
 	return true;
 }
@@ -22,6 +23,7 @@ void GameController::setMap(GameMap * map)
 {
 	if(map) this->map = map;
 	map->setScale(1.0 / 11.0);
+
 }
 
 void GameController::createTouchListener()
@@ -83,7 +85,6 @@ void GameController::createKeyListener()
 void GameController::onEnter()
 {
 	Layer::onEnter();
-	initGame();
 }
 
 void GameController::update(float delta)
@@ -97,13 +98,14 @@ void GameController::isResult(float delta)
 
 void GameController::toOver(bool isWin)
 {
+	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
 	SimpleAudioEngine::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 
-void GameController::initGame()
+void GameController::initGame(float delta)
 {
-	auto sprite = Sprite::create("Pictures/player.png");
-	sprite->setScale(10);
-	map->addSprite(sprite, GameMap::Type::Player_Blue);
+	manager = Manager::create();
+	this->addChild(manager, -1);
+
 }

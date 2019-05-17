@@ -7,26 +7,32 @@
 USING_NS_CC;
 
 
+
 class PlayerManager :public cocos2d::Layer
 {
 public:
 	virtual bool init();
 
-	//role ¶¨ÒåÎªÓ¢ĞÛµÄË³Ğò
+
+	//role å®šä¹‰ä¸ºè‹±é›„çš„é¡ºåº
 	Player* createPlayer(const std::string& id, int role);
 	Player* createLocalPlayer(const std::string& id, int role);
 
 	void setStatus(const std::string& id, Player::Status status);
 	Player* getPlayer(const std::string& id);
 	Player* getLocalPlayer();
+
 	Map<std::string, Player*> getPlayerList();
+
 
 	CREATE_FUNC(PlayerManager);
 
 private:
 	cocos2d::Map<std::string, Player*> _playerList;
+
 	Player* _localPlayer;
 	
 	void addCustomEvent();
 	void initPlayer(float delta);
 };
+
