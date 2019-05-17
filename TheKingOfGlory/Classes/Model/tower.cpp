@@ -29,7 +29,7 @@ void Tower::initAnimation()
 
 bool Tower::attack()
 {
-
+	return true;
 }
 
 float Tower::beAttack(const float damage)
@@ -51,6 +51,7 @@ float Tower::beAttack(const float damage)
 bool Tower::beDestory()
 {
 	//runAnimation("Tower_Destory", this);
+	return true;
 }
 
 void Tower::setHPBar()

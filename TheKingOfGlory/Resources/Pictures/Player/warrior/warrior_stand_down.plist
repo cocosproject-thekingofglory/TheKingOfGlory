@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>warrior_stand_down_1.png</key>
+            <key>warrior_stand_down_01.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_2.png</key>
+            <key>warrior_stand_down_02.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_3.png</key>
+            <key>warrior_stand_down_03.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -64,7 +64,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_4.png</key>
+            <key>warrior_stand_down_04.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -79,7 +79,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_5.png</key>
+            <key>warrior_stand_down_05.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -94,7 +94,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_6.png</key>
+            <key>warrior_stand_down_06.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -109,7 +109,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_7.png</key>
+            <key>warrior_stand_down_07.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -124,7 +124,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_8.png</key>
+            <key>warrior_stand_down_08.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -139,7 +139,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_down_9.png</key>
+            <key>warrior_stand_down_09.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>

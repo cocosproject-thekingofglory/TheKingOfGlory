@@ -22,7 +22,8 @@ bool GameController::init()
 void GameController::setMap(GameMap * map)
 {
 	if(map) this->map = map;
-	map->setScale(1.0 / 11.0);
+	map->setPosition(100,0);
+	map->setScale(1/8.0);
 
 }
 
@@ -36,10 +37,7 @@ void GameController::createTouchListener()
 		if (map->isCanAssess(map->positionToTileCoord(nodeLocation)))
 		{
 			log("Can Assess");
-		}
-		else
-		{
-			log("Can not Assess");
+			manager->playerManager->getLocalPlayer()->startMove(nodeLocation);
 		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,this);
@@ -53,18 +51,22 @@ void GameController::createKeyListener()
 		if (keyCode == EventKeyboard::KeyCode::KEY_W)
 		{
 			map->setPositionY(map->getPositionY() - 100);
+			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		{
 			map->setPositionY(map->getPositionY() + 100);
+			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
 			map->setPositionX(map->getPositionX() +100);
+			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_D)
 		{
 			map->setPositionX(map->getPositionX() -100);
+			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_J)
 		{
@@ -73,6 +75,10 @@ void GameController::createKeyListener()
 		else if (keyCode == EventKeyboard::KeyCode::KEY_K)
 		{
 			map->setScale(map->getScale()/1.1);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_SPACE)
+		{
+			manager->playerManager->getLocalPlayer()->attack();
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
 		{
@@ -106,6 +112,6 @@ void GameController::toOver(bool isWin)
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
-	this->addChild(manager, -1);
 
+	this->addChild(manager, -1);
 }

@@ -8,7 +8,7 @@ bool Soldier::init()
 	{
 		return false;
 	}*/
-	setType(SpriteBase::Type::Soldier);
+	setType(SpriteBase::Type::SOLDIER);
 	setStatus(Status::STANDING);
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
@@ -30,7 +30,7 @@ bool Soldier::init()
 void Soldier::initAnimation()
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	åŠ¨ç”»å‘½åwei"move_01.png"
 	*/
 
 	const float delay = 0.1;
@@ -77,7 +77,7 @@ void Soldier::startMove()
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		toPosition = Vec2(1280, 1280);
+		toPosition = Vec2(3200,3200);
 		runAnimation("soldierMove", this);
 		_destination = toPosition;
 		auto position = this->getPosition();
@@ -98,15 +98,26 @@ bool Soldier::attack()
 	setStatus(Status::ATTACKING);
 	for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 	{
-		if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 		{
-			if (_attackTargetList.at(i)->getType() == SpriteBase::Soldier)
+			switch (_attackTargetList.at(i)->getType())
+			{
+			case SpriteBase::PLAYER:
+			{
+				auto target = dynamic_cast<Player*>(_attackTargetList.at(i));
+				target->beAttack(this->getDamage());
+				log("\nPlayer be hit\n");
+				return true;
+			}
+			break;
+			case SpriteBase::SOLDIER:
 			{
 				auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
 				target->beAttack(this->getDamage());
 				return true;
 			}
-			
+			break;
+			}
 		}
 	}
 	return false;
@@ -123,7 +134,7 @@ float Soldier::beAttack(const float damage)
 	nowHP -= damage;
 	if (nowHP <= 0.0)
 	{
-		//Í£Ö¹¶¯»­£¬²¢ÔÚÄÜ¹¥»÷ËüµÄÐ¡±øµÄÁÐ±íÖÐÉ¾³ýËü
+		//åœæ­¢åŠ¨ç”»ï¼Œå¹¶åœ¨èƒ½æ”»å‡»å®ƒçš„å°å…µçš„åˆ—è¡¨ä¸­åˆ é™¤å®ƒ
 		stopMove();
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{

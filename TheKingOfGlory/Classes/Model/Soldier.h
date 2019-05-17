@@ -2,13 +2,14 @@
 
 #include "cocos2d.h"
 #include "SpriteBase.h"
+#include "Player.h"
 
 USING_NS_CC;
 
-//Ğ¡±øµÄ³õÊ¼ÊôĞÔÖµ
+//å°å…µçš„åˆå§‹å±æ€§å€¼
 const float SOLDIER_ATTACK_RADIUS = 3.0;
-const float SOLDIER_DAMAGE = 10.0;
-const float SOLDIER_HPVALUE = 100.0;
+const float SOLDIER_DAMAGE = 5.0;
+const float SOLDIER_HPVALUE = 50.0;
 const int SOLDIER_ATTACK_INTERVAL = 180;
 const float SOLDIER_MOVE_SPEED = 10;
 
@@ -37,7 +38,7 @@ public:
 	void startMove();
 	void stopMove();
 
-	virtual bool attack();//·µ»ØÊÇ·ñ½øĞĞÁË¹¥»÷
+	virtual bool attack();//è¿”å›æ˜¯å¦è¿›è¡Œäº†æ”»å‡»
 	void stopAttack();
 
 	virtual float beAttack(const float damage);

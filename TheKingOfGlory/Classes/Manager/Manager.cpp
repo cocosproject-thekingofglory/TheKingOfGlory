@@ -22,6 +22,10 @@ bool Manager::init()
 	{
 		return false;
 	}
+
+	playerManager = PlayerManager::create();
+	this->addChild(playerManager, -1);
+
 	scheduleUpdate();
 	return true;
 }
@@ -30,7 +34,7 @@ void Manager::update(float dt)
 {
 	static int count_AppearSoldier = 0;
 	count_AppearSoldier++;
-	//Éú³ÉÐ¡±ø
+	//ç”Ÿæˆå°å…µ
 	if (count_AppearSoldier%SOLDIER_APPEAR_INTERVAL == 0)
 	{
 		count_AppearSoldier = 0;
@@ -39,7 +43,7 @@ void Manager::update(float dt)
 			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
 			soldier_red->init();
 			soldier_red->startMove();
-			soldier_red->setScale(10);
+			soldier_red->setScale(5);
 			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Player_Red);
 
 		}
@@ -49,7 +53,7 @@ void Manager::update(float dt)
 			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
 			soldier_blue->init();
 			soldier_blue->startMove();
-			soldier_blue->setScale(10);
+			soldier_blue->setScale(5);
 			GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Player_Blue);
 
 		}
@@ -64,7 +68,7 @@ void Manager::update(float dt)
 	{
 		count_AttackSoldier = 0;
 
-		//Çå¿Õ¹¥»÷ºÍ±»¹¥»÷ÁÐ±í
+		//æ¸…ç©ºæ”»å‡»å’Œè¢«æ”»å‡»åˆ—è¡¨
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
@@ -73,12 +77,33 @@ void Manager::update(float dt)
 				_soldierList[i].at(j)->getBeAttackTarget().clear();
 			}
 		}
+		for (auto pair : playerManager->getPlayerList())
+		{
+			auto player = pair.second;
+			player->getBeAttackTarget().clear();
+			player->getAttackTarget().clear();
+		}
 		
-		//Ñ°ÕÒ¹¥»÷ºÍ±»¹¥»÷Ä¿±ê
+		//å¯»æ‰¾æ”»å‡»å’Œè¢«æ”»å‡»ç›®æ ‡
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
 			{
+				for (auto pair : playerManager->getPlayerList())
+				{
+					auto player = pair.second;
+					if (insideAttack(_soldierList[i].at(j), player))
+					{
+						player->addAttackTarget(_soldierList[i].at(j));
+						_soldierList[i].at(j)->addBeAttackTarget(player);
+					}
+					if (insideAttack(player, _soldierList[i].at(j)))
+					{
+						_soldierList[i].at(j)->addAttackTarget(player);
+						player->addBeAttackTarget(_soldierList[i].at(j));
+					}
+
+				}
 				for (int k = 0; k < _soldierList[i ^ 1].size(); k++)
 				{
 					if (insideAttack(_soldierList[i ^ 1].at(k), _soldierList[i].at(j)))
@@ -88,31 +113,16 @@ void Manager::update(float dt)
 						break;
 					}
 				}
+				
 			}
 		}
 
-		//ÒÆ³ýÀë¿ª¹¥»÷·¶Î§µÄ¹¥»÷Ä¿±ê
-		for (int i = 0; i < 2; i++)
-		{
-			for (int j = 0; j < _soldierList[i].size(); j++)
-			{
-				Vector<SpriteBase *>& attackTarget = _soldierList[i].at(j)->getAttackTarget();
-				for (auto target : _soldierList[i].at(j)->getAttackTarget())
-				{
-					if (!insideAttack(target, _soldierList[i].at(j)))
-					{
-						attackTarget.eraseObject(target);
-						target->getBeAttackTarget().eraseObject(_soldierList[i].at(j));
-					}
-				}
-			}
-		}
 		
 		for (int i = 0; i < 2; i++)
 		{
 			for (int j = 0; j < _soldierList[i].size(); j++)
 			{
-				//½øÐÐ¹¥»÷¾ÍÍ£Ö¹ÒÆ¶¯
+				//è¿›è¡Œæ”»å‡»å°±åœæ­¢ç§»åŠ¨
 				if (_soldierList[i].at(j)->attack())
 				{
 					_soldierList[i].at(j)->stopMove();
