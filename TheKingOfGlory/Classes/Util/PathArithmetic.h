@@ -1,0 +1,84 @@
+#pragma once
+#include "cocos2d.h"
+#include "Model/GameMap.h"
+
+class GameMap;
+
+
+class Grid : public cocos2d::Ref {
+public:
+	static Grid* create(int x, int y) {
+		Grid* g = new Grid();
+		if (g && g->initWithPoint(x, y))
+		{
+			g->autorelease();
+			return g;
+		}
+		CC_SAFE_DELETE(g);
+		return nullptr;
+	}
+	bool initWithPoint(int x, int y) {
+		_x = x;
+		_y = y;
+		_canAssess = true;
+		return true;
+	}
+	void setX(int x) { _x = x; }
+	int getX() { return _x; }
+
+	void setY(int y) { _y = y; }
+	int getY() { return _y; }
+
+	void setAssess(bool canAssess) { _canAssess = canAssess; }
+	bool isCanAssess() { return _canAssess; }
+private:
+	int _x;
+	int _y;
+	bool _canAssess;
+};
+
+
+class PointDelegate : public cocos2d::Ref {
+private:
+	float _x;
+	float _y;
+public:
+	static PointDelegate* create(float x, float y) {
+		PointDelegate* p = new PointDelegate();
+		if (p && p->initPoint(x, y)) {
+			p->autorelease();
+			return p;
+		}
+		CC_SAFE_DELETE(p);
+		return nullptr;
+	}
+	bool initPoint(float x, float y) {
+		_x = x;
+		_y = y;
+		return true;
+	}
+	void setX(float x) { _x = x; }
+	float getX() { return _x; }
+
+	void setY(float y) { _y = y; }
+	float getY() { return _y; }
+
+};
+
+
+
+class PathArithmetic : public cocos2d::Ref
+{
+private:
+    std::vector<PointDelegate*> _invalidPoints;
+    std::vector<PointDelegate*> _pathPoints;
+
+public:
+	CREATE_FUNC(PathArithmetic);
+	virtual bool init() { return true; };
+    bool updatePath(cocos2d::Vec2 from, cocos2d::Vec2 to);
+    bool findValidGrid(cocos2d::Vec2 from, cocos2d::Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector);
+    bool isCheck(cocos2d::Vec2 point, std::vector<cocos2d::Vector<Grid*>> gridVector);
+	cocos2d::Vec2 getNextPos();
+
+};

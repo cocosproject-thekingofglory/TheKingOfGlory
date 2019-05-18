@@ -65,6 +65,8 @@ bool Player::init(int role)
 	setStatus(Player::Status::STANDING);
 
 
+	log("\nHahah\n");
+
 	return true;
 }
 
@@ -252,9 +254,12 @@ void Player::startMove(Vec2 destination)
 	if (_isMove)
 	{
 		log("move");
-		setDestination(destination);
-		setStatus(Status::MOVING);
-		schedule(CC_CALLBACK_0(Player::move, this), "move");
+		if (path->updatePath(getPosition(), destination))
+		{
+			setDestination(destination);
+			setStatus(Status::MOVING);
+			schedule(CC_CALLBACK_0(Player::move, this), "move");
+		}
 	}
 }
 
@@ -262,7 +267,7 @@ void Player::move()
 {
 	if (getStatus() == Status::MOVING)
 	{
-		auto position = this->getPosition();
+		/*auto position = this->getPosition();
 
 		if (position.equals(getDestination()))
 		{
@@ -295,7 +300,31 @@ void Player::move()
 		if (map->isCanAssess(map->positionToTileCoord(target)))
 			this->setPosition(target);
 		else
+			stopMove();*/
+
+		auto position = this->getPosition();
+
+		if (position.equals(getDestination()))
+		{
 			stopMove();
+			return;
+		}
+
+		Vec2 target = path->getNextPos();
+		float dx = target.x - position.x;
+		float dy = target.y - position.y;
+
+		if (dx < 0)
+			setDirection(Direction::LEFT);
+		else if (dx > 0)
+			setDirection(Direction::RIGHT);
+		else
+		{
+			if (dy <= 0)
+				setDirection(Direction::DOWN);
+			else
+				setDirection(Direction::UP);
+		}
 	}
 }
 

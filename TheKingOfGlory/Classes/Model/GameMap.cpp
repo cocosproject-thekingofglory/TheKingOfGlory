@@ -2,6 +2,24 @@
 USING_NS_CC;
 
 
+bool GameMap::initGrid()
+{
+
+	for (int i = 0; i < tileMap->getMapSize().width; i++)
+	{
+		Vector<Grid*> inner;
+		for (int j = 0; j < tileMap->getMapSize().height; j++)
+		{
+			Grid *grid = Grid::create(i, j);
+			grid->setAssess(isCanAssess(Vec2(i, j)));
+			inner.pushBack(grid);
+		}
+		_gridVector.push_back(inner);
+	}
+	return true;
+
+}
+
 bool GameMap::init()
 {
 	this->setName("map");
@@ -52,7 +70,7 @@ void GameMap::setMap(const std::string& mapName)
 		}
 	}
 	
-
+	initGrid();
 }
 
 Vec2 GameMap::tileCoordToPosition(const Vec2 & coord)

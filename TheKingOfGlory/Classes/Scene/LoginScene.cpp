@@ -1,5 +1,5 @@
 #include "LoginScene.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 #include "StartScene.h"
 
 USING_NS_CC;
@@ -34,8 +34,7 @@ void LoginScene::onEnter()
 	Layer::onEnter();
 
 	//²¥·Å±³¾°ÒôÀÖ
-	//GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/LoginBgm.mp3", true);
+	GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
 
 }
 
@@ -68,8 +67,7 @@ void LoginScene::createLoginButton()
 		else
 		{
 			//²¥·Åµã»÷ÒôÐ§
-			//GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
-			SimpleAudioEngine::getInstance()->playEffect("Sounds/LoginClick.wav");
+			GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
 			username.substr(0, 16);
 			UserDefault::getInstance()->setStringForKey("username", username);
 //			User::getInstance()->setName(username);

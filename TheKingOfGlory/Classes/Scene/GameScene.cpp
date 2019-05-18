@@ -1,5 +1,5 @@
 #include "GameScene.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 #include "ui/CocosGUI.h"
 #include "StartScene.h"
 #include "../Model/GameMap.h"
@@ -12,8 +12,7 @@ using namespace CocosDenshion;
 void GameScene::onEnter()
 {
 	Layer::onEnter();
-	//GameAudio::getInstance()->playBgm("Sounds/Game.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/GameBgm.mp3", true);
+	GameAudio::getInstance()->playBgm("Sounds/GameBgm.mp3");
 }
 
 

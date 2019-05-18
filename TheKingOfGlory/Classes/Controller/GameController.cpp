@@ -1,5 +1,5 @@
 #include "GameController.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -36,7 +36,6 @@ void GameController::createTouchListener()
 		auto nodeLocation = map->convertToNodeSpace(touchLocation);
 		if (map->isCanAssess(map->positionToTileCoord(nodeLocation)))
 		{
-			log("Can Assess");
 			manager->playerManager->getLocalPlayer()->startMove(nodeLocation);
 		}
 	};
@@ -105,7 +104,7 @@ void GameController::isResult(float delta)
 void GameController::toOver(bool isWin)
 {
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
-	SimpleAudioEngine::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
+	GameAudio::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 

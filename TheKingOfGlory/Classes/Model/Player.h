@@ -1,11 +1,9 @@
 #pragma once
-
-
-
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
 #include"Model/SpriteBase.h"
 #include "Model/Soldier.h"
+#include "Util/PathArithmetic.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -66,6 +64,8 @@ public:
 		"Archer"
 	};
 
+	PathArithmetic* path;
+
 	static Player* createPlayer(const std::string& id, int role);
 
 
@@ -100,7 +100,7 @@ public:
 
 	void skill(const void* enemy);
 
-	float beAttack(const float damage);
+	virtual float beAttack(const float damage);
 
 	void setDestination(Vec2 destination) { _destination = destination; }
 	Vec2 getDestination() { return _destination; }
@@ -124,6 +124,7 @@ private:
 	bool _isSkill;
 
 	bool _move;
+
 
 
 	Vec2 _destination;
