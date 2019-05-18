@@ -34,5 +34,6 @@ private:
 	
 	void addCustomEvent();
 	void initPlayer(float delta);
+
 };
 

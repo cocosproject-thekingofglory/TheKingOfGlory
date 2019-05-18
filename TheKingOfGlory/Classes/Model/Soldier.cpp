@@ -34,9 +34,9 @@ void Soldier::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 3);
+	loadAnimation("soldierMove", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 3);
+	loadAnimation("soldierAttack", delay, 8);
 
 }
 
@@ -100,7 +100,7 @@ bool Soldier::attack()
 	{
 		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 		{
-			switch (_attackTargetList.at(i)->getType())
+			/*switch (_attackTargetList.at(i)->getType())
 			{
 			case SpriteBase::PLAYER:
 			{
@@ -117,7 +117,10 @@ bool Soldier::attack()
 				return true;
 			}
 			break;
-			}
+			}*/
+			auto target = _attackTargetList.at(i);
+			target->beAttack(this->getDamage());
+			return true;
 		}
 	}
 	return false;

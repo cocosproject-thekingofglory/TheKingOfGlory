@@ -34,7 +34,7 @@ public:
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
 	//伤害
-	int getDamage() { return _damage; }
+	float getDamage() { return _damage; }
 	void setDamage(float damage) { _damage = damage; }
 	//血条
 	LoadingBar* getHPBar() { return _HPBar; }

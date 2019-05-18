@@ -49,6 +49,8 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_up.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
+	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
+
 
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
