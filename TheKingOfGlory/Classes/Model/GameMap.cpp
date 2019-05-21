@@ -150,3 +150,8 @@ GameMap * GameMap::getCurrentMap()
 	}
 	return nullptr;
 }
+
+void GameMap::addSprite(cocos2d::Sprite * sprite, int zOrder)
+{
+	tileMap->addChild(sprite, zOrder);
+}

@@ -50,7 +50,7 @@ bool Tower::attack()
 				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Soldier_Red);
 			else
 				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Solider_Blue);*/
-			this->addChild(bullet);
+
 			return true;
 		}
 	}

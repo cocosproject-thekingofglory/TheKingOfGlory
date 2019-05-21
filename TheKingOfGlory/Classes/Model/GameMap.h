@@ -29,6 +29,7 @@ public:
 	cocos2d::Size getTileSize();
 	bool isCanAssess(const cocos2d::Vec2 & coord);
 	void addSprite(cocos2d::Sprite* sprite,Type type);
+	void addSprite(cocos2d::Sprite * sprite, int zOrder);
 
 	CREATE_FUNC(GameMap);
 };
