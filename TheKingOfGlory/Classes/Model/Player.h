@@ -8,9 +8,9 @@
 USING_NS_CC;
 using namespace ui;
 
-const float PLAYER_ATTACK_RADIUS = 5.0;
-const float PLAYER_DAMAGE = 10.0;
-const float PLAYER_HPVALUE = 200000.0;
+const float PLAYER_ATTACK_RADIUS = 10;
+const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 
@@ -110,6 +110,8 @@ public:
 	Vec2 getDestination() { return _destination; }
 
 	void startMove(Vec2 destination);
+
+	void revival();
 
 private:
 	std::string _id;

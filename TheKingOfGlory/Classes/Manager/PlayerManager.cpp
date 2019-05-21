@@ -78,13 +78,15 @@ void PlayerManager::addCustomEvent()
 
 void PlayerManager::initPlayer(float delta)
 {
-	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0,BLUE);
-	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Tower_Blue);
+
+	auto player = this->createPlayer("Haha", 0, BLUE);
+	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Player_Blue);
+
+	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0,RED);
+	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
 	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
 	this->getLocalPlayer()->path = PathArithmetic::create();
 
-	auto player = this->createPlayer("Haha", 0, RED);
-	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Tower_Red);
 
 }
 

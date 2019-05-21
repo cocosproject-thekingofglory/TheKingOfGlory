@@ -15,6 +15,8 @@ bool GameController::init()
 	createKeyListener();
 	scheduleOnce(schedule_selector(GameController::initGame), 0.1f);
 
+	auto gameOverListener = EventListenerCustom::create("ToOver", CC_CALLBACK_1(GameController::toOver, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
 
 	return true;
 }
@@ -37,8 +39,9 @@ void GameController::createTouchListener()
 		auto worldLocation = map->convertToWorldSpace(touchLocation);
 		if (map->isCanAssess(map->positionToTileCoord(nodeLocation)))
 		{
-			if(manager->playerManager->getLocalPlayer())
-				manager->playerManager->getLocalPlayer()->startMove(nodeLocation);
+			auto localplayer = manager->playerManager->getLocalPlayer();
+			if(localplayer&&localplayer->getStatus()!=Player::Status::DEAD)
+				localplayer->startMove(nodeLocation);
 		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,this);
@@ -115,8 +118,9 @@ void GameController::isResult(float delta)
 {
 }
 
-void GameController::toOver(bool isWin)
+void GameController::toOver(cocos2d::EventCustom* event)
 {
+	bool isWin = static_cast<bool>(event->getUserData());
 	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
 	GameAudio::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
