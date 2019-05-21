@@ -1,35 +1,30 @@
 #include "BulletBase.h"
+#include "Manager/Manager.h"
 
 
-bool BulletBase::init()
-{
-	if (!Sprite::init())
-	{
-		return false;
-	}
-	
-	return true;
-}
 
-void BulletBase::create(SpriteBase*attacker, SpriteBase*beAttacker, std::string animationName,std::string spriteName, float speed)
+BulletBase* BulletBase::create(SpriteBase*attacker, SpriteBase*beAttacker, std::string animationName,std::string spriteName, float speed)
 {
 	auto bullet = new BulletBase();
-	if (bullet&&bullet->init())
+	if (bullet&&bullet->initWithSpriteFrameName(spriteName))
 	{
 		bullet->setColor(attacker->getColor());
 		bullet->setDamage(attacker->getDamage());
 		bullet->setSpeed(speed);
+		bullet->setAttack(attacker);
+		bullet->setBeAttack(beAttacker);
 
-		bullet->setBullet(Sprite::createWithSpriteFrameName(spriteName));
-
+		beAttacker->addBeAttackBullet(bullet);
+		
 		initAnimation(animationName, bullet);
 		bullet->setAnimationName(animationName);
 
-		//bulletList[bullet->getColor()].pushBack(bullet);
 		bullet->runAnimation(animationName, bullet);
 		bullet->schedule(CC_CALLBACK_0(BulletBase::move,bullet), "move");
+		return bullet;
 	}
 	CC_SAFE_DELETE(bullet);
+	return nullptr;
 }
 
 void BulletBase::initAnimation(std::string animationName, BulletBase*bullet)
@@ -48,7 +43,9 @@ bool BulletBase::removeFromMap(BulletBase*bullet)
 {
 	bullet->unschedule("move");
 	bullet->stopAnimation(bullet);
-	//bulletList[bullet->getColor()].eraseObject(bullet);
+
+	bullet->getBeAttack()->getBeAttackBullet().eraseObject(bullet);
+
 	bullet->removeFromParentAndCleanup(true);
 	return true;
 }
@@ -77,5 +74,5 @@ void BulletBase::move()
 
 bool BulletBase::collisionDetection()
 {
-	return _bullet->getBoundingBox().intersectsRect(_beAttacker->getBoundingBox());
+	return this->getBoundingBox().intersectsRect(_beAttacker->getBoundingBox());
 }

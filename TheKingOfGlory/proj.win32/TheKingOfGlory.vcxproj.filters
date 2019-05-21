@@ -63,9 +63,6 @@
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Model\tower.cpp">
-      <Filter>src\Model</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
       <Filter>src\Util</Filter>
     </ClCompile>
@@ -79,6 +76,9 @@
       <Filter>src\Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\BulletBase.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Tower.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,9 +116,6 @@
     <ClInclude Include="..\Classes\Model\SpriteBase.h">
       <Filter>src\Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Model\tower.h">
-      <Filter>src\Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Util\AnimationLoader.h">
       <Filter>src\Util</Filter>
     </ClInclude>
@@ -132,6 +129,9 @@
       <Filter>src\Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\BulletBase.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Tower.h">
       <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>

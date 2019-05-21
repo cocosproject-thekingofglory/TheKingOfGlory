@@ -45,17 +45,22 @@ bool Manager::init()
 	playerManager = PlayerManager::create();
 	this->addChild(playerManager, -1);
 
-	auto tower_red_1=createTower(RED_TOWER_FILENAME, RED);
-	tower_red_1->init();
-	tower_red_1->setScale(1.5);
-	GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Player_Red);
-	//if (map == nullptr)log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-	//else log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]() 
+	{
+		auto tower_red_1 = createTower(RED_TOWER_FILENAME, RED);
+		tower_red_1->init();
+		tower_red_1->setScale(1.5);
+		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Soldier_Red);
+		//if (map == nullptr)log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		//else log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-	auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
-	//GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Tower_Blue);
+		auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
+		GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Solider_Blue);
 
-	scheduleUpdate();
+		scheduleUpdate();
+	}), NULL);
+	this->runAction(sequence);
+
 	return true;
 }
 
@@ -67,22 +72,24 @@ void Manager::update(float dt)
 	if (count_AppearSoldier%SOLDIER_APPEAR_INTERVAL == 0)
 	{
 		count_AppearSoldier = 0;
-		if (_soldierList[RED].size() < 1)
+		if (_soldierList[RED].size() < 2)
 		{
 			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
 			soldier_red->init();
 			soldier_red->startMove();
 			soldier_red->setScale(5);
+			soldier_red->setTag(_soldierList[RED].size());
 			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Player_Red);
 
 		}
 
-		if (_soldierList[BLUE].size() < 1)
+		if (_soldierList[BLUE].size() < 2)
 		{
 			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
 			soldier_blue->init();
 			soldier_blue->startMove();
 			soldier_blue->setScale(5);
+			soldier_blue->setTag(_soldierList[BLUE].size());
 			GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Player_Blue);
 
 		}
@@ -211,8 +218,17 @@ void Manager::update(float dt)
 			{
 				if (_soldierList[i].at(j)->getNowHPValue() <= 0.0)
 				{
-					_soldierList[i].at(j)->removeFromParentAndCleanup(true);
-					_soldierList[i].eraseObject(_soldierList[i].at(j));
+					auto soldier = _soldierList[i].at(j);
+					
+					Vector<BulletBase*> bulletList = soldier->getBeAttackBullet();
+
+					for (auto bullet : bulletList)
+					{
+						bullet->removeFromMap(bullet);
+					}
+
+					soldier->removeFromParentAndCleanup(true);
+					_soldierList[i].eraseObject(soldier);
 				}
 			}
 

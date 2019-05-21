@@ -1,9 +1,10 @@
 #include "Tower.h"
+#include "GameMap.h"
 
 Tower* Tower::createWithSpriteFrameName(const std::string& filename)
 {
 	auto tower = new Tower();
-	if (tower&&tower->initWithSpriteFrameName(filename)&& sprite->init())
+	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init())
 	{
 		tower->autorelease();
 		return tower;
@@ -44,7 +45,11 @@ bool Tower::attack()
 		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 		{
 			auto target = _attackTargetList.at(i);
-			BulletBase::create(this, target, "towerAttack", "towerAttack");
+			auto bullet=BulletBase::create(this, target, "warrior_attack_down", "warrior_attack_down_01.png");
+			if(getColor()==RED)
+				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Soldier_Red);
+			else
+				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Solider_Blue);
 			return true;
 		}
 	}
@@ -84,7 +89,7 @@ void Tower::setHPBar()
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 
-	_HPBar->setPercent(0);
+	_HPBar->setPercent(100);
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
 		this->getPositionY() + this->getContentSize().height*1.1);
 	_HPBar->setPosition(HPpos);

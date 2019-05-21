@@ -10,9 +10,9 @@ USING_NS_CC;
 using namespace ui;
 
 //≥ı º Ù–‘÷µ
-const float TOWER_ATTACK_RADIUS = 3.0;
+const float TOWER_ATTACK_RADIUS =1000;
 const float TOWER_DAMAGE = 5.0;
-const float TOWER_HPVALUE = 50.0;
+const float TOWER_HPVALUE = 1000;
 const int TOWER_ATTACK_INTERVAL = 180;
 
 
@@ -37,6 +37,8 @@ public:
 
 	bool insideAttack(SpriteBase*beAttacker);
 
+
 private:
+
 
 };

@@ -4,9 +4,11 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
+#include "Model/BulletBase.h"
 
 USING_NS_CC;
 using namespace ui;
+class BulletBase;
 
 //红蓝方基地（即商店）所在位置
 const Vec2 RED_STORE = Vec2(10.0, 10.0);
@@ -61,11 +63,15 @@ public:
 
 	virtual void addBeAttackTarget(SpriteBase*enemy) { _beAttackTargetList.pushBack(enemy); };
 
-	Vector<SpriteBase*> getBeAttackTarget() { return _beAttackTargetList; }
+	Vector<SpriteBase*>& getBeAttackTarget() { return _beAttackTargetList; }
 
 	virtual void addAttackTarget(SpriteBase* attackTarget) { _attackTargetList.pushBack(attackTarget); }
 
-	Vector<SpriteBase*> getAttackTarget() { return _attackTargetList; }
+	Vector<SpriteBase*>& getAttackTarget() { return _attackTargetList; }
+
+	virtual void addBeAttackBullet(BulletBase* bullet) { _beAttackBulletList.pushBack(bullet); }
+
+	Vector<BulletBase*>& getBeAttackBullet() { return _beAttackBulletList; }
 
 	virtual float beAttack(const float damage) { return 0; }
 
@@ -78,6 +84,7 @@ protected:
 	LoadingBar* _HPBar=NULL;
 	Vector<SpriteBase*> _beAttackTargetList;
 	Vector<SpriteBase*> _attackTargetList;
+	Vector<BulletBase*> _beAttackBulletList;
 
 private:
 	Type _type;

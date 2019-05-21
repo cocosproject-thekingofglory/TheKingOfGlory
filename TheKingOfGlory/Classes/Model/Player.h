@@ -12,7 +12,7 @@ using namespace ui;
 
 const float PLAYER_ATTACK_RADIUS = 5.0;
 const float PLAYER_DAMAGE = 10.0;
-const float PLAYER_HPVALUE = 200.0;
+const float PLAYER_HPVALUE = 200000.0;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 

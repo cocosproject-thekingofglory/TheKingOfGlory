@@ -32,6 +32,7 @@ public:
 		DEAD,
 	};
 
+
 	void setStatus(Status status) { _status = status; }
 	Status getStatus() { return _status; }
 

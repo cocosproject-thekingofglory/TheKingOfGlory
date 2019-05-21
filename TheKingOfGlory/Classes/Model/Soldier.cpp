@@ -77,7 +77,10 @@ void Soldier::startMove()
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		toPosition = Vec2(3200,3200);
+		if(getColor()==BLUE)
+			toPosition = Vec2(500,500);
+		else
+			toPosition = Vec2(6000, 6000);
 		runAnimation("soldierMove", this);
 		_destination = toPosition;
 		auto position = this->getPosition();
@@ -94,33 +97,40 @@ void Soldier::stopMove()
 
 bool Soldier::attack()
 {
-	runAnimation("soldierAttack", this);
-	setStatus(Status::ATTACKING);
-	for (int i = _attackTargetList.size() - 1; i >= 0; i--)
+	if (_attackTargetList.size())
 	{
-		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
+		runAnimation("soldierAttack", this);
+		setStatus(Status::ATTACKING);
+		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			/*switch (_attackTargetList.at(i)->getType())
+			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
 			{
-			case SpriteBase::PLAYER:
-			{
-				auto target = dynamic_cast<Player*>(_attackTargetList.at(i));
+				/*switch (_attackTargetList.at(i)->getType())
+				{
+				case SpriteBase::PLAYER:
+				{
+					auto target = dynamic_cast<Player*>(_attackTargetList.at(i));
+					target->beAttack(this->getDamage());
+					log("\nPlayer be hit\n");
+					return true;
+				}
+				break;
+				case SpriteBase::SOLDIER:
+				{
+					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
+					target->beAttack(this->getDamage());
+					return true;
+				}
+				break;
+				}*/
+				auto target = _attackTargetList.at(i);
 				target->beAttack(this->getDamage());
-				log("\nPlayer be hit\n");
 				return true;
 			}
-			break;
-			case SpriteBase::SOLDIER:
+			else
 			{
-				auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
-				target->beAttack(this->getDamage());
-				return true;
+
 			}
-			break;
-			}*/
-			auto target = _attackTargetList.at(i);
-			target->beAttack(this->getDamage());
-			return true;
 		}
 	}
 	return false;

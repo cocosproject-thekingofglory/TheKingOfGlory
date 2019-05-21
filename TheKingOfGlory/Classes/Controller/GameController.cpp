@@ -9,6 +9,7 @@ bool GameController::init()
 	if (!Layer::init())
 		return false;
 	
+	this->setName("GameController");
 	map = nullptr;
 
 	createTouchListener();
@@ -113,5 +114,5 @@ void GameController::initGame(float delta)
 {
 	manager = Manager::create();
 
-	this->addChild(manager, -1);
+	this->addChild(manager, -1,"Manager");
 }

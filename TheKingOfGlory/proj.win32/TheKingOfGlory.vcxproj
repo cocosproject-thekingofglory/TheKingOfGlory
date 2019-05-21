@@ -157,7 +157,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Model\Player.cpp" />
     <ClCompile Include="..\Classes\Model\Soldier.cpp" />
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp" />
-    <ClCompile Include="..\Classes\Model\tower.cpp" />
+    <ClCompile Include="..\Classes\Model\Tower.cpp" />
     <ClCompile Include="..\Classes\Scene\GameScene.cpp" />
     <ClCompile Include="..\Classes\Scene\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
@@ -176,7 +176,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Model\Player.h" />
     <ClInclude Include="..\Classes\Model\Soldier.h" />
     <ClInclude Include="..\Classes\Model\SpriteBase.h" />
-    <ClInclude Include="..\Classes\Model\tower.h" />
+    <ClInclude Include="..\Classes\Model\Tower.h" />
     <ClInclude Include="..\Classes\Scene\GameScene.h" />
     <ClInclude Include="..\Classes\Scene\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />

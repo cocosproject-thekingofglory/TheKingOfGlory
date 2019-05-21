@@ -61,10 +61,6 @@ Player * PlayerManager::getPlayer(const std::string& id)
 }
 
 
-Map<std::string, Player*> PlayerManager::getPlayerList()
-{
-	return _playerList;
-}
 
 Player * PlayerManager::getLocalPlayer()
 {

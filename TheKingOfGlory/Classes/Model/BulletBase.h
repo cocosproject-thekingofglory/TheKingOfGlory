@@ -9,6 +9,7 @@
 USING_NS_CC;
 using namespace ui;
 
+class SpriteBase;
 
 //ƒ¨»œ Ù–‘÷µ
 const float SPEED = 10.0;
@@ -31,15 +32,12 @@ public:
 	void setAnimationName(std::string animationName) { _animationName = animationName; }
 	std::string getAnimationName() { return _animationName; }
 
-	void setBullet(Sprite*bullet) { _bullet = bullet; }
-	Sprite* getBullet() { return _bullet; }
-
+	void setAttack(SpriteBase* attacker) { _attacker = attacker; }
 	SpriteBase* getAttack() { return _attacker; }
 
-	void setBeAttack(SpriteBase*beAttacker) { _beAttacker = beAttacker; }
+	void setBeAttack(SpriteBase* beAttacker) { _beAttacker = beAttacker; }
 	SpriteBase* getBeAttack() { return _beAttacker; }
 
-	bool init();
 
 	static bool removeFromMap(BulletBase*bullet);
 	
@@ -47,13 +45,11 @@ public:
 
 	bool collisionDetection();
 
-	static void create(SpriteBase*attacker, SpriteBase*beAttacker, std::string animationName, std::string spriteName, float speed = SPEED);
+	static BulletBase* create(SpriteBase*attacker, SpriteBase*beAttacker, std::string animationName, std::string spriteName, float speed = SPEED);
 
 	static void initAnimation(std::string animationName, BulletBase*bullet);
 
-	//static Vector<BulletBase*> bulletList[2];
 
-	CREATE_FUNC(BulletBase);
 
 private:
 	float _speed;

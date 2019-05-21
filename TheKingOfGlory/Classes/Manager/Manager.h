@@ -34,6 +34,7 @@ public:
 
 	Tower* createTower(const std::string &filename, const int color);
 
+
 	//Soldier* getSoldier(const std::string);
 
 	virtual void update(float dt);
