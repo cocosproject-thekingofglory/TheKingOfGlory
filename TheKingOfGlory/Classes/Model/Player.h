@@ -16,6 +16,12 @@ const float PLAYER_HPVALUE = 200.0;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 
+const float PLAYER_INITIAL_EXP = 100.0;
+const float PLAYER_LEVELUP_EXP = 100.0;
+const int PLAYER_MAX_LEVEL = 15;
+const int PLAYER_INITIAL_LEVEL = 1;
+
+
 class Player :public SpriteBase
 {
 public:
@@ -27,13 +33,11 @@ public:
 	enum class Status : std::int8_t
 	{
 		STANDING,
-
 		MOVING,
 		ATTACKING,
 		DEAD,
 		BEINGHIT,
 		SKILL
-
 	};
 
 	enum class Direction : std::int8_t
@@ -42,6 +46,10 @@ public:
 		RIGHT,
 		UP,
 		DOWN,
+		LEFTDOWN,
+		LEFTUP,
+		RIGHTDOWN,
+		RIGHTUP,
 		NONE
 	};
 
@@ -62,8 +70,8 @@ public:
 
 	char* roleName[3] = {
 		"warrior",
-		"Mage",
-		"Archer"
+		"mage",
+		"archer"
 	};
 
 	static Player* createPlayer(const std::string& id, int role);
@@ -75,12 +83,17 @@ public:
 	void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
 
-	void isLocal(bool a);//？
+	void isLocal(bool a);
 	bool isLocal();
-
 
 	void setHPBar();
 	void updateHPBar();
+
+	void setEXPBar();
+	void updateEXPBar();
+
+	void setLevel();
+	void updateLevel();
 
 	void setMove(bool move) { _move = move; }//是否能移动
 	bool isMove() { return _move; }
@@ -95,7 +108,7 @@ public:
 
 	void stopMove();
 
-	bool attack();//参数待补充
+	bool attack();
 	void stopAttack();
 
 	void skill(const void* enemy);
@@ -131,7 +144,6 @@ private:
 	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
 	std::vector<int> _animationFrameNum;
 	std::vector<std::string> _animationNames;
-
 
 	void move();
 

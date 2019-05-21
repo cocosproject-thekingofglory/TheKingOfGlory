@@ -6,7 +6,6 @@
 
 USING_NS_CC;
 
-//role值同enum分类，为0，1,2
 
 Player* Player::createPlayer(const std::string& id, int role) 
 {
@@ -32,28 +31,34 @@ bool Player::init(int role)
 	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
+	setNowEXPValue(PLAYER_INITIAL_EXP);
+	setEXPValue(PLAYER_INITIAL_EXP);
+	setNowLevel(PLAYER_INITIAL_LEVEL);
 
 	_isMove = true;
 	_isAttack = true;
 	_isSkill = false;
 
+
 	setHPBar();
+	setEXPBar();
+	setLevel();
 
 	this->setScale(10);
 
-	std::string animationNames[] = { "stand","walk","attack","dead","beinghit","skill" };
-	_animationNames.assign(animationNames, animationNames + 5);
+	std::string animationNames[] = { "stand","move","attack","dead","behit","skill","strikefly" };
+	_animationNames.assign(animationNames, animationNames + 7);
 
-	std::string directions[] = {"up","down","left","right"};
+	std::string directions[] = {"up","down","left","right","rightup","leftup","leftdown","rightdown"};
 
 	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 7; i++)
 	{
 		if (i == 0 || i == 1)
 			_animationNum = 10;
 		else
 			_animationNum = 8;
-		for (int j = 0; j < 4; j++)
+		for (int j = 0; j < 8; j++)
 		{
 			std::string animationName = _roleName +"_" +animationNames[i]+"_" + directions[j];
 			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
@@ -64,7 +69,6 @@ bool Player::init(int role)
 	setDirection(Direction::DOWN);
 	setStatus(Player::Status::STANDING);
 
-
 	return true;
 }
 
@@ -74,7 +78,7 @@ bool Player::initWithRole(int role)
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
-	auto file = _roleName + "_stand_down_01.png";
+	auto file = _roleName + "_stand_down(01).png";
 
 	if (this->initWithSpriteFrameName(file) && this->init(role))
 
@@ -116,7 +120,7 @@ void Player::setStatus(Player::Status status)
 		break;
 	case Player::Status::BEINGHIT:
 	{
-		animation += "behight_";
+		animation += "behit_";
 	}
 		break;
 	case Player::Status::SKILL:
@@ -149,6 +153,26 @@ void Player::setStatus(Player::Status status)
 		animation += "right";
 	}
 	break;
+	case Direction::LEFTDOWN:
+	{
+		animation += "leftdown";
+	}
+	break;
+	case Direction::LEFTUP:
+	{
+		animation += "leftup";
+	}
+	break;
+	case Direction::RIGHTDOWN:
+	{
+		animation += "rightdown";
+	}
+	break;
+	case Direction::RIGHTUP:
+	{
+		animation += "rightup";
+	}
+	break;
 	}
 	AnimationLoader::runAnimation(animation, this);
 }
@@ -170,7 +194,7 @@ void Player::stopMove()
 }
 
 
-//血条问题仍要讨论
+
 bool Player::attack()
 {
 	if (_isAttack&&getStatus()!=Status::ATTACKING)
@@ -185,9 +209,18 @@ bool Player::attack()
 				{
 					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
 					target->beAttack(this->getDamage());
-
+					if (beAttack(this->getDamage()) == 0.0)
+					{
+						setNowEXPValue(SOLDIER_EXPVALUE);
+						setEXPValue(SOLDIER_EXPVALUE);
+						setNowLevel(getNowLevel());
+						if (this->getNowEXPValue > 100.0)
+						{
+							setNowEXPValue(-100.0);
+							updateEXPBar();
+						}
+					}
 				}
-
 			}
 		}
 		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
@@ -316,6 +349,23 @@ void Player::setHPBar()
 	this->addChild(_HPBar);
 }
 
+void Player::setEXPBar()
+{
+	_EXPBar = LoadingBar::create("Pictures/GamesItem/planeEXP.png");
+
+	_EXPBar->setScale(0.1);
+	_EXPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_EXPBar->setPercent(100);
+
+	Vec2 EXPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
+		this->getPositionY() + this->getContentSize.height*1.1);
+
+	_EXPBar->setPosition(EXPpos);
+
+	this->addChild(_EXPBar);
+}
+
 void Player::updateHPBar()
 {
 	if (_HPBar != NULL)
@@ -324,6 +374,15 @@ void Player::updateHPBar()
 		_HPBar->setPercent(100.0*getNowHPValue() / getHPValue());
 	}
 
+}
+
+void Player::updateEXPBar()
+{
+	if (_EXPBar != NULL)
+	{
+		log("Percent:%f", getNowEXPValue());
+		_EXPBar->setPercent(getNowEXPValue());
+	}
 }
 
 void Player::isLocal(bool a)

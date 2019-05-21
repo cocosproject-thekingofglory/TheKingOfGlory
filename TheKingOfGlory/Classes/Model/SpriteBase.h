@@ -8,13 +8,13 @@
 USING_NS_CC;
 using namespace ui;
 
-//ºìÀ¶·½»ùµØ£¨¼´ÉÌµê£©ËùÔÚÎ»ÖÃ
+//çº¢è“æ–¹åŸºåœ°ï¼ˆå³å•†åº—ï¼‰æ‰€åœ¨ä½ç½®
 const Vec2 RED_STORE = Vec2(10.0, 10.0);
 const Vec2 BLUE_STORE = Vec2(150.0, 150.0);
 
 const int RED = 0, BLUE = 1;
 
-//±»¹¥»÷¶ÔÏóµÄÓÅÏÈ¼¶
+//è¢«æ”»å‡»å¯¹è±¡çš„ä¼˜å…ˆçº§
 const int attackGrade = 3;
 const int SOLDIER = 1, HERO = 0, ACTIVE_HERO = 2;
 
@@ -23,39 +23,53 @@ class SpriteBase :public cocos2d::Sprite, public AnimationLoader
 public:
 	enum Type
 	{
-		Player, Soldier
+		PLAYER,SOLDIER
 	};
 
 	virtual bool init();
-	//ÀàĞÍ
+	//ç±»å‹
 	void setType(Type type) { _type = type; };
 	Type getType() { return _type; };
-	//ÕóÓª
+	//é˜µè¥
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
-	//ÉËº¦
+	//ä¼¤å®³
 	int getDamage() { return _damage; }
 	void setDamage(float damage) { _damage = damage; }
-	//ÑªÌõ
+	//è¡€æ¡
 	LoadingBar* getHPBar() { return _HPBar; }
 	virtual void setHPBar() {};
-	//¹¥»÷·¶Î§
+	//ç»éªŒæ¡
+	LoadingBar* getEXPBar() { return _EXPBar; }
+	virtual void setEXPBar() {};
+	//æ”»å‡»èŒƒå›´
 	void setAttackRadius(float radius) { _attackRadius = radius; }
 	int getAttackRadius() { return _attackRadius; }
-	//µ±Ç°ÑªÁ¿
+	//å½“å‰è¡€é‡
 	void setNowHPValue(float nowHPValue) { _nowHPValue = nowHPValue; }
 	float getNowHPValue() { return _nowHPValue; }
-	//×ÜÑªÁ¿
+	//æ€»è¡€é‡
 	float getHPValue() { return _HPValue; }
 	void setHPValue(float HPValue) { _HPValue = HPValue; }
-	//Î»ÖÃ
-	//Á½´Î¹¥»÷µÄ¼ä¸ô(/Ö¡)
+	//å½“å‰ç»éªŒå€¼
+	void setNowEXPValue(float nowEXPValue) { _nowEXPValue += nowEXPValue; }
+	float getNowEXPValue() { return _nowEXPValue; }
+	//æ€»ç»éªŒå€¼
+	void setEXPValue(float EXPValue) { _EXPValue += EXPValue; }
+	float getEXPValue() { return _EXPValue; }
+	//å½“å‰ç­‰çº§
+	int getNowLevel() { return ((int)_EXPValue) % 100; }
+	void setNowLevel(int nowLevel) { _nowLevel = nowLevel; }
+	//ä½ç½®
+	//ä¸¤æ¬¡æ”»å‡»çš„é—´éš”(/å¸§)
 	void setAttackInterval(int attackInterval) { _attackInterval = attackInterval; }
 	int getAttackInterval() { return _attackInterval; }
 
 	static SpriteBase* createWithSpriteFrameName(const std::string& filename);
 
 	virtual void updateHPBar(){}
+	virtual void updateEXPBar(){}
+
 
 	virtual bool attack() { return true; }
 
@@ -67,7 +81,7 @@ public:
 
 	Vector<SpriteBase*> getAttackTarget() { return _attackTargetList; }
 
-	virtual float beAttack(const float damage) { return 0.0; }
+	virtual float beAttack(const float damage) { return 0; }
 
 	virtual void initAnimation() {};
 
@@ -76,6 +90,7 @@ public:
 protected:
 
 	LoadingBar* _HPBar=NULL;
+	LoadingBar* _EXPBar = NULL;
 	Vector<SpriteBase*> _beAttackTargetList;
 	Vector<SpriteBase*> _attackTargetList;
 
@@ -83,8 +98,11 @@ private:
 	Type _type;
 
 	float _HPValue;
+	float _EXPValue = 0.0;
 	
+	int _nowLevel;
 	float _nowHPValue;
+	float _nowEXPValue = 0.0;
 	int _color;
 	float _damage;
 	float _attackRadius;
