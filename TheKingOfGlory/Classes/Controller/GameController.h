@@ -7,7 +7,7 @@
 class GameController:public cocos2d::Layer
 {
 public:
-	Manager* manager;
+	Manager* manager = Manager::getInstance();
 	virtual bool init();
 	CREATE_FUNC(GameController);
 

@@ -6,7 +6,7 @@ bool SpriteBase::init()
 	{
 		return false;
 	}
-	//scheduleUpdate();
+	
 	return true;
 }
 

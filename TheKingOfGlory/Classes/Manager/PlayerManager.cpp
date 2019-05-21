@@ -2,6 +2,8 @@
 
 USING_NS_CC;
 
+
+
 bool PlayerManager::init()
 {
 	if (!Layer::init())
@@ -59,10 +61,6 @@ Player * PlayerManager::getPlayer(const std::string& id)
 }
 
 
-Map<std::string, Player*> PlayerManager::getPlayerList()
-{
-	return _playerList;
-}
 
 Player * PlayerManager::getLocalPlayer()
 {
@@ -79,3 +77,4 @@ void PlayerManager::initPlayer(float delta)
 	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Tower_Blue);
 
 }
+

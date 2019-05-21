@@ -32,6 +32,7 @@ public:
 		DEAD,
 	};
 
+
 	void setStatus(Status status) { _status = status; }
 	Status getStatus() { return _status; }
 
@@ -48,14 +49,14 @@ public:
 	void setSpeed(float speed) { _speed = speed; }
 	float getSpeed() { return _speed; }
 
-	void setHPBar();
-	void updateHPBar();
+	virtual void setHPBar();
+	virtual void updateHPBar();
 
 	void setDestination(Vec2 destination) { _destination = destination; }
 	Vec2 getDestination() { return _destination; }
 
-	void initAnimation();
-	void move();
+	virtual void initAnimation();
+	virtual void move();
 
 	void randomDestination();
 

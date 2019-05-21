@@ -22,7 +22,7 @@ public:
 	Player* getPlayer(const std::string& id);
 	Player* getLocalPlayer();
 
-	Map<std::string, Player*> getPlayerList();
+	Map<std::string, Player*>& getPlayerList(){	return _playerList;	}
 
 
 	CREATE_FUNC(PlayerManager);
@@ -34,5 +34,6 @@ private:
 	
 	void addCustomEvent();
 	void initPlayer(float delta);
+
 };
 
