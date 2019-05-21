@@ -1,4 +1,5 @@
 #include"PlayerManager.h"
+#include "Model/GameMap.h"
 
 USING_NS_CC;
 
@@ -14,14 +15,14 @@ bool PlayerManager::init()
 	addCustomEvent();
 
 
-	scheduleOnce(schedule_selector(PlayerManager::initPlayer), 1.0f);
+	scheduleOnce(schedule_selector(PlayerManager::initPlayer), 2.0f);
 
 	return true;
 }
 
-Player* PlayerManager::createPlayer(const std::string& id, int role)
+Player* PlayerManager::createPlayer(const std::string& id, int role,int color)
 {
-	auto player = Player::createPlayer(id, role);
+	auto player = Player::createPlayer(id, role,color);
 	if (player)
 	{
 		player->isLocal(false);
@@ -33,10 +34,10 @@ Player* PlayerManager::createPlayer(const std::string& id, int role)
 	return nullptr;
 }
 
-Player* PlayerManager::createLocalPlayer(const std::string& id, int role)
+Player* PlayerManager::createLocalPlayer(const std::string& id, int role,int color)
 {
 
-	auto localPlayer = Player::createPlayer(id, role);
+	auto localPlayer = Player::createPlayer(id, role,color);
 	if (localPlayer)
 	{
 		_localPlayer = localPlayer;
@@ -61,6 +62,10 @@ Player * PlayerManager::getPlayer(const std::string& id)
 }
 
 
+Map<std::string, Player*>& PlayerManager::getPlayerList()
+{
+	return _playerList;
+}
 
 Player * PlayerManager::getLocalPlayer()
 {
@@ -73,8 +78,13 @@ void PlayerManager::addCustomEvent()
 
 void PlayerManager::initPlayer(float delta)
 {
-	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0);
+	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0,BLUE);
 	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Tower_Blue);
+	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
+	this->getLocalPlayer()->path = PathArithmetic::create();
+
+	auto player = this->createPlayer("Haha", 0, RED);
+	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Tower_Red);
 
 }
 

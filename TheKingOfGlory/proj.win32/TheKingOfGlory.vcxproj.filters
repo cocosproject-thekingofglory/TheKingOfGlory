@@ -75,6 +75,14 @@
     <ClCompile Include="..\Classes\Model\Player.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Util\GameAudio.cpp">
+      <Filter>src\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
+      <Filter>src\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\SettingsScene.cpp">
+      <Filter>src\Scene</Filter>
     <ClCompile Include="..\Classes\Model\BulletBase.cpp">
       <Filter>src\Model</Filter>
     </ClCompile>
@@ -128,6 +136,17 @@
     <ClInclude Include="..\Classes\Model\Player.h">
       <Filter>src\Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Util\GameAudio.h">
+      <Filter>src\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\PathArithmetic.h">
+      <Filter>src\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\User.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SettingsScene.h">
+      <Filter>src\Scene</Filter>
     <ClInclude Include="..\Classes\Model\BulletBase.h">
       <Filter>src\Model</Filter>
     </ClInclude>

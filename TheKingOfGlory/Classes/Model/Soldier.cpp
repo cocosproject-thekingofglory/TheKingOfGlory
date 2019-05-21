@@ -1,13 +1,14 @@
-#include "Soldier.h"
+﻿#include "Soldier.h"
 #include "Model/GameMap.h"
 #include <cmath>
 
-bool Soldier::init()
+bool Soldier::init(int color)
 {
 	/*if (!SpriteBase::init())
 	{
 		return false;
 	}*/
+	setColor(color);
 	setType(SpriteBase::Type::SOLDIER);
 	setStatus(Status::STANDING);
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
@@ -84,7 +85,7 @@ void Soldier::startMove()
 		runAnimation("soldierMove", this);
 		_destination = toPosition;
 		auto position = this->getPosition();
-		schedule(CC_CALLBACK_0(Soldier::move,this),"move");
+		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
 }
@@ -133,6 +134,7 @@ bool Soldier::attack()
 			}
 		}
 	}
+	
 	return false;
 }
 
@@ -161,7 +163,10 @@ float Soldier::beAttack(const float damage)
 
 void Soldier::setHPBar()
 {
-	_HPBar = LoadingBar::create("Pictures/GameItem/planeHP.png");
+	if(getColor()==RED)
+		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
+	else if(getColor()==BLUE)
+		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -184,10 +189,10 @@ void Soldier::updateHPBar()
 }
 
 
-Soldier* Soldier::createWithSpriteFrameName(const std::string& filename)
+Soldier* Soldier::createWithSpriteFrameName(const std::string& filename,int color)
 {
 	auto sprite = new Soldier();
-	if (sprite&&sprite->initWithSpriteFrameName(filename)&&sprite->init())
+	if(sprite&&sprite->initWithSpriteFrameName(filename)&&sprite->init(color))
 	{
 		sprite->autorelease();
 		return sprite;

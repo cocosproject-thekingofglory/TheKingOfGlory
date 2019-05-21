@@ -1,6 +1,7 @@
 #include "LoginScene.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 #include "StartScene.h"
+#include "Model/User.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -34,8 +35,7 @@ void LoginScene::onEnter()
 	Layer::onEnter();
 
 	//²¥·Å±³¾°ÒôÀÖ
-	//GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/LoginBgm.mp3", true);
+	GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
 
 }
 
@@ -68,11 +68,10 @@ void LoginScene::createLoginButton()
 		else
 		{
 			//²¥·Åµã»÷ÒôÐ§
-			//GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
-			SimpleAudioEngine::getInstance()->playEffect("Sounds/LoginClick.wav");
+			GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
 			username.substr(0, 16);
 			UserDefault::getInstance()->setStringForKey("username", username);
-//			User::getInstance()->setName(username);
+			User::getInstance()->setName(username);
 			Director::getInstance()->replaceScene(TransitionFade::create(1.2f, StartScene::createScene()));
 		}
 	});

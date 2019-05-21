@@ -2,7 +2,6 @@
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
 #include "Manager/Manager.h"
-#include "Manager/PlayerManager.h"
 
 class GameController:public cocos2d::Layer
 {

@@ -1,7 +1,8 @@
 #include "StartScene.h"
 #include "ui/CocosGUI.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 #include "GameScene.h"
+#include "SettingsScene.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -11,8 +12,7 @@ void StartScene::onEnter()
 	Layer::onEnter();
 
 	//播放背景音乐
-	//GameAudio::getInstance()->playBgm("Sounds/StartBgm.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/StartBgm.mp3", true);
+	GameAudio::getInstance()->playBgm("Sounds/StartBgm.mp3");
 
 }
 
@@ -28,8 +28,8 @@ void StartScene::createPlayButton()
 {
 	//创建开始游戏按钮
 	auto PlayButton=MenuItemLabel::create(Label::createWithTTF("Play",text_Font, text_Size),
-		[](Ref* pSender) {
-		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
+		[=](Ref* pSender) {
+		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
 		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 		});
 	PlayButton->setColor(label_Color);
@@ -43,8 +43,8 @@ void StartScene::createSettingButton()
 	//创建游戏设置按钮
 	auto SettingButton= MenuItemLabel::create(Label::createWithTTF("Setting", text_Font, text_Size),
 		[](Ref* pSender) {
-		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
-	//	Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
+		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
+		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
 	});
 	SettingButton->setColor(label_Color);
 	auto menu = Menu::createWithItem(SettingButton);
@@ -57,7 +57,7 @@ void StartScene::createHelpButton()
 	//创建游戏帮助按钮
 	auto HelpButton = MenuItemLabel::create(Label::createWithTTF("Help", text_Font, text_Size),
 		[](Ref* pSender) {
-		SimpleAudioEngine::getInstance()->playEffect("Sounds/ButtonClick.wav");
+		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
 	//	Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
 	});
 	HelpButton->setColor(label_Color);
