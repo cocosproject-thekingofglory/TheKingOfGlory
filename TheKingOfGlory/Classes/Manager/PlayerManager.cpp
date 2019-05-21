@@ -3,6 +3,8 @@
 
 USING_NS_CC;
 
+
+
 bool PlayerManager::init()
 {
 	if (!Layer::init())
@@ -85,3 +87,4 @@ void PlayerManager::initPlayer(float delta)
 	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Tower_Red);
 
 }
+

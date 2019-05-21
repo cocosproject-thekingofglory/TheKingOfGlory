@@ -1,4 +1,4 @@
-#include "Soldier.h"
+﻿#include "Soldier.h"
 #include "Model/GameMap.h"
 #include <cmath>
 
@@ -35,9 +35,9 @@ void Soldier::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 3);
+	loadAnimation("soldierMove", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 3);
+	loadAnimation("soldierAttack", delay, 8);
 
 }
 
@@ -78,7 +78,10 @@ void Soldier::startMove()
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		toPosition = Vec2(3200,3200);
+		if(getColor()==BLUE)
+			toPosition = Vec2(500,500);
+		else
+			toPosition = Vec2(6000, 6000);
 		runAnimation("soldierMove", this);
 		_destination = toPosition;
 		auto position = this->getPosition();
@@ -101,9 +104,9 @@ bool Soldier::attack()
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
+			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
 			{
-				switch (_attackTargetList.at(i)->getType())
+				/*switch (_attackTargetList.at(i)->getType())
 				{
 				case SpriteBase::PLAYER:
 				{
@@ -120,11 +123,14 @@ bool Soldier::attack()
 					return true;
 				}
 				break;
-				}
+				}*/
+				auto target = _attackTargetList.at(i);
+				target->beAttack(this->getDamage());
+				return true;
 			}
 			else
 			{
-				_attackTargetList.eraseObject(_attackTargetList.at(i));
+
 			}
 		}
 	}

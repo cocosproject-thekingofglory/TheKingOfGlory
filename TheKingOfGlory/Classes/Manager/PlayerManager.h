@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include"cocos2d.h"
 #include"Model/Player.h"
@@ -33,5 +33,6 @@ private:
 	
 	void addCustomEvent();
 	void initPlayer(float delta);
+
 };
 

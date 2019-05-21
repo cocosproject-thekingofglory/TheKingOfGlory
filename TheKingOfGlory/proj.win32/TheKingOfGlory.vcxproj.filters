@@ -83,6 +83,11 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\SettingsScene.cpp">
       <Filter>src\Scene</Filter>
+    <ClCompile Include="..\Classes\Model\BulletBase.cpp">
+      <Filter>src\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Tower.cpp">
+      <Filter>src\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +147,11 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\SettingsScene.h">
       <Filter>src\Scene</Filter>
+    <ClInclude Include="..\Classes\Model\BulletBase.h">
+      <Filter>src\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Tower.h">
+      <Filter>src\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

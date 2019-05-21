@@ -239,7 +239,7 @@ bool GameScene::init()
 
 	auto gameController = GameController::create();
 	gameController->setMap(map);
-	this->addChild(gameController, -1, "GameController");
+	this->addChild(gameController, -1);
 
 	createMenuButton();
 

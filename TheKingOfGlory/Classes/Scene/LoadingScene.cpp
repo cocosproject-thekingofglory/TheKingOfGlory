@@ -93,6 +93,8 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_rightup.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
+	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
+
 
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
@@ -177,9 +179,9 @@ void LoadingScene::progressUpdate()
 		auto callFunc = CallFunc::create([=] {
 
 			auto delay = DelayTime::create(2.0f);
-//			const auto transition = TransitionFade::create(1, LoginScene::createScene());
-			const auto transition = TransitionFade::create(1, GameScene::createScene());
-			//auto action = Sequence::create(delay, transition, NULL);
+			const auto transition = TransitionFade::create(1, LoginScene::createScene());
+			//const auto transition = TransitionFade::create(1, GameScene::createScene());
+			auto action = Sequence::create(delay, transition, NULL);
 			Director::getInstance()->replaceScene(transition);
 		});
 		auto action = Sequence::create(pft, callFunc, NULL);

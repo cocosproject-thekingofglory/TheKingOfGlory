@@ -1,12 +1,14 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
+#include "Model/BulletBase.h"
 
 USING_NS_CC;
 using namespace ui;
+class BulletBase;
 
 //红蓝方基地（即商店）所在位置
 const Vec2 RED_STORE = Vec2(10.0, 10.0);
@@ -34,7 +36,7 @@ public:
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
 	//伤害
-	int getDamage() { return _damage; }
+	float getDamage() { return _damage; }
 	void setDamage(float damage) { _damage = damage; }
 	//血条
 	LoadingBar* getHPBar() { return _HPBar; }
@@ -67,6 +69,10 @@ public:
 
 	Vector<SpriteBase*>& getAttackTarget() { return _attackTargetList; }
 
+	virtual void addBeAttackBullet(BulletBase* bullet) { _beAttackBulletList.pushBack(bullet); }
+
+	Vector<BulletBase*>& getBeAttackBullet() { return _beAttackBulletList; }
+
 	virtual float beAttack(const float damage) { return 0; }
 
 	virtual void initAnimation() {};
@@ -78,6 +84,7 @@ protected:
 	LoadingBar* _HPBar=NULL;
 	Vector<SpriteBase*> _beAttackTargetList;
 	Vector<SpriteBase*> _attackTargetList;
+	Vector<BulletBase*> _beAttackBulletList;
 
 private:
 	Type _type;

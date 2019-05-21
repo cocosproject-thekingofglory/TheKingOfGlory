@@ -125,7 +125,5 @@ void GameController::toOver(bool isWin)
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
-	//playerManager = PlayerManager::create();
-	//this->addChild(playerManager,-1); 
-	this->addChild(manager, -1);
+	this->addChild(manager, -1,"Manager");
 }
