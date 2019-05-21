@@ -46,10 +46,11 @@ bool Tower::attack()
 		{
 			auto target = _attackTargetList.at(i);
 			auto bullet=BulletBase::create(this, target, "warrior_attack_down", "warrior_attack_down_01.png");
-			if(getColor()==RED)
+			/*if(getColor()==RED)
 				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Soldier_Red);
 			else
-				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Solider_Blue);
+				GameMap::getCurrentMap()->addSprite(bullet, GameMap::Type::Solider_Blue);*/
+			this->addChild(bullet);
 			return true;
 		}
 	}
