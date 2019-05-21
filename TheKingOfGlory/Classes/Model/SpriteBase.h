@@ -61,11 +61,11 @@ public:
 
 	virtual void addBeAttackTarget(SpriteBase*enemy) { _beAttackTargetList.pushBack(enemy); };
 
-	Vector<SpriteBase*> getBeAttackTarget() { return _beAttackTargetList; }
+	Vector<SpriteBase*>& getBeAttackTarget() { return _beAttackTargetList; }
 
 	virtual void addAttackTarget(SpriteBase* attackTarget) { _attackTargetList.pushBack(attackTarget); }
 
-	Vector<SpriteBase*> getAttackTarget() { return _attackTargetList; }
+	Vector<SpriteBase*>& getAttackTarget() { return _attackTargetList; }
 
 	virtual float beAttack(const float damage) { return 0; }
 

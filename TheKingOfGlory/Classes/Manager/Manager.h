@@ -16,8 +16,8 @@ const Vec2 BLUE_BIRTH_POINT = Vec2(150.0, 150.0);
 
 //const std::string RED_SOLDIER_FILENAME = "red_soldier.png";
 //const std::string BLUE_SOLDIER_FILENAME = "blue_soldier.png";
-const std::string RED_SOLDIER_FILENAME = "soldierMove_01.png";
-const std::string BLUE_SOLDIER_FILENAME = "soldierMove_01.png";
+const std::string RED_SOLDIER_FILENAME = "soldierMove (1).png";
+const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
 
 
 

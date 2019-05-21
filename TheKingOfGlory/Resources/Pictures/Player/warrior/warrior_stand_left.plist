@@ -4,153 +4,153 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>warrior_stand_left_01.png</key>
+            <key>warrior_stand_left (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{42,87}</string>
+                <string>{36,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{42,87}</string>
+                <string>{36,87}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{42,87}}</string>
+                <string>{{0,0},{36,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_10.png</key>
+            <key>warrior_stand_left (10).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{164,87},{40,87}}</string>
+                <string>{{147,87},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_02.png</key>
+            <key>warrior_stand_left (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{42,0},{40,87}}</string>
+                <string>{{36,0},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_03.png</key>
+            <key>warrior_stand_left (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{82,0},{40,87}}</string>
+                <string>{{73,0},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_04.png</key>
+            <key>warrior_stand_left (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{122,0},{40,87}}</string>
+                <string>{{110,0},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_05.png</key>
+            <key>warrior_stand_left (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{162,0},{40,87}}</string>
+                <string>{{147,0},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_06.png</key>
+            <key>warrior_stand_left (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{40,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{0,87},{40,87}}</string>
+                <string>{{0,87},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_07.png</key>
+            <key>warrior_stand_left (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{41,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{41,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{40,87},{41,87}}</string>
+                <string>{{37,87},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_08.png</key>
+            <key>warrior_stand_left (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{41,87}</string>
+                <string>{37,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{41,87}</string>
+                <string>{37,87}</string>
                 <key>textureRect</key>
-                <string>{{81,87},{41,87}}</string>
+                <string>{{74,87},{37,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_stand_left_09.png</key>
+            <key>warrior_stand_left (9).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{42,87}</string>
+                <string>{36,87}</string>
                 <key>spriteSourceSize</key>
-                <string>{42,87}</string>
+                <string>{36,87}</string>
                 <key>textureRect</key>
-                <string>{{122,87},{42,87}}</string>
+                <string>{{111,87},{36,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -166,9 +166,9 @@
             <key>realTextureFileName</key>
             <string>warrior_stand_left.png</string>
             <key>size</key>
-            <string>{204,174}</string>
+            <string>{184,174}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5397116c0639c895fe639007cc4ec8b2:31753719410471446b06404f59f06b47:270432a8e7157601b26b6172caee0140$</string>
+            <string>$TexturePacker:SmartUpdate:520cd177ea2353f8dfcde01f1c496642:e643918369a4e1d7696af3d1e2d971b3:270432a8e7157601b26b6172caee0140$</string>
             <key>textureFileName</key>
             <string>warrior_stand_left.png</string>
         </dict>

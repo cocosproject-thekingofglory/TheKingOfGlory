@@ -2,12 +2,12 @@
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
 #include "Manager/Manager.h"
-#include "Manager/PlayerManager.h"
 
 class GameController:public cocos2d::Layer
 {
 public:
 	Manager* manager;
+	PlayerManager* playerManager;
 	virtual bool init();
 	CREATE_FUNC(GameController);
 

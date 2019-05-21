@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>soldierAttack_01.png</key>
+            <key>soldierAttack (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_02.png</key>
+            <key>soldierAttack (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_03.png</key>
+            <key>soldierAttack (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_04.png</key>
+            <key>soldierAttack (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -64,7 +64,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_05.png</key>
+            <key>soldierAttack (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -79,7 +79,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_06.png</key>
+            <key>soldierAttack (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -94,7 +94,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_07.png</key>
+            <key>soldierAttack (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -109,7 +109,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierAttack_08.png</key>
+            <key>soldierAttack (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>

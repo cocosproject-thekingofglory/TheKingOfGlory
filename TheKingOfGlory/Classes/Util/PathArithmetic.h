@@ -1,6 +1,5 @@
 #pragma once
 #include "cocos2d.h"
-#include "Model/GameMap.h"
 
 class GameMap;
 
@@ -64,7 +63,6 @@ public:
 	float getY() { return _y; }
 
 };
-
 
 
 class PathArithmetic : public cocos2d::Ref

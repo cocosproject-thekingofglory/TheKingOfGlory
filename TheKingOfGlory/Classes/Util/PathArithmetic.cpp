@@ -1,5 +1,6 @@
 #include "PathArithmetic.h"
 #include <algorithm>
+#include "Model/GameMap.h"
 USING_NS_CC;
 
 
@@ -21,7 +22,6 @@ bool PathArithmetic::updatePath(Vec2 from, Vec2 to)
 bool PathArithmetic::findValidGrid(Vec2 from, Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector) {
 	PointDelegate* fromDelegate = PointDelegate::create(from.x, from.y);
 	_invalidPoints.push_back(fromDelegate);
-	log("\nHHHHHHHHHHHHHHH\n");
 	Vector<PointDelegate*> points;
 	points.pushBack(PointDelegate::create(from.x, from.y - 1));
 	points.pushBack(PointDelegate::create(from.x, from.y + 1));

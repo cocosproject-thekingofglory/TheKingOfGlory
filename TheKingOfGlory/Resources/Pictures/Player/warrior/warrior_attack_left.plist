@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>warrior_attack_left_01.png</key>
+            <key>warrior_attack_left (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -15,11 +15,11 @@
                 <key>spriteSourceSize</key>
                 <string>{77,97}</string>
                 <key>textureRect</key>
-                <string>{{69,165},{77,97}}</string>
+                <string>{{0,0},{77,97}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_02.png</key>
+            <key>warrior_attack_left (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -30,11 +30,11 @@
                 <key>spriteSourceSize</key>
                 <string>{69,97}</string>
                 <key>textureRect</key>
-                <string>{{0,165},{69,97}}</string>
+                <string>{{77,0},{69,97}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_03.png</key>
+            <key>warrior_attack_left (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -45,11 +45,11 @@
                 <key>spriteSourceSize</key>
                 <string>{55,79}</string>
                 <key>textureRect</key>
-                <string>{{74,0},{55,79}}</string>
+                <string>{{154,0},{55,79}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_04.png</key>
+            <key>warrior_attack_left (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -60,11 +60,11 @@
                 <key>spriteSourceSize</key>
                 <string>{74,75}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{74,75}}</string>
+                <string>{{231,0},{74,75}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_05.png</key>
+            <key>warrior_attack_left (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -75,11 +75,11 @@
                 <key>spriteSourceSize</key>
                 <string>{64,86}</string>
                 <key>textureRect</key>
-                <string>{{128,79},{64,86}}</string>
+                <string>{{308,0},{64,86}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_06.png</key>
+            <key>warrior_attack_left (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -90,11 +90,11 @@
                 <key>spriteSourceSize</key>
                 <string>{66,79}</string>
                 <key>textureRect</key>
-                <string>{{129,0},{66,79}}</string>
+                <string>{{385,0},{66,79}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_07.png</key>
+            <key>warrior_attack_left (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -105,11 +105,11 @@
                 <key>spriteSourceSize</key>
                 <string>{64,82}</string>
                 <key>textureRect</key>
-                <string>{{0,79},{64,82}}</string>
+                <string>{{462,0},{64,82}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_left_08.png</key>
+            <key>warrior_attack_left (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -120,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{64,85}</string>
                 <key>textureRect</key>
-                <string>{{64,79},{64,85}}</string>
+                <string>{{539,0},{64,85}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -136,9 +136,9 @@
             <key>realTextureFileName</key>
             <string>warrior_attack_left.png</string>
             <key>size</key>
-            <string>{195,262}</string>
+            <string>{616,97}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d3580ba6be7925f741cf8ee44ac3a52c:5ea5e6c4b193232111265de5c3a77199:c087f8a3b6a795ef8f68cc68ef6608fd$</string>
+            <string>$TexturePacker:SmartUpdate:839874621942e20756980733ed231cfe:5ea5e6c4b193232111265de5c3a77199:c087f8a3b6a795ef8f68cc68ef6608fd$</string>
             <key>textureFileName</key>
             <string>warrior_attack_left.png</string>
         </dict>

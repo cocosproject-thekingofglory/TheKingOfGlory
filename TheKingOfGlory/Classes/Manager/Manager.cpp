@@ -5,10 +5,9 @@ USING_NS_CC;
 
 Soldier* Manager::createSoldier(const std::string &filename, const int color)
 {
-	auto soldier = Soldier::createWithSpriteFrameName(filename);
+	auto soldier = Soldier::createWithSpriteFrameName(filename,color);
 	if (soldier)
 	{	
-		soldier->setColor(color);
 		_soldierList[color].pushBack(soldier);
 		return soldier;
 	}
@@ -38,22 +37,20 @@ void Manager::update(float dt)
 	if (count_AppearSoldier%SOLDIER_APPEAR_INTERVAL == 0)
 	{
 		count_AppearSoldier = 0;
-		if (_soldierList[RED].size() < 1)
+		if (_soldierList[RED].size() < 10)
 		{
 			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
-			soldier_red->init();
 			soldier_red->startMove();
-			soldier_red->setScale(5);
+			//soldier_red->setScale(5);
 			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Player_Red);
 
 		}
 
-		if (_soldierList[BLUE].size() < 1)
+		if (_soldierList[BLUE].size() < 10)
 		{
 			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
-			soldier_blue->init();
 			soldier_blue->startMove();
-			soldier_blue->setScale(5);
+			//soldier_blue->setScale(5);
 			GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Player_Blue);
 
 		}
@@ -92,12 +89,14 @@ void Manager::update(float dt)
 				for (auto pair : playerManager->getPlayerList())
 				{
 					auto player = pair.second;
-					if (insideAttack(_soldierList[i].at(j), player))
+					if (player->getColor() != _soldierList[i].at(j)->getColor()&&
+						insideAttack(_soldierList[i].at(j), player)&&player->getNowHPValue()>0)
 					{
 						player->addAttackTarget(_soldierList[i].at(j));
 						_soldierList[i].at(j)->addBeAttackTarget(player);
 					}
-					if (insideAttack(player, _soldierList[i].at(j)))
+					if (player->getColor() != _soldierList[i].at(j)->getColor() && 
+						insideAttack(player, _soldierList[i].at(j))&& _soldierList[i].at(j)->getNowHPValue()>0)
 					{
 						_soldierList[i].at(j)->addAttackTarget(player);
 						player->addBeAttackTarget(_soldierList[i].at(j));
@@ -106,7 +105,8 @@ void Manager::update(float dt)
 				}
 				for (int k = 0; k < _soldierList[i ^ 1].size(); k++)
 				{
-					if (insideAttack(_soldierList[i ^ 1].at(k), _soldierList[i].at(j)))
+					if (insideAttack(_soldierList[i ^ 1].at(k), _soldierList[i].at(j))
+						&& _soldierList[i].at(j)->getNowHPValue()>0)
 					{
 						_soldierList[i].at(j)->addAttackTarget(_soldierList[i ^ 1].at(k));
 						_soldierList[i ^ 1].at(k)->addBeAttackTarget(_soldierList[i].at(j));

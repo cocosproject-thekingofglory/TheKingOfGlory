@@ -8,7 +8,7 @@ bool GameController::init()
 {
 	if (!Layer::init())
 		return false;
-	
+	this->setName("GameController");
 	map = nullptr;
 
 	createTouchListener();
@@ -22,8 +22,8 @@ bool GameController::init()
 void GameController::setMap(GameMap * map)
 {
 	if(map) this->map = map;
-	map->setPosition(100,0);
-	map->setScale(1/8.0);
+	map->setAnchorPoint(Vec2::ZERO);
+	
 
 }
 
@@ -34,9 +34,11 @@ void GameController::createTouchListener()
 	listener->onTouchEnded =[=](cocos2d::Touch * touch, cocos2d::Event * event) {
 		auto touchLocation = touch->getLocation();
 		auto nodeLocation = map->convertToNodeSpace(touchLocation);
+		auto worldLocation = map->convertToWorldSpace(touchLocation);
 		if (map->isCanAssess(map->positionToTileCoord(nodeLocation)))
 		{
-			manager->playerManager->getLocalPlayer()->startMove(nodeLocation);
+			if(manager->playerManager->getLocalPlayer())
+				manager->playerManager->getLocalPlayer()->startMove(nodeLocation);
 		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,this);
@@ -50,22 +52,34 @@ void GameController::createKeyListener()
 		if (keyCode == EventKeyboard::KeyCode::KEY_W)
 		{
 			map->setPositionY(map->getPositionY() - 100);
-			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_S)
 		{
 			map->setPositionY(map->getPositionY() + 100);
-			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
 			map->setPositionX(map->getPositionX() +100);
-			log("(%f,%f)", map->getPositionX(), map->getPositionY());
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_D)
 		{
 			map->setPositionX(map->getPositionX() -100);
-			log("(%f,%f)", map->getPositionX(), map->getPositionY());
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_T)
+		{
+			map->setPositionY(map->getPositionY() - 10);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_G)
+		{
+			map->setPositionY(map->getPositionY() + 10);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_F)
+		{
+			map->setPositionX(map->getPositionX() + 10);
+		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_H)
+		{
+			map->setPositionX(map->getPositionX() - 10);
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_J)
 		{
@@ -111,6 +125,7 @@ void GameController::toOver(bool isWin)
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
-
+	//playerManager = PlayerManager::create();
+	//this->addChild(playerManager,-1); 
 	this->addChild(manager, -1);
 }

@@ -10,7 +10,7 @@ USING_NS_CC;
 const float SOLDIER_ATTACK_RADIUS = 3.0;
 const float SOLDIER_DAMAGE = 5.0;
 const float SOLDIER_HPVALUE = 50.0;
-const int SOLDIER_ATTACK_INTERVAL = 180;
+const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
 
 const int SOLDIER_MOVE_ACTION = 1;
@@ -18,8 +18,7 @@ const int SOLDIER_MOVE_ACTION = 1;
 class Soldier :public SpriteBase
 {
 public:
-	virtual bool init();
-	CREATE_FUNC(Soldier);
+	virtual bool init(int color);
 
 	bool _isMove = 1;
 	bool _isAttack = 0;
@@ -43,7 +42,7 @@ public:
 
 	virtual float beAttack(const float damage);
 
-	static Soldier* createWithSpriteFrameName(const std::string& filename);
+	static Soldier* createWithSpriteFrameName(const std::string& filename,int color);
 
 	void setSpeed(float speed) { _speed = speed; }
 	float getSpeed() { return _speed; }

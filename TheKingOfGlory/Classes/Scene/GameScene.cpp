@@ -2,8 +2,9 @@
 #include "Util/GameAudio.h"
 #include "ui/CocosGUI.h"
 #include "StartScene.h"
-#include "../Model/GameMap.h"
-#include "../Controller/GameController.h"
+#include "SettingsScene.h"
+#include "Model/GameMap.h"
+#include "Controller/GameController.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -22,11 +23,11 @@ void GameScene::createMenuButton()
 	auto menuItem = MenuItemImage::create(
 		"Pictures/UI/SettingNormal.png",
 		"Pictures/UI/SettingSelected.png",
-		CC_CALLBACK_0(GameScene::createMenu,this));
+		CC_CALLBACK_0(GameScene::createMenu, this));
 	auto menu = Menu::create(menuItem, NULL);
 	menu->setPosition(Vec2(visible_Size.width*0.95, visible_Size.height*0.95));
 	this->addChild(menu);
-	menuRect= Rect(menu->getPosition().x - menuItem->getContentSize().width / 2,
+	menuRect = Rect(menu->getPosition().x - menuItem->getContentSize().width / 2,
 		menu->getPosition().y - menuItem->getContentSize().height / 2,
 		menuItem->getContentSize().width + menuItem->getContentSize().width / 2,
 		menuItem->getContentSize().height + menuItem->getContentSize().height / 2);
@@ -50,7 +51,7 @@ void GameScene::createMenu()
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu);
 
-	Color4B text_Color= Color4B(255,255,255,255);
+	Color4B text_Color = Color4B(255, 255, 255, 255);
 	std::string text_Font = "fonts/UnifrakturCook-Bold.ttf";
 	float text_Size = 28;
 
@@ -110,7 +111,7 @@ void GameScene::createResultBox(EventCustom* event)
 
 	Size boxSize = box->getContentSize();
 
-	auto resultText = ui::Text::create((isWin?"You Win!":"You Lose!"), "fonts/Lobster-Regular.ttf", 48);
+	auto resultText = ui::Text::create((isWin ? "You Win!" : "You Lose!"), "fonts/Lobster-Regular.ttf", 48);
 	resultText->setColor(Color3B(0, 0, 255));
 	resultText->setPosition(Vec2(boxSize.width / 2, boxSize.height*0.7));
 
@@ -155,7 +156,7 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	auto touchLocation = touch->getLocation();
 	auto nodeLocation = this->convertToNodeSpace(touchLocation);
 
-	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation)||
+	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation) ||
 		menuRect.containsPoint(nodeLocation))
 	{
 		removeMenu();
@@ -163,8 +164,8 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，删除菜单,进入游戏设置界面
-		//removeMenu();
-		//Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
+		removeMenu();
+		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
 	}
 	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
@@ -178,7 +179,7 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 		//停用菜单事件监听器，返回主菜单
 		menuListener->setEnabled(false);
 		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1,	StartScene::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
 	}
 }
 
@@ -216,7 +217,7 @@ bool GameScene::init()
 
 	//创建自定义事件监听器，用于打开关闭菜单
 	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener,1);
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener, 1);
 
 	//创建自定义事件监听器，游戏结束时弹出对话框
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
@@ -225,6 +226,9 @@ bool GameScene::init()
 	auto bg = Sprite::create("Pictures/Background/WhiteBackground.png");
 	bg->setScale(100);
 	this->addChild(bg, -2);
+
+	//this->setAnchorPoint(Vec2::ZERO);
+	log("visible:x:%f  y:%f", visible_Size.width, visible_Size.height);
 
 	//添加地图
 	auto map = GameMap::create();
@@ -235,7 +239,7 @@ bool GameScene::init()
 
 	auto gameController = GameController::create();
 	gameController->setMap(map);
-	this->addChild(gameController, -1,"GameController");
+	this->addChild(gameController, -1, "GameController");
 
 	createMenuButton();
 

@@ -1,6 +1,7 @@
 #include "LoginScene.h"
 #include "Util/GameAudio.h"
 #include "StartScene.h"
+#include "Model/User.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -70,7 +71,7 @@ void LoginScene::createLoginButton()
 			GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
 			username.substr(0, 16);
 			UserDefault::getInstance()->setStringForKey("username", username);
-//			User::getInstance()->setName(username);
+			User::getInstance()->setName(username);
 			Director::getInstance()->replaceScene(TransitionFade::create(1.2f, StartScene::createScene()));
 		}
 	});

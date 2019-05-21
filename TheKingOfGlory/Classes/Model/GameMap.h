@@ -4,7 +4,7 @@
 
 class Grid;
 
-class GameMap:public cocos2d::Layer
+class GameMap :public cocos2d::Layer
 {
 private:
 	std::vector<std::vector<int>> mapInfo;
@@ -18,12 +18,17 @@ private:
 	cocos2d::ValueMap tower_blue;
 	cocos2d::ValueMap store_red;
 	cocos2d::ValueMap store_blue;
+	cocos2d::Sprite* _centerSprite;
 
 	bool initGrid();
+	void setViewPointCenter();
 
 public:
-	enum Type 
-	{NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue };
+	enum Type
+	{
+		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue
+	};
+
 
 	virtual bool init();
 	void setMap(const std::string& mapName);
@@ -37,7 +42,8 @@ public:
 	cocos2d::Size getMapSize();
 	cocos2d::Size getTileSize();
 	bool isCanAssess(const cocos2d::Vec2 & coord);
-	void addSprite(cocos2d::Sprite* sprite,Type type);
+	void addSprite(cocos2d::Sprite* sprite, Type type);
+	void addCenterSprite(cocos2d::Sprite* sprite) { _centerSprite = sprite; setViewPointCenter(); }
 
 	CREATE_FUNC(GameMap);
 };

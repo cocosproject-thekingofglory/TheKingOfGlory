@@ -2,6 +2,7 @@
 #include "ui/CocosGUI.h"
 #include "Util/GameAudio.h"
 #include "GameScene.h"
+#include "SettingsScene.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -43,7 +44,7 @@ void StartScene::createSettingButton()
 	auto SettingButton= MenuItemLabel::create(Label::createWithTTF("Setting", text_Font, text_Size),
 		[](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
-	//	Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
+		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
 	});
 	SettingButton->setColor(label_Color);
 	auto menu = Menu::createWithItem(SettingButton);

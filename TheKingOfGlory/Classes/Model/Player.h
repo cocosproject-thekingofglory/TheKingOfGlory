@@ -40,6 +40,10 @@ public:
 		RIGHT,
 		UP,
 		DOWN,
+		LEFTDOWN,
+		LEFTUP,
+		RIGHTDOWN,
+		RIGHTUP,
 		NONE
 	};
 
@@ -66,11 +70,11 @@ public:
 
 	PathArithmetic* path;
 
-	static Player* createPlayer(const std::string& id, int role);
+	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role);//初始化一些条件
-	bool initWithRole(int role);//只是初始化名字
+	bool init(int role,int color);//初始化一些条件
+	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态

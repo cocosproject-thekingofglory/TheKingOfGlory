@@ -23,7 +23,11 @@ bool GameMap::initGrid()
 bool GameMap::init()
 {
 	this->setName("map");
-	return true;	
+
+	auto viewCenterListener = EventListenerCustom::create("ViewCenter", CC_CALLBACK_0(GameMap::setViewPointCenter, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(viewCenterListener, 1);
+
+	return true;
 }
 
 void GameMap::setMap(const std::string& mapName)
@@ -34,7 +38,6 @@ void GameMap::setMap(const std::string& mapName)
 
 	collidable = tileMap->getLayer("collidable");
 
-	//collidable->setVisible(false);
 
 	objectLayer = tileMap->getObjectGroup("objects");
 
@@ -55,7 +58,7 @@ void GameMap::setMap(const std::string& mapName)
 	{
 		for (int j = 0; j < getMapSize().height; j++)
 		{
-			int tileGid = collidable->getTileGIDAt(Vec2(i,j));
+			int tileGid = collidable->getTileGIDAt(Vec2(i, j));
 			if (tileGid)
 			{
 				Value properties = tileMap->getPropertiesForGID(tileGid);
@@ -69,8 +72,9 @@ void GameMap::setMap(const std::string& mapName)
 
 		}
 	}
-	
+
 	initGrid();
+
 }
 
 Vec2 GameMap::tileCoordToPosition(const Vec2 & coord)
@@ -117,11 +121,10 @@ bool GameMap::isCanAssess(const cocos2d::Vec2 & coord)
 		&& ((mapInfo.at(coord.x).at(coord.y) == 1) ? false : true);
 }
 
-void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
+void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 {
-	if(tileMap)
+	if (tileMap)
 		tileMap->addChild(sprite);
-	log("\nHi\n");
 	switch (type)
 	{
 	case Type::Player_Blue:
@@ -137,7 +140,7 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 	break;
 	case Type::Soldier_Red:
 	{
-		sprite->setPosition(Vec2(store_red.at("x").asFloat(),store_red.at("y").asFloat()));
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat()));
 	}
 	break;
 	case Type::Solider_Blue:
@@ -158,6 +161,27 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 	}
 
 }
+
+void GameMap::setViewPointCenter()
+{
+	if (_centerSprite)
+	{
+		Vec2 spritePos = _centerSprite->getPosition();
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 mapPos = Vec2(visibleSize.width/2 - spritePos.x*getScaleX(),
+			visibleSize.height/2 - spritePos.y*getScaleY());
+		if (mapPos.x > 0)
+			mapPos.x = 0;
+		else if(mapPos.x < visibleSize.width-getMapSize().width*getTileSize().width*getScaleX() )
+			mapPos.x = visibleSize.width - getMapSize().width*getTileSize().width*getScaleX();
+		if (mapPos.y > 0)
+			mapPos.y = 0;
+		else if (mapPos.y < visibleSize.height - getMapSize().height*getTileSize().height*getScaleY())
+			mapPos.y = visibleSize.height - getMapSize().height*getTileSize().height*getScaleY();
+		this->setPosition(mapPos);
+	}
+}
+
 
 GameMap * GameMap::getCurrentMap()
 {
