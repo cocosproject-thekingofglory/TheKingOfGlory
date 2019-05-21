@@ -76,11 +76,9 @@ bool Player::init(int role,int color)
 
 	}
 
-	setDirection(Direction::DOWN);
+	setDirection(Direction::RIGHTUP);
 	setStatus(Player::Status::STANDING);
 
-
-	log("\nHahah\n");
 
 	return true;
 }
@@ -216,14 +214,10 @@ bool Player::attack()
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 			{
-				if (_attackTargetList.at(i)->getType() == SpriteBase::SOLDIER)
-				{
-					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
-					target->beAttack(this->getDamage());
-
-				}
+				auto target = _attackTargetList.at(i);
+				target->beAttack(this->getDamage());
 
 			}
 		}
@@ -271,7 +265,58 @@ float Player::beAttack(const float damage)
 			setStatus(Status::DEAD);
 			auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
 				this->stopAnimation(this);
-				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)false);
+				std::string frameName = _roleName + "_dead_";
+				switch (getDirection())
+				{
+				case Direction::DOWN:
+				{
+					frameName += "down";
+				}
+				break;
+				case Direction::UP:
+				{
+					frameName += "up";
+				}
+				break;
+				case Direction::LEFT:
+				{
+					frameName += "left";
+				}
+				break;
+				case Direction::RIGHT:
+				{
+					frameName += "right";
+				}
+				break;
+				case Direction::LEFTDOWN:
+				{
+					frameName += "leftdown";
+				}
+				break;
+				case Direction::LEFTUP:
+				{
+					frameName += "leftup";
+				}
+				break;
+				case Direction::RIGHTDOWN:
+				{
+					frameName += "rightdown";
+				}
+				break;
+				case Direction::RIGHTUP:
+				{
+					frameName += "rightup";
+				}
+				break;
+				}
+				frameName += " (7).png";
+				this->setSpriteFrame(frameName);
+				auto sequence = Sequence::create(DelayTime::create(10.0f), CallFunc::create([=]() {
+					revival();
+				}), NULL);
+				this->runAction(sequence);
+
+
 			}), NULL);
 			this->runAction(sequence);
 		}
@@ -300,6 +345,30 @@ void Player::startMove(Vec2 destination)
 			schedule(CC_CALLBACK_0(Player::move, this), "move");
 		//}
 	}
+}
+
+void Player::revival()
+{
+
+
+	_isMove = true;
+	_isAttack = true;
+	_isSkill = false;
+
+
+	setDirection(Direction::RIGHTUP);
+	setStatus(Player::Status::STANDING);
+
+	setNowHPValue(PLAYER_HPVALUE);
+	updateHPBar();
+
+	if (getColor() == RED)
+		GameMap::getCurrentMap()->setSpritePosition(this, GameMap::Type::Player_Red);
+	else
+		GameMap::getCurrentMap()->setSpritePosition(this, GameMap::Type::Player_Blue);
+
+	if (this->isLocal())
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
 }
 
 void Player::move()

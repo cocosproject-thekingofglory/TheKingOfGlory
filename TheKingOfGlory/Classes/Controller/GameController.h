@@ -22,7 +22,7 @@ private:
 	void onEnter();
 	void update(float delta);
 	void isResult(float delta);
-	void toOver(bool isWin);
+	void toOver(cocos2d::EventCustom* event);
 
 };
 

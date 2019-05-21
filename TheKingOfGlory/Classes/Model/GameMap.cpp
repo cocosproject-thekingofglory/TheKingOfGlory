@@ -27,6 +27,7 @@ bool GameMap::init()
 	auto viewCenterListener = EventListenerCustom::create("ViewCenter", CC_CALLBACK_0(GameMap::setViewPointCenter, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(viewCenterListener, 1);
 
+
 	return true;
 }
 
@@ -74,6 +75,8 @@ void GameMap::setMap(const std::string& mapName)
 	}
 
 	initGrid();
+
+
 
 }
 
@@ -130,6 +133,50 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 	case Type::Player_Blue:
 	{
 		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Player_Red:
+	{
+		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Soldier_Red:
+	{
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Solider_Blue:
+	{
+		sprite->setPosition(Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Tower_Blue:
+	{
+		sprite->setPosition(Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	case Type::Tower_Red:
+	{
+		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	}
+
+}
+
+void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
+{
+	switch (type)
+	{
+	case Type::Player_Blue:
+	{
+		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
 	}
 	break;
 	case Type::Player_Red:
@@ -159,7 +206,6 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 	}
 	break;
 	}
-
 }
 
 void GameMap::setViewPointCenter()

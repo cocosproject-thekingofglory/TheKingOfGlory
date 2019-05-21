@@ -11,26 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{502,502}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{502,502}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{502,502}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>towerAttack.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{28,28}</string>
-                <key>spriteSourceSize</key>
-                <string>{32,32}</string>
-                <key>textureRect</key>
-                <string>{{505,1},{28,28}}</string>
+                <string>{{0,0},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -46,9 +31,9 @@
             <key>realTextureFileName</key>
             <string>towerItem.png</string>
             <key>size</key>
-            <string>{534,504}</string>
+            <string>{500,500}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:539f2f9e75b5a7dc84710a5e9d979c11:18abf9188df23bbc9d5479d9bd90b7d2:ecd6510cbfee877c4f6ec856a5d6ea1c$</string>
+            <string>$TexturePacker:SmartUpdate:8c3f0a2f5441ec2413d882c75498afbf:a1c33b4ec42f85e85eb0a315efc36b01:ecd6510cbfee877c4f6ec856a5d6ea1c$</string>
             <key>textureFileName</key>
             <string>towerItem.png</string>
         </dict>

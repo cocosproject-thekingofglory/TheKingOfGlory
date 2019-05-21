@@ -9,7 +9,6 @@ bool Soldier::init(int color)
 		return false;
 	}*/
 	setColor(color);
-	setType(SpriteBase::Type::SOLDIER);
 	setStatus(Status::STANDING);
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
@@ -79,9 +78,9 @@ void Soldier::startMove()
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
 		if(getColor()==BLUE)
-			toPosition = Vec2(500,500);
+			toPosition = Vec2(2032,2192);
 		else
-			toPosition = Vec2(6000, 6000);
+			toPosition = Vec2(3800, 4000);
 		runAnimation("soldierMove", this);
 		_destination = toPosition;
 		auto position = this->getPosition();
@@ -106,31 +105,10 @@ bool Soldier::attack()
 		{
 			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
 			{
-				/*switch (_attackTargetList.at(i)->getType())
-				{
-				case SpriteBase::PLAYER:
-				{
-					auto target = dynamic_cast<Player*>(_attackTargetList.at(i));
-					target->beAttack(this->getDamage());
-					log("\nPlayer be hit\n");
-					return true;
-				}
-				break;
-				case SpriteBase::SOLDIER:
-				{
-					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
-					target->beAttack(this->getDamage());
-					return true;
-				}
-				break;
-				}*/
+			
 				auto target = _attackTargetList.at(i);
 				target->beAttack(this->getDamage());
 				return true;
-			}
-			else
-			{
-
 			}
 		}
 	}
