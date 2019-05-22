@@ -5,6 +5,7 @@
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
 #include "SpriteBase.h"
+#include "GameMap.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -14,7 +15,8 @@ class SpriteBase;
 //默认属性值
 const float SPEED = 10.0;
 
-
+//子弹的zorder
+const int BULLET_ZORDER = 10;
 
 class BulletBase :public cocos2d::Sprite, public AnimationLoader
 {
