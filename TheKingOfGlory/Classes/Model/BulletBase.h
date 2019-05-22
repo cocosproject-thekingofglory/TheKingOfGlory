@@ -5,7 +5,6 @@
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
 #include "SpriteBase.h"
-#include "GameMap.h"
 
 USING_NS_CC;
 using namespace ui;

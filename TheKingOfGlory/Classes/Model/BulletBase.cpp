@@ -14,7 +14,6 @@ BulletBase* BulletBase::create(SpriteBase*attacker, SpriteBase*beAttacker, std::
 		bullet->setAttack(attacker);
 		bullet->setBeAttack(beAttacker);
 
-		bullet->setPosition(attacker->getPosition());
 
 		beAttacker->addBeAttackBullet(bullet);
 		
@@ -23,7 +22,6 @@ BulletBase* BulletBase::create(SpriteBase*attacker, SpriteBase*beAttacker, std::
 
 		bullet->runAnimation(animationName, bullet);
 
-		GameMap::getCurrentMap()->addSprite(bullet, BULLET_ZORDER);
 
 		bullet->schedule(CC_CALLBACK_0(BulletBase::move,bullet), "move");
 		return bullet;
