@@ -1,8 +1,9 @@
 #include"Player.h"
-
-#include "GameMap.h"
 #include<ctime>
 #include<cmath>
+#include "GameMap.h"
+#include "UI/CountDown.h"
+
 
 USING_NS_CC;
 
@@ -34,8 +35,8 @@ bool Player::init(int role,int color)
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 
-	_isMove = true;
-	_isAttack = true;
+	_isMove = false;
+	_isAttack = false;
 	_isSkill = false;
 
 	setHPBar();
@@ -311,11 +312,21 @@ float Player::beAttack(const float damage)
 				}
 				frameName += " (7).png";
 				this->setSpriteFrame(frameName);
-				auto sequence = Sequence::create(DelayTime::create(10.0f), CallFunc::create([=]() {
-					revival();
-				}), NULL);
-				this->runAction(sequence);
-
+				if (isLocal())
+				{
+					auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
+						[=]() {
+						revival();
+					});
+					cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
+				}
+				else
+				{
+					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
+						revival();
+					}, NULL);
+					this->runAction(sequence);
+				}
 
 			}), NULL);
 			this->runAction(sequence);

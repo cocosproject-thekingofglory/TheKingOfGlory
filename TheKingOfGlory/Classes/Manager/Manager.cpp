@@ -1,5 +1,6 @@
 ﻿#include "Manager.h"
 #include "Controller/GameController.h"
+#include "UI/CountDown.h"
 
 USING_NS_CC;
 
@@ -50,18 +51,28 @@ bool Manager::init()
 		auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
 		tower_blue_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Tower_Blue);
-		log("bluePos:x:%f  y:%f", tower_blue_1->getPosition().x, tower_blue_1->getPosition().y);
 
 		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
 		tower_red_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
-		log("redPos:x:%f  y:%f", tower_red_1->getPosition().x, tower_red_1->getPosition().y);
 
-		schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
-		schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.3f, "TowertAttack");
-		schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
-		schedule(CC_CALLBACK_0(Manager::schedulePlayer, this), 1.0f, "PlayerAttack");
-		schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
+	
+		auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Game start after ", "fonts/arial.ttf", 32, 5, false,
+			[=]() {		
+			for (auto pair : playerManager->getPlayerList())
+			{
+				auto player = pair.second;
+				player->setMove(true);
+				player->setAttack(true);
+			}
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
+			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.3f, "TowertAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
+			schedule(CC_CALLBACK_0(Manager::schedulePlayer, this), 1.0f, "PlayerAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
+		});
+		cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown,2);
+
 	}), NULL);
 	this->runAction(sequence);
 
@@ -236,14 +247,26 @@ void Manager::scheduleDeadDetect()
 			if (tower->getNowHPValue() <= 0.0)
 			{
 				tower->destroy();
-				bool isWin;
-				if (tower->getColor() == playerManager->getLocalPlayer()->getColor())
-					isWin = false;
-				else
-					isWin = true;
-				//_towerList[i].eraseObject(tower);
-				//tower->removeFromParentAndCleanup(true);
-				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
+				unschedule( "CreateSoldier");
+				unschedule( "TowertAttack");
+				unschedule( "UpdateAttack");
+				unschedule( "PlayerAttack");
+				unschedule( "DeadDetect");
+				playerManager->getLocalPlayer()->setMove(false);
+				playerManager->getLocalPlayer()->setAttack(false);
+				playerManager->getLocalPlayer()->setStatus(Player::Status::STANDING);
+
+				auto sequence = Sequence::create(DelayTime::create(6.0f), CallFunc::create([=]() {
+					bool isWin;
+					if (tower->getColor() == playerManager->getLocalPlayer()->getColor())
+						isWin = false;
+					else
+						isWin = true;
+					_towerList[i].eraseObject(tower);
+					tower->removeFromParentAndCleanup(true);
+					Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
+				}),NULL);
+				this->runAction(sequence);
 			}
 		}
 	}

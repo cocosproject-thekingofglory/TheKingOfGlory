@@ -34,7 +34,7 @@ void BulletBase::initAnimation(std::string animationName, BulletBase*bullet)
 	*/
 
 	const float delay = 0.1;
-	bullet->loadAnimation(animationName, delay, 8);
+	bullet->loadAnimation(animationName, delay, 1);
 
 }
 

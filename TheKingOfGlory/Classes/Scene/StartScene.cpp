@@ -79,6 +79,7 @@ void StartScene::createExitButton()
 	this->addChild(menu);
 }
 
+
 cocos2d::Scene * StartScene::createScene()
 {
 	auto scene = Scene::create();
@@ -103,6 +104,7 @@ bool StartScene::init()
 	createSettingButton();
 	createHelpButton();
 	createExitButton();
+
 
 	return true;
 }

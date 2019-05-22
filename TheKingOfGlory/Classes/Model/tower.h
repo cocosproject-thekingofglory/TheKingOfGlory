@@ -28,8 +28,6 @@ public:
 	virtual float beAttack(const float damage);
 	void destroy();
 
-	virtual bool playDestoryAnimation();
-
 	void setHPBar();
 	void updateHPBar();
 
