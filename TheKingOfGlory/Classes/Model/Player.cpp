@@ -1,17 +1,18 @@
 #include"Player.h"
-
-#include "GameMap.h"
 #include<ctime>
 #include<cmath>
+#include "GameMap.h"
+#include "UI/CountDown.h"
+
 
 USING_NS_CC;
 
 //role值同enum分类，为0，1,2
 
-Player* Player::createPlayer(const std::string& id, int role) 
+Player* Player::createPlayer(const std::string& id, int role,int color) 
 {
 	auto player = new (std::nothrow) Player();
-	if (player&&player->initWithRole(role))
+	if (player&&player->initWithRole(role,color))
 	{
 		player->_id = id;
 		player->autorelease();
@@ -24,8 +25,9 @@ Player* Player::createPlayer(const std::string& id, int role)
 }
 
 //初始化信息，对这个角色初始化信息
-bool Player::init(int role)
+bool Player::init(int role,int color)
 {
+	setColor(color);
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
@@ -33,27 +35,41 @@ bool Player::init(int role)
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 
-	_isMove = true;
-	_isAttack = true;
+	_isMove = false;
+	_isAttack = false;
 	_isSkill = false;
 
 	setHPBar();
 
-	this->setScale(10);
+	this->setScale(2);
 
-	std::string animationNames[] = { "stand","walk","attack","dead","beinghit","skill" };
+	std::string animationNames[] = { "move","attack","dead","behit","stand" };
 	_animationNames.assign(animationNames, animationNames + 5);
 
-	std::string directions[] = {"up","down","left","right"};
+	std::string directions[] = {"up","down","left","right","leftdown","leftup","rightdown","rightup"};
 
 	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		if (i == 0 || i == 1)
+		switch (i)
+		{
+		case 0:
 			_animationNum = 10;
-		else
+			break;
+		case 1:
 			_animationNum = 8;
-		for (int j = 0; j < 4; j++)
+			break;
+		case 2:
+			_animationNum = 7;
+			break;
+		case 3:
+			_animationNum = 4;
+			break;
+		case 4:
+			_animationNum = 10;
+			break;
+		}
+		for (int j = 0; j < 8; j++)
 		{
 			std::string animationName = _roleName +"_" +animationNames[i]+"_" + directions[j];
 			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
@@ -61,7 +77,7 @@ bool Player::init(int role)
 
 	}
 
-	setDirection(Direction::DOWN);
+	setDirection(Direction::RIGHTUP);
 	setStatus(Player::Status::STANDING);
 
 
@@ -69,14 +85,14 @@ bool Player::init(int role)
 }
 
 //只是获得名字
-bool Player::initWithRole(int role)
+bool Player::initWithRole(int role,int color)
 {
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
-	auto file = _roleName + "_stand_down_01.png";
+	auto file = _roleName + "_stand_down (1).png";
 
-	if (this->initWithSpriteFrameName(file) && this->init(role))
+	if (this->initWithSpriteFrameName(file) && this->init(role,color))
 
 	{
 		// do something here
@@ -101,7 +117,7 @@ void Player::setStatus(Player::Status status)
 		break;
 	case Player::Status::MOVING:
 	{
-		animation += "walk_";
+		animation += "move_";
 	}
 		break;
 	case Player::Status::ATTACKING:
@@ -116,7 +132,7 @@ void Player::setStatus(Player::Status status)
 		break;
 	case Player::Status::BEINGHIT:
 	{
-		animation += "behight_";
+		animation += "behit_";
 	}
 		break;
 	case Player::Status::SKILL:
@@ -149,6 +165,26 @@ void Player::setStatus(Player::Status status)
 		animation += "right";
 	}
 	break;
+	case Direction::LEFTDOWN:
+	{
+		animation += "leftdown";
+	}
+	break;
+	case Direction::LEFTUP:
+	{
+		animation += "leftup";
+	}
+	break;
+	case Direction::RIGHTDOWN:
+	{
+		animation += "rightdown";
+	}
+	break;
+	case Direction::RIGHTUP:
+	{
+		animation += "rightup";
+	}
+	break;
 	}
 	AnimationLoader::runAnimation(animation, this);
 }
@@ -179,14 +215,10 @@ bool Player::attack()
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 			{
-				if (_attackTargetList.at(i)->getType() == SpriteBase::SOLDIER)
-				{
-					auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
-					target->beAttack(this->getDamage());
-
-				}
+				auto target = _attackTargetList.at(i);
+				target->beAttack(this->getDamage());
 
 			}
 		}
@@ -219,32 +251,97 @@ void Player::skill(const void* enemy)
 
 float Player::beAttack(const float damage)
 {
-
-	float nowHP = getNowHPValue();
-	nowHP -= damage;
-	setNowHPValue(MAX(nowHP, 0));
-	updateHPBar();
-	if (nowHP <= 0.0)
+	if (!(getStatus() == Status::DEAD || getStatus() == Status::BEINGHIT))
 	{
-		for (int i = 0; i < _beAttackTargetList.size(); i++)
+		float nowHP = getNowHPValue();
+		nowHP -= damage;
+		setNowHPValue(MAX(nowHP, 0));
+		updateHPBar();
+		if (nowHP <= 0.0)
 		{
-			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
+			for (int i = 0; i < _beAttackTargetList.size(); i++)
+			{
+				_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
+			}
+			setStatus(Status::DEAD);
+			auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
+				this->stopAnimation(this);
+				std::string frameName = _roleName + "_dead_";
+				switch (getDirection())
+				{
+				case Direction::DOWN:
+				{
+					frameName += "down";
+				}
+				break;
+				case Direction::UP:
+				{
+					frameName += "up";
+				}
+				break;
+				case Direction::LEFT:
+				{
+					frameName += "left";
+				}
+				break;
+				case Direction::RIGHT:
+				{
+					frameName += "right";
+				}
+				break;
+				case Direction::LEFTDOWN:
+				{
+					frameName += "leftdown";
+				}
+				break;
+				case Direction::LEFTUP:
+				{
+					frameName += "leftup";
+				}
+				break;
+				case Direction::RIGHTDOWN:
+				{
+					frameName += "rightdown";
+				}
+				break;
+				case Direction::RIGHTUP:
+				{
+					frameName += "rightup";
+				}
+				break;
+				}
+				frameName += " (7).png";
+				this->setSpriteFrame(frameName);
+				if (isLocal())
+				{
+					auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
+						[=]() {
+						revival();
+					});
+					cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
+				}
+				else
+				{
+					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
+						revival();
+					}, NULL);
+					this->runAction(sequence);
+				}
+
+			}), NULL);
+			this->runAction(sequence);
 		}
-		setStatus(Status::DEAD);
-		auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]() {
-			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)false);
-		}), NULL);
-		this->runAction(sequence);
+		else
+		{
+			setStatus(Status::BEINGHIT);
+			auto sequence = Sequence::create(DelayTime::create(0.4f), CallFunc::create([=]() {
+				this->setStatus(Status::STANDING);
+			}), NULL);
+			this->runAction(sequence);
+		}
+		return nowHP;
 	}
-	else
-	{
-		setStatus(Status::BEINGHIT);
-		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
-			this->setStatus(Status::STANDING);
-		}), NULL);
-		this->runAction(sequence);
-	}
-	return nowHP;
+	return getNowHPValue();
 }
 
 void Player::startMove(Vec2 destination)
@@ -252,10 +349,37 @@ void Player::startMove(Vec2 destination)
 	if (_isMove)
 	{
 		log("move");
-		setDestination(destination);
-		setStatus(Status::MOVING);
-		schedule(CC_CALLBACK_0(Player::move, this), "move");
+		//if (path->updatePath(getPosition(), destination))
+		//{
+			setDestination(destination);
+			setStatus(Status::MOVING);
+			schedule(CC_CALLBACK_0(Player::move, this), "move");
+		//}
 	}
+}
+
+void Player::revival()
+{
+
+
+	_isMove = true;
+	_isAttack = true;
+	_isSkill = false;
+
+
+	setDirection(Direction::RIGHTUP);
+	setStatus(Player::Status::STANDING);
+
+	setNowHPValue(PLAYER_HPVALUE);
+	updateHPBar();
+
+	if (getColor() == RED)
+		GameMap::getCurrentMap()->setSpritePosition(this, GameMap::Type::Player_Red);
+	else
+		GameMap::getCurrentMap()->setSpritePosition(this, GameMap::Type::Player_Blue);
+
+	if (this->isLocal())
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
 }
 
 void Player::move()
@@ -276,9 +400,23 @@ void Player::move()
 		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
 
 		if (dx < 0)
-			setDirection(Direction::LEFT);
+		{
+			if (dy == 0)
+				setDirection(Direction::LEFT);
+			else if (dy < 0)
+				setDirection(Direction::LEFTDOWN);
+			else
+				setDirection(Direction::LEFTUP);
+		}
 		else if (dx > 0)
-			setDirection(Direction::RIGHT);
+		{
+			if (dy == 0)
+				setDirection(Direction::RIGHT);
+			else if (dy < 0)
+				setDirection(Direction::RIGHTDOWN);
+			else
+				setDirection(Direction::RIGHTUP);
+		}
 		else
 		{
 			if (dy <= 0)
@@ -293,15 +431,46 @@ void Player::move()
 		auto map = GameMap::getCurrentMap();
 
 		if (map->isCanAssess(map->positionToTileCoord(target)))
+		{
 			this->setPosition(target);
+			if (this->isLocal())
+				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
+		}
 		else
 			stopMove();
+		/*
+		auto position = this->getPosition();
+
+		if (position.equals(getDestination()))
+		{
+			stopMove();
+			return;
+		}
+
+		Vec2 target = path->getNextPos();
+		float dx = target.x - position.x;
+		float dy = target.y - position.y;
+
+		if (dx < 0)
+			setDirection(Direction::LEFT);
+		else if (dx > 0)
+			setDirection(Direction::RIGHT);
+		else
+		{
+			if (dy <= 0)
+				setDirection(Direction::DOWN);
+			else
+				setDirection(Direction::UP);
+		}*/
 	}
 }
 
 void Player::setHPBar()
 {
-	_HPBar = LoadingBar::create("Pictures/GameItem/planeHP.png");
+	if(getColor()==BLUE)
+		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
+	else if(getColor()==RED)
+		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);

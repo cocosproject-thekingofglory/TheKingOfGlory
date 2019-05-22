@@ -1,9 +1,10 @@
 #include "GameScene.h"
-#include "SimpleAudioEngine.h"
+#include "Util/GameAudio.h"
 #include "ui/CocosGUI.h"
 #include "StartScene.h"
-#include "../Model/GameMap.h"
-#include "../Controller/GameController.h"
+#include "SettingsScene.h"
+#include "Model/GameMap.h"
+#include "Controller/GameController.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -12,8 +13,7 @@ using namespace CocosDenshion;
 void GameScene::onEnter()
 {
 	Layer::onEnter();
-	//GameAudio::getInstance()->playBgm("Sounds/Game.mp3");
-	SimpleAudioEngine::getInstance()->playBackgroundMusic("Sounds/GameBgm.mp3", true);
+	GameAudio::getInstance()->playBgm("Sounds/GameBgm.mp3");
 }
 
 
@@ -23,11 +23,11 @@ void GameScene::createMenuButton()
 	auto menuItem = MenuItemImage::create(
 		"Pictures/UI/SettingNormal.png",
 		"Pictures/UI/SettingSelected.png",
-		CC_CALLBACK_0(GameScene::createMenu,this));
+		CC_CALLBACK_0(GameScene::createMenu, this));
 	auto menu = Menu::create(menuItem, NULL);
 	menu->setPosition(Vec2(visible_Size.width*0.95, visible_Size.height*0.95));
-	this->addChild(menu);
-	menuRect= Rect(menu->getPosition().x - menuItem->getContentSize().width / 2,
+	this->addChild(menu,4);
+	menuRect = Rect(menu->getPosition().x - menuItem->getContentSize().width / 2,
 		menu->getPosition().y - menuItem->getContentSize().height / 2,
 		menuItem->getContentSize().width + menuItem->getContentSize().width / 2,
 		menuItem->getContentSize().height + menuItem->getContentSize().height / 2);
@@ -49,9 +49,9 @@ void GameScene::createMenu()
 	//添加菜单图片
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(menu);
+	this->addChild(menu,4);
 
-	Color4B text_Color= Color4B(255,255,255,255);
+	Color4B text_Color = Color4B(255, 255, 255, 255);
 	std::string text_Font = "fonts/UnifrakturCook-Bold.ttf";
 	float text_Size = 28;
 
@@ -62,25 +62,25 @@ void GameScene::createMenu()
 	continueLabel = Label::createWithTTF("Continue", text_Font, text_Size);
 	continueLabel->setTextColor(text_Color);
 	continueLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.8));
-	this->addChild(continueLabel);
+	this->addChild(continueLabel, 4);
 
 	//添加游戏设置文字
 	settingLabel = Label::createWithTTF("Setting", text_Font, text_Size);
 	settingLabel->setTextColor(text_Color);
 	settingLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
-	this->addChild(settingLabel);
+	this->addChild(settingLabel, 4);
 
 	//添加重新开始文字
 	restartLabel = Label::createWithTTF("Restart", text_Font, text_Size);
 	restartLabel->setTextColor(text_Color);
 	restartLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
-	this->addChild(restartLabel);
+	this->addChild(restartLabel, 4);
 
 	//添加返回主菜单文字
 	returnLabel = Label::createWithTTF("Main Menu", text_Font, text_Size);
 	returnLabel->setTextColor(text_Color);
 	returnLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
-	this->addChild(returnLabel);
+	this->addChild(returnLabel, 4);
 
 	menuListener->setEnabled(true);
 	hasMenu = true;
@@ -107,11 +107,11 @@ void GameScene::createResultBox(EventCustom* event)
 	Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	auto box = Sprite::create("Pictures/UI/Resultbox.png");
 	box->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(box);
+	this->addChild(box, 4);
 
 	Size boxSize = box->getContentSize();
 
-	auto resultText = ui::Text::create((isWin?"You Win!":"You Lose!"), "fonts/Lobster-Regular.ttf", 48);
+	auto resultText = ui::Text::create((isWin ? "You Win!" : "You Lose!"), "fonts/Lobster-Regular.ttf", 48);
 	resultText->setColor(Color3B(0, 0, 255));
 	resultText->setPosition(Vec2(boxSize.width / 2, boxSize.height*0.7));
 
@@ -145,9 +145,9 @@ void GameScene::createResultBox(EventCustom* event)
 		}
 	});
 
-	box->addChild(resultText);
-	box->addChild(restartButton);
-	box->addChild(returnButton);
+	box->addChild(resultText, 4);
+	box->addChild(restartButton, 4);
+	box->addChild(returnButton, 4);
 
 }
 
@@ -156,7 +156,7 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	auto touchLocation = touch->getLocation();
 	auto nodeLocation = this->convertToNodeSpace(touchLocation);
 
-	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation)||
+	if (this->rectOfLabel(continueLabel).containsPoint(nodeLocation) ||
 		menuRect.containsPoint(nodeLocation))
 	{
 		removeMenu();
@@ -164,8 +164,8 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，删除菜单,进入游戏设置界面
-		//removeMenu();
-		//Director::getInstance()->pushScene(TransitionFade::create(1, SettingScene::createScene()));
+		removeMenu();
+		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
 	}
 	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
@@ -179,7 +179,7 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 		//停用菜单事件监听器，返回主菜单
 		menuListener->setEnabled(false);
 		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1,	StartScene::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
 	}
 }
 
@@ -217,7 +217,7 @@ bool GameScene::init()
 
 	//创建自定义事件监听器，用于打开关闭菜单
 	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener,1);
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener, 1);
 
 	//创建自定义事件监听器，游戏结束时弹出对话框
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
@@ -226,6 +226,9 @@ bool GameScene::init()
 	auto bg = Sprite::create("Pictures/Background/WhiteBackground.png");
 	bg->setScale(100);
 	this->addChild(bg, -2);
+
+	//this->setAnchorPoint(Vec2::ZERO);
+	log("visible:x:%f  y:%f", visible_Size.width, visible_Size.height);
 
 	//添加地图
 	auto map = GameMap::create();
@@ -239,6 +242,7 @@ bool GameScene::init()
 	this->addChild(gameController, -1);
 
 	createMenuButton();
+
 
 	return true;
 }

@@ -2,7 +2,6 @@
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
 #include "Manager/Manager.h"
-#include "Manager/PlayerManager.h"
 
 class GameController:public cocos2d::Layer
 {
@@ -23,7 +22,7 @@ private:
 	void onEnter();
 	void update(float delta);
 	void isResult(float delta);
-	void toOver(bool isWin);
+	void toOver(cocos2d::EventCustom* event);
 
 };
 

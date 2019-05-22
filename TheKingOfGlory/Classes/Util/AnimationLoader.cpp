@@ -11,11 +11,8 @@ AnimationLoader::AnimationLoader()
 void AnimationLoader::runAnimation(const std::string& animationName, cocos2d::Sprite * sprite)
 {
     auto animation = getAnimation(animationName);
-	log("In runAnimation");
-	log("animationName:%s", animationName.c_str());
     if (animation != nullptr)
     {
-		log("getAnimation successfully");
         auto animate = Animate::create(animation);
         auto repeat = RepeatForever::create(animate);
         
@@ -50,8 +47,7 @@ void AnimationLoader::loadAnimation(const std::string & animationName, float del
     for (int i = 1; i <= num; ++i)
     {
         std::string name = animationName;
-        name.append(StringUtils::format("_%02d", i)).append(".png");
-		log("%s", name.c_str());
+        name.append(StringUtils::format(" (%d)", i)).append(".png");
         animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
     }
     animation->setDelayPerUnit(delay);

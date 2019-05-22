@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include "cocos2d.h"
@@ -23,15 +23,8 @@ const int SOLDIER = 1, HERO = 0, ACTIVE_HERO = 2;
 class SpriteBase :public cocos2d::Sprite, public AnimationLoader
 {
 public:
-	enum Type
-	{
-		PLAYER,SOLDIER
-	};
 
 	virtual bool init();
-	//类型
-	void setType(Type type) { _type = type; };
-	Type getType() { return _type; };
 	//阵营
 	void setColor(int color) { _color = color; }
 	int getColor() { return _color; }
@@ -87,7 +80,7 @@ protected:
 	Vector<BulletBase*> _beAttackBulletList;
 
 private:
-	Type _type;
+
 
 	float _HPValue;
 	

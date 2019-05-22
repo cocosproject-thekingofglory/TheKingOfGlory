@@ -10,26 +10,24 @@
 USING_NS_CC;
 using namespace ui;
 
-//初始属性值
-const float TOWER_ATTACK_RADIUS =6000;
-const float TOWER_DAMAGE = 50.0;
-const float TOWER_HPVALUE = 1000;
+//鲁玫脢录脢么脨脭脰碌
+const float TOWER_ATTACK_RADIUS =1500;
+const float TOWER_DAMAGE = 50;
+const float TOWER_HPVALUE = 2000;
 const int TOWER_ATTACK_INTERVAL = 180;
 
 
 class Tower :public SpriteBase
 {
 public:
-	static Tower* createWithSpriteFrameName(const std::string& filename);
+	static Tower* createWithSpriteFrameName(const std::string& filename,int color);
 
-	CREATE_FUNC(Tower);
 
-	virtual bool init();
+	virtual bool init(int color);
 
 	virtual bool attack();
 	virtual float beAttack(const float damage);
-
-	virtual bool playDestoryAnimation();
+	void destroy();
 
 	void setHPBar();
 	void updateHPBar();

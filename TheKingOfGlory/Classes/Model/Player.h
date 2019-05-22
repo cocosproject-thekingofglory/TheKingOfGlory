@@ -1,18 +1,16 @@
 #pragma once
-
-
-
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
 #include"Model/SpriteBase.h"
 #include "Model/Soldier.h"
+#include "Util/PathArithmetic.h"
 
 USING_NS_CC;
 using namespace ui;
 
-const float PLAYER_ATTACK_RADIUS = 5.0;
-const float PLAYER_DAMAGE = 10.0;
-const float PLAYER_HPVALUE = 200000.0;
+const float PLAYER_ATTACK_RADIUS = 10;
+const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 
@@ -42,6 +40,10 @@ public:
 		RIGHT,
 		UP,
 		DOWN,
+		LEFTDOWN,
+		LEFTUP,
+		RIGHTDOWN,
+		RIGHTUP,
 		NONE
 	};
 
@@ -66,11 +68,13 @@ public:
 		"Archer"
 	};
 
-	static Player* createPlayer(const std::string& id, int role);
+	PathArithmetic* path;
+
+	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role);//初始化一些条件
-	bool initWithRole(int role);//只是初始化名字
+	bool init(int role,int color);//初始化一些条件
+	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
@@ -82,8 +86,8 @@ public:
 	void setHPBar();
 	void updateHPBar();
 
-	void setMove(bool move) { _move = move; }//是否能移动
-	bool isMove() { return _move; }
+	void setMove(bool move) { _isMove = move; }//是否能移动
+	bool isMove() { return _isMove; }
 
 	void setDirection(Direction direction) {
 		if (_direction != direction) _direction = direction,setStatus(getStatus());	}
@@ -98,14 +102,18 @@ public:
 	bool attack();//参数待补充
 	void stopAttack();
 
+	void setAttack(bool isAttack) { _isAttack = isAttack; }
+
 	void skill(const void* enemy);
 
-	float beAttack(const float damage);
+	virtual float beAttack(const float damage);
 
 	void setDestination(Vec2 destination) { _destination = destination; }
 	Vec2 getDestination() { return _destination; }
 
 	void startMove(Vec2 destination);
+
+	void revival();
 
 private:
 	std::string _id;
@@ -123,7 +131,7 @@ private:
 	bool _isAttack;
 	bool _isSkill;
 
-	bool _move;
+
 
 
 	Vec2 _destination;
