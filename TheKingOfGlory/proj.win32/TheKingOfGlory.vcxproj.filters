@@ -57,6 +57,9 @@
     <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\UI\CountDown.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -118,6 +121,9 @@
     <ClInclude Include="..\Classes\Util\PathArithmetic.h">
       <Filter>Util</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\UI\CountDown.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
@@ -137,6 +143,9 @@
     </Filter>
     <Filter Include="Util">
       <UniqueIdentifier>{88684ed0-94b9-47c2-9c6b-5932b8ec7e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{c2ccd54b-eeea-497a-a73b-4e10d994a5b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -9,4 +9,9 @@
    <object id="2" x="0" y="0" width="64" height="64"/>
   </objectgroup>
  </tile>
+ <tile id="1">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+ </tile>
 </tileset>

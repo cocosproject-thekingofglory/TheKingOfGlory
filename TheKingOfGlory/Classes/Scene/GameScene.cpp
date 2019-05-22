@@ -26,7 +26,7 @@ void GameScene::createMenuButton()
 		CC_CALLBACK_0(GameScene::createMenu, this));
 	auto menu = Menu::create(menuItem, NULL);
 	menu->setPosition(Vec2(visible_Size.width*0.95, visible_Size.height*0.95));
-	this->addChild(menu);
+	this->addChild(menu,4);
 	menuRect = Rect(menu->getPosition().x - menuItem->getContentSize().width / 2,
 		menu->getPosition().y - menuItem->getContentSize().height / 2,
 		menuItem->getContentSize().width + menuItem->getContentSize().width / 2,
@@ -49,7 +49,7 @@ void GameScene::createMenu()
 	//添加菜单图片
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(menu);
+	this->addChild(menu,4);
 
 	Color4B text_Color = Color4B(255, 255, 255, 255);
 	std::string text_Font = "fonts/UnifrakturCook-Bold.ttf";
@@ -62,25 +62,25 @@ void GameScene::createMenu()
 	continueLabel = Label::createWithTTF("Continue", text_Font, text_Size);
 	continueLabel->setTextColor(text_Color);
 	continueLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.8));
-	this->addChild(continueLabel);
+	this->addChild(continueLabel, 4);
 
 	//添加游戏设置文字
 	settingLabel = Label::createWithTTF("Setting", text_Font, text_Size);
 	settingLabel->setTextColor(text_Color);
 	settingLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
-	this->addChild(settingLabel);
+	this->addChild(settingLabel, 4);
 
 	//添加重新开始文字
 	restartLabel = Label::createWithTTF("Restart", text_Font, text_Size);
 	restartLabel->setTextColor(text_Color);
 	restartLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
-	this->addChild(restartLabel);
+	this->addChild(restartLabel, 4);
 
 	//添加返回主菜单文字
 	returnLabel = Label::createWithTTF("Main Menu", text_Font, text_Size);
 	returnLabel->setTextColor(text_Color);
 	returnLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
-	this->addChild(returnLabel);
+	this->addChild(returnLabel, 4);
 
 	menuListener->setEnabled(true);
 	hasMenu = true;
@@ -107,7 +107,7 @@ void GameScene::createResultBox(EventCustom* event)
 	Director::getInstance()->getEventDispatcher()->removeAllEventListeners();
 	auto box = Sprite::create("Pictures/UI/Resultbox.png");
 	box->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
-	this->addChild(box);
+	this->addChild(box, 4);
 
 	Size boxSize = box->getContentSize();
 
@@ -145,9 +145,9 @@ void GameScene::createResultBox(EventCustom* event)
 		}
 	});
 
-	box->addChild(resultText);
-	box->addChild(restartButton);
-	box->addChild(returnButton);
+	box->addChild(resultText, 4);
+	box->addChild(restartButton, 4);
+	box->addChild(returnButton, 4);
 
 }
 
@@ -242,6 +242,7 @@ bool GameScene::init()
 	this->addChild(gameController, -1);
 
 	createMenuButton();
+
 
 	return true;
 }

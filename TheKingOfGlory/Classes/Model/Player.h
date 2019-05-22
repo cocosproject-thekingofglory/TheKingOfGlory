@@ -86,8 +86,8 @@ public:
 	void setHPBar();
 	void updateHPBar();
 
-	void setMove(bool move) { _move = move; }//是否能移动
-	bool isMove() { return _move; }
+	void setMove(bool move) { _isMove = move; }//是否能移动
+	bool isMove() { return _isMove; }
 
 	void setDirection(Direction direction) {
 		if (_direction != direction) _direction = direction,setStatus(getStatus());	}
@@ -101,6 +101,8 @@ public:
 
 	bool attack();//参数待补充
 	void stopAttack();
+
+	void setAttack(bool isAttack) { _isAttack = isAttack; }
 
 	void skill(const void* enemy);
 
@@ -129,7 +131,6 @@ private:
 	bool _isAttack;
 	bool _isSkill;
 
-	bool _move;
 
 
 

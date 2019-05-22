@@ -31,13 +31,7 @@ bool Tower::init(int color)
 
 void Tower::initAnimation()
 {
-	/*
-	const float delay=
-	loadAnimation("Tower_Destory", delay, 3);
-
-	loadAnimation("",delay,3);
-
-	*/
+	loadAnimation("blast",0.1f, 8);
 }
 
 bool Tower::attack()
@@ -47,7 +41,7 @@ bool Tower::attack()
 		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 		{
 			auto target = _attackTargetList.at(i);
-			auto bullet=BulletBase::create(this, target, "warrior_attack_down", "warrior_attack_down (1).png");
+			auto bullet=BulletBase::create(this, target, "bullet", "bullet (1).png");
 			GameMap::getCurrentMap()->addChild(bullet);
 			Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
 			bullet->setPosition(pos);
@@ -77,18 +71,16 @@ float Tower::beAttack(const float damage)
 
 void Tower::destroy()
 {
-
+	runAnimation("blast",this);
 }
 
-bool Tower::playDestoryAnimation()
-{
-	//runAnimation("Tower_Destory", this);
-	return true;
-}
 
 void Tower::setHPBar()
 {
-	_HPBar = LoadingBar::create("Pictures/GameItem/blueBar.png");
+	if(getColor()==BLUE)
+		_HPBar = LoadingBar::create("Pictures/GameItem/blueBar.png");
+	else
+		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
 
 	_HPBar->setScale(0.4);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
