@@ -154,6 +154,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Manager\PlayerManager.cpp" />
     <ClCompile Include="..\Classes\Model\BulletBase.cpp" />
     <ClCompile Include="..\Classes\Model\GameMap.cpp" />
+    <ClCompile Include="..\Classes\Model\Home.cpp" />
     <ClCompile Include="..\Classes\Model\Player.cpp" />
     <ClCompile Include="..\Classes\Model\Soldier.cpp" />
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp" />
@@ -177,6 +178,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Manager\PlayerManager.h" />
     <ClInclude Include="..\Classes\Model\BulletBase.h" />
     <ClInclude Include="..\Classes\Model\GameMap.h" />
+    <ClInclude Include="..\Classes\Model\Home.h" />
     <ClInclude Include="..\Classes\Model\Player.h" />
     <ClInclude Include="..\Classes\Model\Soldier.h" />
     <ClInclude Include="..\Classes\Model\SpriteBase.h" />

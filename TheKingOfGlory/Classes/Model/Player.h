@@ -68,8 +68,6 @@ public:
 		"Archer"
 	};
 
-	PathArithmetic* path;
-
 	static Player* createPlayer(const std::string& id, int role,int color);
 
 
@@ -108,10 +106,17 @@ public:
 
 	virtual float beAttack(const float damage);
 
-	void setDestination(Vec2 destination) { _destination = destination; }
-	Vec2 getDestination() { return _destination; }
+	void setSmallDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getSmallDestination() { return _destination; }
+
+	void setBigDestination(Vec2 destination) { _Destination = destination; }
+	Vec2 getBigDestination() { return _Destination; }
 
 	void startMove(Vec2 destination);
+
+	void judgeDirection(float dx, float dy);
+
+	void randomSmallDestination();
 
 	void revival();
 
@@ -132,9 +137,11 @@ private:
 	bool _isSkill;
 
 
-
-
 	Vec2 _destination;
+	Vec2 _Destination;
+	Vector<PointDelegate*> path;
+
+	int moveStep;
 
 	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
 	std::vector<int> _animationFrameNum;

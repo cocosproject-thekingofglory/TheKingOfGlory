@@ -41,12 +41,19 @@ bool Manager::init()
 		return false;
 	}
 
-	playerManager = PlayerManager::create();
-	this->addChild(playerManager, -1);
-
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
+		auto redhome = Home::create("Pictures/GameItem/redhome.png", RED);
+		redhome->setScale(1.5);
+		GameMap::getCurrentMap()->addSprite(redhome, GameMap::Type::Player_Red);
+		redhome->setZOrder(0);
+		_homeList.pushBack(redhome);
 
+		auto bluehome = Home::create("Pictures/GameItem/redhome.png", BLUE);
+		bluehome->setScale(1.5);
+		GameMap::getCurrentMap()->addSprite(bluehome, GameMap::Type::Player_Blue);
+		bluehome->setZOrder(0);
+		_homeList.pushBack(bluehome);
 
 		auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
 		tower_blue_1->setScale(1.5);
@@ -56,6 +63,8 @@ bool Manager::init()
 		tower_red_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
 
+		playerManager = PlayerManager::create();
+		this->addChild(playerManager, -1);
 	
 		auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Game start after ", "fonts/arial.ttf", 32, 5, false,
 			[=]() {		
@@ -66,15 +75,17 @@ bool Manager::init()
 				player->setAttack(true);
 			}
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
-			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.3f, "TowertAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
-			schedule(CC_CALLBACK_0(Manager::schedulePlayer, this), 1.0f, "PlayerAttack");
+			schedule(CC_CALLBACK_0(Manager::AIHero, this), 2.0f, "PlayerAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
 		});
 		cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown,2);
 
 	}), NULL);
 	this->runAction(sequence);
+
 
 	return true;
 }
@@ -251,6 +262,7 @@ void Manager::scheduleDeadDetect()
 				unschedule( "TowertAttack");
 				unschedule( "UpdateAttack");
 				unschedule( "PlayerAttack");
+				unschedule("Home");
 				unschedule( "DeadDetect");
 				playerManager->getLocalPlayer()->setMove(false);
 				playerManager->getLocalPlayer()->setAttack(false);
@@ -325,21 +337,54 @@ void Manager::scheduleTowerAttack()
 
 }
 
-void Manager::schedulePlayer()
+void Manager::scheduleHomeRecover()
 {
+	for (auto& home : _homeList)
+	{
+		home->getRecoverList().clear();
+		for (auto pair : playerManager->getPlayerList())
+		{
+			auto player = pair.second;
+			if (home->getColor() == player->getColor())
+			{
+				if (home->isAtHome(player))
+					home->getRecoverList().pushBack(player);
+			}
+		}
+	}
+
+}
+
+
+
+void Manager::AIHero()
+{
+	
 	for (auto pair : playerManager->getPlayerList())
 	{
 		auto player = pair.second;
 		if (!player->isLocal() && player->getStatus() != Player::Status::DEAD)
 		{
-			if (player->getAttackTarget().size())
+			if ((player->getNowHPValue()/player->getHPValue()) <0.5 )
 			{
-				player->attack();
+				if(player->getColor()==BLUE)
+					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Blue));
+				else
+					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Red));
+
 			}
 			else
 			{
-				if(_towerList[player->getColor() ^ 1].size())
-				player->startMove(_towerList[player->getColor() ^ 1].front()->getPosition());
+				if (player->getAttackTarget().size())
+				{
+					player->attack();
+				}
+				else
+				{
+					if (_towerList[player->getColor() ^ 1].size())
+						player->startMove(_towerList[player->getColor() ^ 1].front()->getPosition());
+				}
+
 			}
 		}
 	}

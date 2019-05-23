@@ -29,8 +29,8 @@
   </data>
  </layer>
  <objectgroup id="5" name="objects" opacity="0.9">
-  <object id="5" name="player_red" x="692" y="5852" width="348" height="308"/>
-  <object id="7" name="player_blue" x="5872" y="1320" width="416" height="408"/>
+  <object id="5" name="player_red" x="113.212" y="6021.69" width="348" height="308"/>
+  <object id="7" name="player_blue" x="5732.61" y="192.726" width="416" height="408"/>
   <object id="10" name="store_red" x="544" y="5088" width="720" height="680"/>
   <object id="11" name="store_blue" x="4848" y="640" width="784" height="728"/>
   <object id="12" name="tower_red" x="2032" y="3592" width="592" height="616"/>

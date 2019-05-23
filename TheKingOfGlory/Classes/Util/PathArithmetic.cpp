@@ -2,26 +2,30 @@
 #include <algorithm>
 #include "Model/GameMap.h"
 USING_NS_CC;
-
-
+using namespace std;
 
 // 寻路函数
-bool PathArithmetic::updatePath(Vec2 from, Vec2 to)
-{
-	auto map = GameMap::getCurrentMap();
-	if (!_pathPoints.empty())
-		_pathPoints.clear();
-	if (!_invalidPoints.empty())
-		_invalidPoints.clear();
-	if (!(map->isCanAssess(map->positionToTileCoord(from)) && map->isCanAssess(map->positionToTileCoord(from))))
-		return false;
-	return findValidGrid(map->positionToTileCoord(from), map->positionToTileCoord(to), map->getGridVector());
+Vector<PointDelegate*> PathArithmetic::getPath(Vec2 from, Vec2 to, vector<Vector<Grid*>> gridVector) {
+	searchtimes = 0;
+	if (findValidGrid(from, to, gridVector))
+	{
+		_pathPoints.reverse();
+		return _pathPoints;
+	}
+	else
+	{
+		return Vector<PointDelegate*>();
+	}
 }
 
-// 查找有效路径函数
-bool PathArithmetic::findValidGrid(Vec2 from, Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector) {
+
+bool PathArithmetic::findValidGrid(Vec2 from, Vec2 to, vector<Vector<Grid*>> gridVector) {
+	if (++searchtimes >= 40)
+	{
+		return false;
+	}
 	PointDelegate* fromDelegate = PointDelegate::create(from.x, from.y);
-	_invalidPoints.push_back(fromDelegate);
+	_invalidPoints.pushBack(fromDelegate);
 	Vector<PointDelegate*> points;
 	points.pushBack(PointDelegate::create(from.x, from.y - 1));
 	points.pushBack(PointDelegate::create(from.x, from.y + 1));
@@ -36,7 +40,7 @@ bool PathArithmetic::findValidGrid(Vec2 from, Vec2 to, std::vector<cocos2d::Vect
 		PointDelegate* pd = points.at(i);
 		Vec2 p = Vec2(pd->getX(), pd->getY());
 		if (p.equals(to)) {
-			_pathPoints.push_back(pd);
+			_pathPoints.pushBack(pd);
 			return true;
 		}
 		if (isCheck(p, gridVector)) {
@@ -56,15 +60,17 @@ bool PathArithmetic::findValidGrid(Vec2 from, Vec2 to, std::vector<cocos2d::Vect
 		Vec2 p = Vec2(pd->getX(), pd->getY());
 		bool flag = findValidGrid(p, to, gridVector);
 		if (flag) {
-			_pathPoints.push_back(pd);
+			_pathPoints.pushBack(pd);
 			return true;
 		}
 	}
 	return false;
 }
 
-
-bool PathArithmetic::isCheck(Vec2 point, std::vector<cocos2d::Vector<Grid*>> gridVector) {
+bool PathArithmetic::isCheck(Vec2 point, vector<Vector<Grid*>> gridVector) {
+	if (point.x < 0 || point.y < 0) {
+		return false;
+	}
 	PointDelegate* g = PointDelegate::create(point.x, point.y);
 	for (int i = 0; i < _invalidPoints.size(); i++) {
 		PointDelegate* pp = _invalidPoints.at(i);
@@ -73,18 +79,13 @@ bool PathArithmetic::isCheck(Vec2 point, std::vector<cocos2d::Vector<Grid*>> gri
 			return false;
 		}
 	}
+	if (point.x >= gridVector.size() || point.y >=gridVector.at(0).size()) {
+		return false;
+	}
 	Vector<Grid*> tempX = gridVector.at((int)g->getX());
 	Grid* grid = tempX.at((int)g->getY());
-	if (grid->isCanAssess()) {
+	if (point.x >= 0 && point.y >= 0 && grid->isCanAssess()) {
 		return true;
 	}
 	return false;
-}
-
-Vec2 PathArithmetic::getNextPos()
-{
-	auto coord = _pathPoints.back();
-	_pathPoints.pop_back();
-	auto position = GameMap::getCurrentMap()->tileCoordToPosition(Vec2(coord->getX(), coord->getY()));
-	return position;
 }

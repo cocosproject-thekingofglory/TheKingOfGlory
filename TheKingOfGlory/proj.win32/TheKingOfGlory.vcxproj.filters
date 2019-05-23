@@ -54,11 +54,14 @@
     <ClCompile Include="..\Classes\Manager\PlayerManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\UI\CountDown.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\UI\CountDown.cpp">
-      <Filter>UI</Filter>
+    <ClCompile Include="..\Classes\Model\Home.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -118,11 +121,14 @@
     <ClInclude Include="..\Classes\Manager\PlayerManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\UI\CountDown.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\Util\PathArithmetic.h">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\UI\CountDown.h">
-      <Filter>UI</Filter>
+    <ClInclude Include="..\Classes\Model\Home.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
