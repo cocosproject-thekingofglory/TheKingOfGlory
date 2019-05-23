@@ -12,6 +12,10 @@ const float SOLDIER_DAMAGE = 5.0;
 const float SOLDIER_HPVALUE = 50.0;
 const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
+const float SOLDIER_DEFEND = 0.1;
+//击杀经验、金钱
+const int SOLDIER_KILL_EXPRIENCE = 5;
+const int SOLDIER_KILL_MONEY = 10;
 
 const int SOLDIER_MOVE_ACTION = 1;
 

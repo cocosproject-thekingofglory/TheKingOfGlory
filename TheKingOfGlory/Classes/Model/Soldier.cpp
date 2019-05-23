@@ -16,6 +16,10 @@ bool Soldier::init(int color)
 	setDamage(SOLDIER_DAMAGE);
 	setAttackInterval(SOLDIER_ATTACK_INTERVAL);
 	setSpeed(SOLDIER_MOVE_SPEED);
+	setDefend(SOLDIER_DEFEND);
+
+	setKillExperience(SOLDIER_KILL_EXPRIENCE); 
+	setKillMoney(SOLDIER_KILL_MONEY);
 
 	initAnimation();
 	setHPBar();

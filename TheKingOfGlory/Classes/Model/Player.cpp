@@ -27,6 +27,9 @@ Player* Player::createPlayer(const std::string& id, int role,int color)
 //初始化信息，对这个角色初始化信息
 bool Player::init(int role,int color)
 {
+	setHPBar();
+	setEXPBar();
+
 	setColor(color);
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
@@ -34,7 +37,7 @@ bool Player::init(int role,int color)
 	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
-
+	setDefend(PLAYER_DEFEND);
 	//金钱、经验
 	setNowEXPValue(PLAYER_INITIAL_EXP);
 	setEXPValue(PLAYER_LEVEL_UP_EXP);
@@ -46,8 +49,7 @@ bool Player::init(int role,int color)
 	_isAttack = false;
 	_isSkill = false;
 
-	setHPBar();
-
+	
 	this->setScale(2);
 
 	std::string animationNames[] = { "move","attack","dead","behit","stand" };
@@ -265,7 +267,7 @@ float Player::beAttack(const float damage)
 	if (!(getStatus() == Status::DEAD || getStatus() == Status::BEINGHIT))
 	{
 		float nowHP = getNowHPValue();
-		nowHP -= damage;
+		nowHP -= damage * (1 - getDefend());
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
 		if (nowHP <= 0.0)
@@ -543,7 +545,7 @@ void Player::setHPBar()
 	_HPBar->setPercent(100);
 
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
-		this->getPositionY() + this->getContentSize().height*1.2);
+		this->getPositionY() + this->getContentSize().height*1.3);
 
 	_HPBar->setPosition(HPpos);
 
@@ -563,15 +565,15 @@ void Player::updateHPBar()
 //金钱、经验
 void Player::setEXPBar()
 {
-	_EXPBar = LoadingBar::create("Pictures/GamesItem/planeEXP.png");
+	_EXPBar = LoadingBar::create("Pictures/GamesItem/redBar.png");
 
-	_EXPBar->setScale(1);
+	_EXPBar->setScale(0.1);
 	_EXPBar->setDirection(LoadingBar::Direction::LEFT);
 
-	_EXPBar->setPercent(100);
+	_EXPBar->setPercent(0);
 
 	Vec2 EXPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
-		this->getPositionY() + this->getContentSize.height*1.1);
+		this->getPositionY() + this->getContentSize().height*1.1);
 
 	_EXPBar->setPosition(EXPpos);
 
@@ -580,8 +582,10 @@ void Player::setEXPBar()
 
 void Player::updateEXPBar()
 {
+	//log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	if (_EXPBar != NULL)
 	{
+		//log("######################");
 		_EXPBar->setPercent((float)100.0*getNowEXPValue() / getEXPValue());
 	}
 }
@@ -591,6 +595,8 @@ void Player::updateLevel()
 	if (_level < PLAYER_MAX_LEVEL)
 	{
 		_level++;
+		addDamage(PLAYER_LEVEL_UP_DAMAGE);
+		addDefend(PLAYER_LEVEL_UP_DEFEND);
 	}
 }
 

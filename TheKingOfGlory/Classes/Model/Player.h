@@ -14,12 +14,16 @@ const float PLAYER_DAMAGE = 20.0;
 const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
+const float PLAYER_DEFEND = 0.2;
 //经验、金钱
 const int PLAYER_INITIAL_EXP = 0;
-const int PLAYER_LEVEL_UP_EXP = 100;
+const int PLAYER_LEVEL_UP_EXP = 8;
 const int PLAYER_MAX_LEVEL = 15;
 const int PLAYER_INITIAL_LEVEL = 1;
 const int PLAYER_INITIAL_MONEY = 100;
+
+const int PLAYER_LEVEL_UP_DAMAGE = 5;
+const float PLAYER_LEVEL_UP_DEFEND = 0.01;
 
 class Player :public SpriteBase
 {
@@ -129,6 +133,7 @@ public:
 
 	//金钱、经验
 	void setEXPBar();
+	LoadingBar* getEXPBar() { return _EXPBar; }
 	void updateEXPBar();
 
 	void setLevel(int level) { _level = level; }

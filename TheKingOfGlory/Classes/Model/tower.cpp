@@ -22,7 +22,9 @@ bool Tower::init(int color)
 	setNowHPValue(TOWER_HPVALUE);
 	setDamage(TOWER_DAMAGE);
 	setAttackInterval(TOWER_ATTACK_INTERVAL);
-
+	setDefend(TOWER_DEFEND);
+	setKillExperience(TOWER_KILL_EXPRIENCE);
+	setKillMoney(TOWER_KILL_MONEY);
 
 	initAnimation();
 	setHPBar();
