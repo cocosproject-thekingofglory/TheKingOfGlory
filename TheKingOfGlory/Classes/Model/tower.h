@@ -5,13 +5,14 @@
 #include "ui/CocosGUI.h"
 #include "SpriteBase.h"
 #include "BulletBase.h"
+#include "Scene/GameScene.h"
 
 USING_NS_CC;
 using namespace ui;
 
-//初始属性值
+//鲁玫脢录脢么脨脭脰碌
 const float TOWER_ATTACK_RADIUS =1500;
-const float TOWER_DAMAGE = 40;
+const float TOWER_DAMAGE = 50;
 const float TOWER_HPVALUE = 2000;
 const int TOWER_ATTACK_INTERVAL = 180;
 

@@ -18,7 +18,7 @@ BulletBase* BulletBase::create(SpriteBase*attacker, SpriteBase*beAttacker, const
 void BulletBase::initAnimation(const std::string&animationName, BulletBase*bullet)
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	Â¶Â¯Â»Â­ÃƒÃ¼ÃƒÃ»wei"move_01.png"
 	*/
 
 	const float delay = 0.1;
