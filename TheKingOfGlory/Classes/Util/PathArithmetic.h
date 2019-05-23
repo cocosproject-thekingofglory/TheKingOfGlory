@@ -68,15 +68,22 @@ public:
 class PathArithmetic : public cocos2d::Ref
 {
 private:
-    std::vector<PointDelegate*> _invalidPoints;
-    std::vector<PointDelegate*> _pathPoints;
+	cocos2d::Vector<PointDelegate*> _invalidPoints;
+	cocos2d::Vector<PointDelegate*> _pathPoints;
 
+	int searchtimes;
 public:
-	CREATE_FUNC(PathArithmetic);
-	virtual bool init() { return true; };
-    bool updatePath(cocos2d::Vec2 from, cocos2d::Vec2 to);
-    bool findValidGrid(cocos2d::Vec2 from, cocos2d::Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector);
-    bool isCheck(cocos2d::Vec2 point, std::vector<cocos2d::Vector<Grid*>> gridVector);
-	cocos2d::Vec2 getNextPos();
-
+	static PathArithmetic* create() {
+		PathArithmetic* p = new PathArithmetic();
+		if (p) {
+			p->autorelease();
+		}
+		else {
+			CC_SAFE_DELETE(p);
+		}
+		return p;
+	}
+	cocos2d::Vector<PointDelegate*> getPath(cocos2d::Vec2 from, cocos2d::Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector);
+	bool findValidGrid(cocos2d::Vec2 from, cocos2d::Vec2 to, std::vector<cocos2d::Vector<Grid*>> gridVector);
+	bool isCheck(cocos2d::Vec2 point, std::vector<cocos2d::Vector<Grid*>> gridVector);
 };

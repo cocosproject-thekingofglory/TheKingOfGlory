@@ -45,6 +45,7 @@ public:
 	void addSprite(cocos2d::Sprite* sprite, Type type);
 	void setSpritePosition(cocos2d::Sprite* sprite, Type type);
 	void addCenterSprite(cocos2d::Sprite* sprite) { _centerSprite = sprite; setViewPointCenter(); }
+	cocos2d::Vec2 getObjectPosition(Type type);
 
 	CREATE_FUNC(GameMap);
 };

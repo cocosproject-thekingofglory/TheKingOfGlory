@@ -348,14 +348,69 @@ void Player::startMove(Vec2 destination)
 {
 	if (_isMove)
 	{
-		log("move");
-		//if (path->updatePath(getPosition(), destination))
-		//{
-			setDestination(destination);
+		//设置一个大目的地和小目的地，大目的地为实际目的地，将大目的地分为小目的地
+		if (isLocal())
+		{
+			//本地英雄使用寻路算法
+			auto pathArithmetic = PathArithmetic::create();
+			auto map = GameMap::getCurrentMap();
+			path = pathArithmetic->getPath(map->positionToTileCoord(getPosition()), map->positionToTileCoord(destination), map->getGridVector());
+			if (path.size())
+			{
+				moveStep = 0;
+				setBigDestination(destination);
+				setSmallDestination(getPosition());
+				setStatus(Status::MOVING);
+				schedule(CC_CALLBACK_0(Player::move, this), "move");
+			}
+		}
+		else
+		{
+			srand(time(NULL));
+			setBigDestination(destination);
+			setSmallDestination(destination);
 			setStatus(Status::MOVING);
 			schedule(CC_CALLBACK_0(Player::move, this), "move");
-		//}
+		}
+
 	}
+}
+
+void Player::judgeDirection(float dx, float dy)
+{
+	if (dx < 0)
+	{
+		if (dy == 0)
+			setDirection(Direction::LEFT);
+		else if (dy < 0)
+			setDirection(Direction::LEFTDOWN);
+		else
+			setDirection(Direction::LEFTUP);
+	}
+	else if (dx > 0)
+	{
+		if (dy == 0)
+			setDirection(Direction::RIGHT);
+		else if (dy < 0)
+			setDirection(Direction::RIGHTDOWN);
+		else
+			setDirection(Direction::RIGHTUP);
+	}
+	else
+	{
+		if (dy <= 0)
+			setDirection(Direction::DOWN);
+		else
+			setDirection(Direction::UP);
+	}
+}
+
+void Player::randomSmallDestination()
+{
+	float dx = rand() % 600 - 300;
+	float dy = rand() % 600 - 300;
+	setSmallDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+
 }
 
 void Player::revival()
@@ -388,80 +443,79 @@ void Player::move()
 	{
 		auto position = this->getPosition();
 
-		if (position.equals(getDestination()))
+		//到达大目的地，停止移动
+		if (position.equals(getBigDestination()))
 		{
 			stopMove();
 			return;
 		}
-
-		int flagX = (position.x < _destination.x) ? 1 : -1, flagY = (position.y < _destination.y) ? 1 : -1;
-
-		float dx = flagX * MIN(getSpeed(), fabs(_destination.x - position.x));
-		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
-
-		if (dx < 0)
+		if (isLocal())
 		{
-			if (dy == 0)
-				setDirection(Direction::LEFT);
-			else if (dy < 0)
-				setDirection(Direction::LEFTDOWN);
-			else
-				setDirection(Direction::LEFTUP);
-		}
-		else if (dx > 0)
-		{
-			if (dy == 0)
-				setDirection(Direction::RIGHT);
-			else if (dy < 0)
-				setDirection(Direction::RIGHTDOWN);
-			else
-				setDirection(Direction::RIGHTUP);
-		}
-		else
-		{
-			if (dy <= 0)
-				setDirection(Direction::DOWN);
-			else
-				setDirection(Direction::UP);
-		}
+			//将寻路算法求得的路径中的每步设为小目的地，小目的地的移动采用直线移动
+			if (moveStep >= path.size())
+			{
+				stopMove();
+				return;
+			}
+			if (path.size())
+			{
+
+				if (position.equals(getSmallDestination()))
+				{
+					auto point = path.at(moveStep++);
+					Vec2 coord = Vec2(point->getX(), point->getY());
+					setSmallDestination(GameMap::getCurrentMap()->tileCoordToPosition(coord));
+				}
+
+				Vec2 smallDestination = getSmallDestination();
+
+				int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+
+				float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+				float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+				judgeDirection(dx, dy);
 
 
-		Vec2 target = Vec2(position.x + dx, position.y + dy);
+				Vec2 target = Vec2(position.x + dx, position.y + dy);
+				this->setPosition(target);
 
-		auto map = GameMap::getCurrentMap();
-
-		if (map->isCanAssess(map->positionToTileCoord(target)))
-		{
-			this->setPosition(target);
-			if (this->isLocal())
 				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
+			}
 		}
 		else
-			stopMove();
-		/*
-		auto position = this->getPosition();
-
-		if (position.equals(getDestination()))
 		{
-			stopMove();
-			return;
-		}
+			//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
 
-		Vec2 target = path->getNextPos();
-		float dx = target.x - position.x;
-		float dy = target.y - position.y;
+			if (position.equals(getSmallDestination()))
+			{
+				setSmallDestination(getBigDestination());
+			}
 
-		if (dx < 0)
-			setDirection(Direction::LEFT);
-		else if (dx > 0)
-			setDirection(Direction::RIGHT);
-		else
-		{
-			if (dy <= 0)
-				setDirection(Direction::DOWN);
+			Vec2 smallDestination = getSmallDestination();
+
+			int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+
+			float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+			float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+			judgeDirection(dx, dy);
+
+
+			Vec2 target = Vec2(position.x + dx, position.y + dy);
+
+			auto map = GameMap::getCurrentMap();
+
+			if (map->isCanAssess(map->positionToTileCoord(target)))
+			{
+				this->setPosition(target);
+			}
 			else
-				setDirection(Direction::UP);
-		}*/
+			{
+				randomSmallDestination();
+			}
+		}
+
 	}
 }
 

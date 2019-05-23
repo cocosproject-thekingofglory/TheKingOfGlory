@@ -15,7 +15,7 @@ bool PlayerManager::init()
 	addCustomEvent();
 
 
-	scheduleOnce(schedule_selector(PlayerManager::initPlayer), 2.0f);
+	scheduleOnce(schedule_selector(PlayerManager::initPlayer),0.1f);
 
 	return true;
 }
@@ -85,8 +85,6 @@ void PlayerManager::initPlayer(float delta)
 	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0,RED);
 	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
 	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
-	this->getLocalPlayer()->path = PathArithmetic::create();
-
 
 }
 

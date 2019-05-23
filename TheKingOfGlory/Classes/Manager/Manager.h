@@ -5,6 +5,7 @@
 #include "Model/GameMap.h"
 #include "Model/Tower.h"
 #include "PlayerManager.h"
+#include "Model/Home.h"
 
 USING_NS_CC;
 
@@ -32,17 +33,18 @@ public:
 	Tower* createTower(const std::string &filename, const int color);
 
 
-	//Soldier* getSoldier(const std::string);
 
 	void scheduleAttack();
 	void scheduleCreateSoldier();
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
-	void schedulePlayer();
+	void scheduleHomeRecover();
+	void AIHero();
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];
 	Vector<Tower*> _towerList[2];
+	Vector<Home*> _homeList;
 	CREATE_FUNC(Manager);
 
 	static Manager* getInstance();

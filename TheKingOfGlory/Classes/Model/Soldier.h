@@ -51,17 +51,22 @@ public:
 	virtual void setHPBar();
 	virtual void updateHPBar();
 
-	void setDestination(Vec2 destination) { _destination = destination; }
-	Vec2 getDestination() { return _destination; }
+	void setSmallDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getSmallDestination() { return _destination; }
+
+	void setBigDestination(Vec2 destination) { _Destination = destination; }
+	Vec2 getBigDestination() { return _Destination; }
 
 	virtual void initAnimation();
 	virtual void move();
 
-	void randomDestination();
+	void randomSmallDestination();
+	void randomBigDestination();
 
 private:
 	float _speed;
 	Vec2 _destination;
+	Vec2 _Destination;
 	Status _status;
 	//Sprite* _bullet;
 	//Sprite* _soldier;

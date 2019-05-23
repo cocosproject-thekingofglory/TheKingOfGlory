@@ -45,15 +45,16 @@ public:
 
 	bool collisionDetection();
 
-	static BulletBase* create(SpriteBase*attacker, SpriteBase*beAttacker, std::string animationName, std::string spriteName, float speed = SPEED);
+	static BulletBase* create(SpriteBase*attacker, SpriteBase*beAttacker,const std::string& animationName,const std::string& spriteName, float speed = SPEED);
 
-	static void initAnimation(std::string animationName, BulletBase*bullet);
+	static void initAnimation(const std::string& animationName, BulletBase*bullet);
 
-
+	bool init(SpriteBase*attacker, SpriteBase*beAttacker, const std::string& animationName, float speed);
 
 private:
 	float _speed;
 	float _damage;
+	float _times;
 	int _color;
 
 	Sprite* _bullet;

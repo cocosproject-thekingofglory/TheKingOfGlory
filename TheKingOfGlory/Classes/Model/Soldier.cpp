@@ -44,46 +44,74 @@ void Soldier::move()
 {
 	if (getStatus() == Status::MOVING)
 	{
+		//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
+
 		auto position = this->getPosition();
-		if (position.equals(_destination))
-			randomDestination();
-		int flagX = (position.x < _destination.x) ? 1 : -1, flagY = (position.y < _destination.y) ? 1 : -1;
+
+		if (position.equals(getBigDestination()))
+		{
+			randomBigDestination();
+		}
+
+		if (position.equals(getSmallDestination()))
+		{
+			setSmallDestination(getBigDestination());
+		}
+
+		Vec2 smallDestination = getSmallDestination();
+
+		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+
 		this->setFlippedX(!(position.x <= _destination.x));
-		float dx = flagX * MIN(getSpeed(), fabs(_destination.x - position.x));
-		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
-		
+
+		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+
 		Vec2 target = Vec2(position.x + dx, position.y + dy);
+
 		auto map = GameMap::getCurrentMap();
 
 		if (map->isCanAssess(map->positionToTileCoord(target)))
+		{
 			this->setPosition(target);
+		}
 		else
-			randomDestination();
+		{
+			randomSmallDestination();
+		}
 	}
 
 }
 
-void Soldier::randomDestination()
+void Soldier::randomSmallDestination()
+{
+	float dx = rand() % 200 - 100;
+	float dy = rand() % 200 - 100;
+	setSmallDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+}
+
+void Soldier::randomBigDestination()
 {
 	float dx = rand() % 400 - 200;
 	float dy = rand() % 400 - 200;
-	setDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+	setBigDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
 }
 
 void Soldier::startMove()
 {
 	if (_isMove)
 	{
+		srand(time(NULL));
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		if(getColor()==BLUE)
-			toPosition = Vec2(2032,2192);
+		if (getColor() == BLUE)
+			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
 		else
-			toPosition = Vec2(3800, 4000);
+			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
 		runAnimation("soldierMove", this);
-		_destination = toPosition;
-		auto position = this->getPosition();
+		this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
