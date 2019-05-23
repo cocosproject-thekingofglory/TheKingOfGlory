@@ -55,7 +55,6 @@ void GameMap::setMap(const std::string& mapName)
 	monster2_blue = objectLayer->getObject("monster2_blue");
 	monster3_blue = objectLayer->getObject("monster3_blue");
 
-
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
 	{
@@ -140,37 +139,47 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 	case Type::Player_Blue:
 	{
 		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
-		sprite->setLocalZOrder(2);
+		sprite->setLocalZOrder(3);
 	}
 	break;
 	case Type::Player_Red:
 	{
 		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
-		sprite->setLocalZOrder(2);
+		sprite->setLocalZOrder(3);
 	}
 	break;
 	case Type::Soldier_Red:
 	{
 		sprite->setPosition(Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat()));
-		sprite->setLocalZOrder(1);
+		sprite->setLocalZOrder(2);
 	}
 	break;
 	case Type::Solider_Blue:
 	{
 		sprite->setPosition(Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat()));
-		sprite->setLocalZOrder(1);
+		sprite->setLocalZOrder(2);
 	}
 	break;
 	case Type::Tower_Blue:
 	{
 		sprite->setPosition(Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat()));
-		sprite->setLocalZOrder(0);
+		sprite->setLocalZOrder(1);
 	}
 	break;
 	case Type::Tower_Red:
 	{
 		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
-		sprite->setLocalZOrder(0);
+		sprite->setLocalZOrder(1);
+	}
+	break;
+		case Type::Monster_Red:
+	{
+		sprite->setPosition(Vec2(, ));
+	}
+	break;
+	case Type::Monster_Blue:
+	{
+		sprite->setPosition(Vec2(, ));
 	}
 	break;
 	case Type::Monster_Red:
@@ -237,6 +246,57 @@ void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
 	}
 }
 
+cocos2d::Vec2 GameMap::getObjectPosition(Type type)
+{
+	Vec2 position;
+	switch (type)
+	{
+	case Type::Player_Blue:
+	{
+		position=Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat());
+	}
+	break;
+	case Type::Player_Red:
+	{
+		position = Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat());
+
+	}
+	break;
+	case Type::Soldier_Red:
+	{
+		position = Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat());
+	}
+	break;
+	case Type::Solider_Blue:
+	{
+		position = Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat());
+	}
+	break;
+	case Type::Tower_Blue:
+	{
+		position = Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat());
+	}
+	break;
+	case Type::Tower_Red:
+	{
+		position = Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat());
+	}
+	break;
+	case Type::Monster_Red:
+	{
+		position = Vec2(,);
+	}
+	break;
+	case Type::Monster_Blue:
+	{
+		position = Vec2(, );
+	}
+	break;
+	}
+
+	return position;
+}
+
 void GameMap::setViewPointCenter()
 {
 	if (_centerSprite)
@@ -266,4 +326,9 @@ GameMap * GameMap::getCurrentMap()
 		return map;
 	}
 	return nullptr;
+}
+
+void GameMap::addSprite(cocos2d::Sprite * sprite, int zOrder)
+{
+	tileMap->addChild(sprite, zOrder);
 }

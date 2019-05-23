@@ -3,9 +3,10 @@
 #include "cocos2d.h"
 #include "Model/Soldier.h"
 #include "Model/Monster.h"
-#include "Model/tower.h"
 #include "Model/GameMap.h"
+#include "Model/Tower.h"
 #include "PlayerManager.h"
+#include "Model/Home.h"
 
 USING_NS_CC;
 
@@ -24,7 +25,6 @@ const std::string BLUE_TOWER_FILENAME = "tower.png";
 const std::string RED_MONSTER_FILENAME = "redMonsterStand (1).png";
 const std::string BLUE_MONSTER_FILENAME = "blueMonsterStand (1).png";
 
-
 class Manager :public cocos2d::Layer
 {
 public:
@@ -38,19 +38,20 @@ public:
 	Tower* createTower(const std::string &filename, const int color);
 
 
-	//Soldier* getSoldier(const std::string);
 
 	void scheduleAttack();
 	void scheduleCreateSoldier();
 	void scheduleCreateMonster(); //À¿Õˆ∫Û¥¥Ω®
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
-	void schedulePlayer();
+	void scheduleHomeRecover();
+	void AIHero();
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];
-	Vector<Monster*> _monsterList[2];
 	Vector<Tower*> _towerList[2];
+	Vector<Monster*> _monsterList[2];
+	Vector<Home*> _homeList;
 	CREATE_FUNC(Manager);
 
 	static Manager* getInstance();
