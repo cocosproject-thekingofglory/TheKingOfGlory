@@ -112,6 +112,9 @@ public:
 	void setBigDestination(Vec2 destination) { _Destination = destination; }
 	Vec2 getBigDestination() { return _Destination; }
 
+	void setRecover(bool recover) { _isRecover = recover; }
+	bool getRecover() { return _isRecover; }
+
 	void startMove(Vec2 destination);
 
 	void judgeDirection(float dx, float dy);
@@ -135,6 +138,7 @@ private:
 	bool _isMove;
 	bool _isAttack;
 	bool _isSkill;
+	bool _isRecover;
 
 
 	Vec2 _destination;

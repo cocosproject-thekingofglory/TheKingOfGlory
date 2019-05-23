@@ -28,6 +28,7 @@ Player* Player::createPlayer(const std::string& id, int role,int color)
 bool Player::init(int role,int color)
 {
 	setColor(color);
+	setRecover(false);
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
@@ -312,21 +313,14 @@ float Player::beAttack(const float damage)
 				}
 				frameName += " (7).png";
 				this->setSpriteFrame(frameName);
-				if (isLocal())
-				{
-					auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
-						[=]() {
-						revival();
-					});
-					cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
-				}
-				else
-				{
-					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
-						revival();
-					}, NULL);
-					this->runAction(sequence);
-				}
+				auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
+					[=]() {
+					revival();
+				});
+				cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
+
+				if (!isLocal())
+					countDown->setVisible(false);
 
 			}), NULL);
 			this->runAction(sequence);
