@@ -35,6 +35,13 @@ bool Player::init(int role,int color)
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 
+	//金钱、经验
+	setNowEXPValue(PLAYER_INITIAL_EXP);
+	setEXPValue(PLAYER_LEVEL_UP_EXP);
+	setLevel(PLAYER_INITIAL_LEVEL);
+
+	setMoney(PLAYER_INITIAL_MONEY);
+
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
@@ -219,7 +226,11 @@ bool Player::attack()
 			{
 				auto target = _attackTargetList.at(i);
 				target->beAttack(this->getDamage());
-
+				if (target->getNowHPValue() <= 0.0)
+				{
+					addEXP(target->getKillExperience());
+					addMoney(target->getKillMoney());
+				}
 			}
 		}
 		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
@@ -532,7 +543,7 @@ void Player::setHPBar()
 	_HPBar->setPercent(100);
 
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
-		this->getPositionY() + this->getContentSize().height*1.1);
+		this->getPositionY() + this->getContentSize().height*1.2);
 
 	_HPBar->setPosition(HPpos);
 
@@ -548,6 +559,55 @@ void Player::updateHPBar()
 	}
 
 }
+
+//金钱、经验
+void Player::setEXPBar()
+{
+	_EXPBar = LoadingBar::create("Pictures/GamesItem/planeEXP.png");
+
+	_EXPBar->setScale(1);
+	_EXPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_EXPBar->setPercent(100);
+
+	Vec2 EXPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
+		this->getPositionY() + this->getContentSize.height*1.1);
+
+	_EXPBar->setPosition(EXPpos);
+
+	this->addChild(_EXPBar);
+}
+
+void Player::updateEXPBar()
+{
+	if (_EXPBar != NULL)
+	{
+		_EXPBar->setPercent((float)100.0*getNowEXPValue() / getEXPValue());
+	}
+}
+
+void Player::updateLevel()
+{
+	if (_level < PLAYER_MAX_LEVEL)
+	{
+		_level++;
+	}
+}
+
+void Player::addEXP(int addEXP)
+{
+	if (getLevel() < PLAYER_MAX_LEVEL)
+	{
+		_nowEXP += addEXP;
+		while (_nowEXP >= _EXP)
+		{
+			_nowEXP -= _EXP;
+			updateLevel();
+		}
+		updateEXPBar();
+	}
+}
+
 
 void Player::isLocal(bool a)
 {

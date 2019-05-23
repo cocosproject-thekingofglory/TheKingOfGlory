@@ -8,11 +8,18 @@
 USING_NS_CC;
 using namespace ui;
 
+//基础属性
 const float PLAYER_ATTACK_RADIUS = 10;
 const float PLAYER_DAMAGE = 20.0;
 const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
+//经验、金钱
+const int PLAYER_INITIAL_EXP = 0;
+const int PLAYER_LEVEL_UP_EXP = 100;
+const int PLAYER_MAX_LEVEL = 15;
+const int PLAYER_INITIAL_LEVEL = 1;
+const int PLAYER_INITIAL_MONEY = 100;
 
 class Player :public SpriteBase
 {
@@ -120,6 +127,25 @@ public:
 
 	void revival();
 
+	//金钱、经验
+	void setEXPBar();
+	void updateEXPBar();
+
+	void setLevel(int level) { _level = level; }
+	int getLevel() { return _level; }
+	void updateLevel();
+
+	void setEXPValue(int EXP) { _EXP = EXP; }
+	int getEXPValue() { return _EXP; }
+
+	void setNowEXPValue(int EXP) { _nowEXP = EXP; }
+	int getNowEXPValue() { return _nowEXP; }
+	void addEXP(int addEXP);
+
+	void addMoney(int money) { _money += money; }
+	int getMoney() { return _money; }
+	void setMoney(int money) { _money = money; }
+
 private:
 	std::string _id;
 	std::string _roleName;
@@ -150,4 +176,12 @@ private:
 
 	void move();
 
+
+	//金钱、经验
+	int _money;
+	int _EXP;
+	int _nowEXP = 0;
+	int _level;
+
+	LoadingBar* _EXPBar;
 };
