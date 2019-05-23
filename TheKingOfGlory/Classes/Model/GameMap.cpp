@@ -2,10 +2,33 @@
 USING_NS_CC;
 
 
+bool GameMap::initGrid()
+{
+
+	for (int i = 0; i < tileMap->getMapSize().width; i++)
+	{
+		Vector<Grid*> inner;
+		for (int j = 0; j < tileMap->getMapSize().height; j++)
+		{
+			Grid *grid = Grid::create(i, j);
+			grid->setAssess(isCanAssess(Vec2(i, j)));
+			inner.pushBack(grid);
+		}
+		_gridVector.push_back(inner);
+	}
+	return true;
+
+}
+
 bool GameMap::init()
 {
 	this->setName("map");
-	return true;	
+
+	auto viewCenterListener = EventListenerCustom::create("ViewCenter", CC_CALLBACK_0(GameMap::setViewPointCenter, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(viewCenterListener, 1);
+
+
+	return true;
 }
 
 void GameMap::setMap(const std::string& mapName)
@@ -16,7 +39,6 @@ void GameMap::setMap(const std::string& mapName)
 
 	collidable = tileMap->getLayer("collidable");
 
-	//collidable->setVisible(false);
 
 	objectLayer = tileMap->getObjectGroup("objects");
 
@@ -26,6 +48,13 @@ void GameMap::setMap(const std::string& mapName)
 	tower_blue = objectLayer->getObject("tower_blue");
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
+	monster1_red = objectLayer->getObject("monster1_red");
+	monster2_red = objectLayer->getObject("monster2_red");
+	monster3_red = objectLayer->getObject("monster3_red");
+	monster1_blue = objectLayer->getObject("monster1_blue");
+	monster2_blue = objectLayer->getObject("monster2_blue");
+	monster3_blue = objectLayer->getObject("monster3_blue");
+
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -37,7 +66,7 @@ void GameMap::setMap(const std::string& mapName)
 	{
 		for (int j = 0; j < getMapSize().height; j++)
 		{
-			int tileGid = collidable->getTileGIDAt(Vec2(i,j));
+			int tileGid = collidable->getTileGIDAt(Vec2(i, j));
 			if (tileGid)
 			{
 				Value properties = tileMap->getPropertiesForGID(tileGid);
@@ -51,7 +80,10 @@ void GameMap::setMap(const std::string& mapName)
 
 		}
 	}
-	
+
+	initGrid();
+
+
 
 }
 
@@ -99,11 +131,66 @@ bool GameMap::isCanAssess(const cocos2d::Vec2 & coord)
 		&& ((mapInfo.at(coord.x).at(coord.y) == 1) ? false : true);
 }
 
-void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
+void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 {
-	if(tileMap)
+	if (tileMap)
 		tileMap->addChild(sprite);
-	log("\nHi\n");
+	switch (type)
+	{
+	case Type::Player_Blue:
+	{
+		sprite->setPosition(Vec2(player_blue.at("x").asFloat(), player_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Player_Red:
+	{
+		sprite->setPosition(Vec2(player_red.at("x").asFloat(), player_red.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Soldier_Red:
+	{
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Solider_Blue:
+	{
+		sprite->setPosition(Vec2(store_blue.at("x").asFloat(), store_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Tower_Blue:
+	{
+		sprite->setPosition(Vec2(tower_blue.at("x").asFloat(), tower_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	case Type::Tower_Red:
+	{
+		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	case Type::Monster_Red:
+	{
+		sprite->setPosition(Vec2(, ));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	case Type::Monster_Blue:
+	{
+		sprite->setPosition(Vec2(, ));
+		sprite->setLocalZOrder(0);
+	}
+	break;
+	}
+
+}
+
+void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
+{
 	switch (type)
 	{
 	case Type::Player_Blue:
@@ -119,7 +206,7 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 	break;
 	case Type::Soldier_Red:
 	{
-		sprite->setPosition(Vec2(store_red.at("x").asFloat(),store_red.at("y").asFloat()));
+		sprite->setPosition(Vec2(store_red.at("x").asFloat(), store_red.at("y").asFloat()));
 	}
 	break;
 	case Type::Solider_Blue:
@@ -137,9 +224,39 @@ void GameMap::addSprite(cocos2d::Sprite * sprite,Type type)
 		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
 	}
 	break;
+	case Type::Monster_Red:
+	{
+		sprite->setPosition(Vec2(, ));
 	}
-
+	break;
+	case Type::Monster_Blue:
+	{
+		sprite->setPosition(Vec2(, ));
+	}
+	break;
+	}
 }
+
+void GameMap::setViewPointCenter()
+{
+	if (_centerSprite)
+	{
+		Vec2 spritePos = _centerSprite->getPosition();
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 mapPos = Vec2(visibleSize.width/2 - spritePos.x*getScaleX(),
+			visibleSize.height/2 - spritePos.y*getScaleY());
+		if (mapPos.x > 0)
+			mapPos.x = 0;
+		else if(mapPos.x < visibleSize.width-getMapSize().width*getTileSize().width*getScaleX() )
+			mapPos.x = visibleSize.width - getMapSize().width*getTileSize().width*getScaleX();
+		if (mapPos.y > 0)
+			mapPos.y = 0;
+		else if (mapPos.y < visibleSize.height - getMapSize().height*getTileSize().height*getScaleY())
+			mapPos.y = visibleSize.height - getMapSize().height*getTileSize().height*getScaleY();
+		this->setPosition(mapPos);
+	}
+}
+
 
 GameMap * GameMap::getCurrentMap()
 {
