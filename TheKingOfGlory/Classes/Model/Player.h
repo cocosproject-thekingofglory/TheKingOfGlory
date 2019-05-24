@@ -21,9 +21,10 @@ const int PLAYER_LEVEL_UP_EXP = 8;
 const int PLAYER_MAX_LEVEL = 15;
 const int PLAYER_INITIAL_LEVEL = 1;
 const int PLAYER_INITIAL_MONEY = 100;
-
-const int PLAYER_LEVEL_UP_DAMAGE = 5;
+//升级加属性
+const float PLAYER_LEVEL_UP_DAMAGE = 5.0;
 const float PLAYER_LEVEL_UP_DEFEND = 0.01;
+const float PLAYER_LEVEL_UP_HPVALUE = 20;
 
 class Player :public SpriteBase
 {

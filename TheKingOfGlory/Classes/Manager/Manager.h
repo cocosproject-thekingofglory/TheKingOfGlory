@@ -6,6 +6,7 @@
 #include "Model/Tower.h"
 #include "PlayerManager.h"
 #include "Model/Home.h"
+#include "Model/store/Store.h"
 
 USING_NS_CC;
 
@@ -21,6 +22,9 @@ const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";
 
+const std::string RED_STORE_FILENAME = "tower.png";
+const std::string BLUE_STORE_FILENAME = "tower.png";
+
 
 class Manager :public cocos2d::Layer
 {
@@ -32,7 +36,7 @@ public:
 
 	Tower* createTower(const std::string &filename, const int color);
 
-
+	Store* createStore(const std::string &filename, const int color);
 
 	void scheduleAttack();
 	void scheduleCreateSoldier();

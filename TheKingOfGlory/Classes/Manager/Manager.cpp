@@ -33,6 +33,18 @@ Tower* Manager::createTower(const std::string &filename, const int color)
 	return nullptr;
 }
 
+Store* Manager::createStore(const std::string &filename, const int color)
+{
+	auto store = Store::createWithSpriteFrameName(filename, color);
+	if (store)
+	{
+		_towerList[color].pushBack(store);
+		return store;
+	}
+	CC_SAFE_DELETE(store);
+	return nullptr;
+}
+
 
 bool Manager::init()
 {
@@ -43,6 +55,7 @@ bool Manager::init()
 
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
+		//血泉
 		auto redhome = Home::create("Pictures/GameItem/redhome.png", RED);
 		redhome->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(redhome, GameMap::Type::Player_Red);
@@ -54,7 +67,7 @@ bool Manager::init()
 		GameMap::getCurrentMap()->addSprite(bluehome, GameMap::Type::Player_Blue);
 		bluehome->setZOrder(0);
 		_homeList.pushBack(bluehome);
-
+		//防御塔
 		auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
 		tower_blue_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Tower_Blue);
@@ -62,6 +75,14 @@ bool Manager::init()
 		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
 		tower_red_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
+		//商店
+		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
+		store_blue->setScale(1.8);
+		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Player_Blue);
+
+		auto store_red = createStore(RED_STORE_FILENAME, RED);
+		store_red->setScale(1.8);
+		GameMap::getCurrentMap()->addSprite(store_red, GameMap::Type::Player_Red);
 
 		playerManager = PlayerManager::create();
 		this->addChild(playerManager, -1);

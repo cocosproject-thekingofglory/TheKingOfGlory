@@ -597,6 +597,7 @@ void Player::updateLevel()
 		_level++;
 		addDamage(PLAYER_LEVEL_UP_DAMAGE);
 		addDefend(PLAYER_LEVEL_UP_DEFEND);
+		addHPValue(PLAYER_LEVEL_UP_HPVALUE);
 	}
 }
 

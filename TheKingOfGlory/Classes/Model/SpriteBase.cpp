@@ -24,7 +24,7 @@ SpriteBase* SpriteBase::createWithSpriteFrameName(const std::string& filename)
 
 void SpriteBase::addHPValue(float add)
 {
-	setHPValue(add + getNowHPValue());
+	setHPValue(add + getHPValue());
 	updateHPBar();
 }
 
@@ -32,4 +32,5 @@ void SpriteBase::addHPValue(float add)
 void SpriteBase::addNowHPValue(float add)
 {
 	setNowHPValue(MIN(getHPValue(), add + getNowHPValue()));
+	updateHPBar();
 }
