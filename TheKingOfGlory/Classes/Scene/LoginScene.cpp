@@ -2,6 +2,7 @@
 #include "Util/GameAudio.h"
 #include "StartScene.h"
 #include "Model/User.h"
+#include "Model/Skill.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -24,7 +25,6 @@ bool LoginScene::init()
 	createBackground();
 	createLoginButton();
 	initUserBox();
-
 
 
 	return true;

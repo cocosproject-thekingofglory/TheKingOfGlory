@@ -179,8 +179,8 @@ void LoadingScene::progressUpdate()
 		auto callFunc = CallFunc::create([=] {
 
 			auto delay = DelayTime::create(2.0f);
-			const auto transition = TransitionFade::create(1, LoginScene::createScene());
-			//const auto transition = TransitionFade::create(1, GameScene::createScene());
+			//const auto transition = TransitionFade::create(1, LoginScene::createScene());
+			const auto transition = TransitionFade::create(1, GameScene::createScene());
 			auto action = Sequence::create(delay, transition, NULL);
 			Director::getInstance()->replaceScene(transition);
 		});
