@@ -15,6 +15,7 @@ Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 
 bool Tower::init(int color)
 {
+	setName("Tower");
 	setAnchorPoint(Vec2::ZERO);
 	setColor(color);
 	setAttackRadius(TOWER_ATTACK_RADIUS);
