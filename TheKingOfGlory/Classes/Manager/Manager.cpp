@@ -74,6 +74,7 @@ bool Manager::init()
 				player->setMove(true);
 				player->setAttack(true);
 			}
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
@@ -122,7 +123,7 @@ void Manager::scheduleAttack()
 			{
 				auto player = pair.second;
 				if (player->getColor() != _soldierList[i].at(j)->getColor() &&
-					insideAttack(_soldierList[i].at(j), player) && _soldierList[i].at(j)->getNowHPValue() > 0)
+					insideAttack(_soldierList[i].at(j), player) && _soldierList[i].at(j)->getNowHPValue() >0)
 				{
 					player->addAttackTarget(_soldierList[i].at(j));
 					_soldierList[i].at(j)->addBeAttackTarget(player);
@@ -166,7 +167,7 @@ void Manager::scheduleAttack()
 		for (auto pair2 : playerManager->getPlayerList())
 		{
 			auto player2 = pair2.second;
-			if (player1->getColor() != player2->getColor() && insideAttack(player2, player1))
+			if (player1->getColor() != player2->getColor() && insideAttack(player2, player1)&&player2->getNowHPValue()>0)
 			{
 				player1->addAttackTarget(player2);
 				player2->addBeAttackTarget(player1);
@@ -175,7 +176,7 @@ void Manager::scheduleAttack()
 		}
 		for (auto tower : _towerList[player1->getColor() ^ 1])
 		{
-			if (insideAttack(tower, player1) && tower->getNowHPValue() > 0)
+			if (insideAttack(tower, player1) && tower->getNowHPValue() >= 0)
 			{
 				player1->addAttackTarget(tower);
 				tower->addBeAttackTarget(player1);

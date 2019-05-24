@@ -66,6 +66,9 @@
     <ClCompile Include="..\Classes\UI\Tip.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\Skill.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -135,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\UI\Tip.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Skill.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
