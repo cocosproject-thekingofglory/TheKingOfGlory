@@ -14,43 +14,24 @@ const int MONSTER_ATTACK_INTERVAL = 100;
 const float MONSTER_EXPVALUE = 30.0;
 const int MONSTER_MONEY = 5;
 
-class Monster :public SpriteBase
+class Monster :public Soldier
 {
 public:
-	virtual bool init(int color);
-
-	bool _isAttack = 0;
-
-	enum class Status : std::int8_t
-	{
-		STANDING,
-		ATTACKING,
-		DEAD,
-	};
 
 	enum MonsterType {
-		MONSTER,
+		MONSTER1,
+		MONSTER2,
+		MONSTER3,
+		MONSTER4,
 		REDBUFF,
 		BLUEBUFF
 	};
 
-	void setStatus(Status status) { _status = status; }
-	Status getStatus() { return _status; }
-
-	virtual bool attack();//返回是否进行了攻击
-	void stopAttack();
-
-	virtual float beAttack(const float damage);
-
 	static Monster* createWithSpriteFrameName(const std::string& filename, int color);
 
-	virtual void setHPBar();
-	virtual void updateHPBar();
 
 	void setDestination(Vec2 destination) { _destination = destination; }
 	Vec2 getDestination() { return _destination; }
-
-	virtual void initAnimation();
 
 	void randomDestination();
 

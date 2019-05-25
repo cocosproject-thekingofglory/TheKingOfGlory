@@ -19,12 +19,12 @@ Soldier* Manager::createSoldier(const std::string &filename, const int color)
 	return nullptr;
 }
 
-Monster* Manager::createMonster(const std::string &filename, const int color)
+Monster* Manager::createMonster(const std::string &filename, const int color, int pos)
 {
 	auto monster = Monster::createWithSpriteFrameName(filename, color);
 	if (monster)
 	{
-		_monsterList[color].pushBack(monster);
+		_monsterList[color].insert(_monsterList[color].begin() + pos, monster);
 		return monster;
 	}
 	CC_SAFE_DELETE(monster);
@@ -60,7 +60,7 @@ bool Manager::init()
 		redhome->setZOrder(0);
 		_homeList.pushBack(redhome);
 
-		auto bluehome = Home::create("Pictures/GameItem/redhome.png", BLUE);
+		auto bluehome = Home::create("Pictures/GameItem/bluehome.png", BLUE);
 		bluehome->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(bluehome, GameMap::Type::Player_Blue);
 		bluehome->setZOrder(0);
@@ -86,10 +86,10 @@ bool Manager::init()
 				player->setAttack(true);
 			}
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
-			schedule(CC_CALLBACK_0(Manager::scheduleCreateMonster, this), 1.8f, "CreateMonster");
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateMonster, this), 5.0f, "CreateMonster");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
-			schedule(CC_CALLBACK_0(Manager::AIHero, this), 2.0f, "PlayerAttack");
+			schedule(CC_CALLBACK_0(Manager::AIHero, this), 0.5f, "PlayerAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
 		});
@@ -276,17 +276,28 @@ void Manager::scheduleCreateSoldier()
 	}
 }
 
-//待补充
 void Manager::scheduleCreateMonster()
 {
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < _monsterList[i].size; j++)
-		{
 
+	for (int i = 0; i < _monsterList[i].size; i++)
+	{
+		if (_monsterList[RED].at(i)->getNowHPValue <= 0)
+		{
+			auto monster = createMonster(MONSTER1_RED_FILENAME, RED, i);
+			GameMap::getCurrentMap()->addSprite(monster, GameMap::Type::Monster_Red);
+		}
+	}
+
+	for (int i = 0; i < _monsterList[i].size; i++)
+	{
+		if (_monsterList[BLUE].at(i)->getNowHPValue <= 0)
+		{
+			auto monster = createMonster(MONSTER1_BLUE_FILENAME, BLUE, i);
+			GameMap::getCurrentMap()->addSprite(monster, GameMap::Type::Monster_Blue);
 		}
 	}
 }
+
 
 void Manager::scheduleDeadDetect()
 {
@@ -331,6 +342,7 @@ void Manager::scheduleDeadDetect()
 			{
 				tower->destroy();
 				unschedule( "CreateSoldier");
+				unschedule( "CreateMonster");
 				unschedule( "TowertAttack");
 				unschedule( "UpdateAttack");
 				unschedule( "PlayerAttack");
@@ -431,19 +443,33 @@ void Manager::scheduleHomeRecover()
 
 void Manager::AIHero()
 {
-	
+
 	for (auto pair : playerManager->getPlayerList())
 	{
 		auto player = pair.second;
 		if (!player->isLocal() && player->getStatus() != Player::Status::DEAD)
 		{
-			if ((player->getNowHPValue()/player->getHPValue()) <0.5 )
+			if ((player->getNowHPValue() / player->getHPValue()) < 0.5 || player->getRecover())
 			{
-				if(player->getColor()==BLUE)
-					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Blue));
-				else
-					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Red));
-
+				if (player->getRecover())
+				{
+					if ((player->getNowHPValue() / player->getHPValue()) > 0.9)
+					{
+						player->setRecover(false);
+					}
+					if (player->getAttackTarget().size())
+					{
+						player->attack();
+					}
+				}
+				if ((player->getNowHPValue() / player->getHPValue()) < 0.5)
+				{
+					if (player->getColor() == BLUE)
+						player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Blue));
+					else
+						player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Red));
+					player->setRecover(true);
+				}
 			}
 			else
 			{
@@ -453,8 +479,85 @@ void Manager::AIHero()
 				}
 				else
 				{
+					bool isFind = false;
 					if (_towerList[player->getColor() ^ 1].size())
-						player->startMove(_towerList[player->getColor() ^ 1].front()->getPosition());
+					{
+						if (player->getBeAttackTarget().size())
+						{
+							for (auto target : player->getBeAttackTarget())
+							{
+								if (target->getName() != "Tower")
+								{
+									player->startMove(player->getBeAttackTarget().front()->getPosition());
+									isFind = true;
+									break;
+								}
+								else
+								{
+									player->startMove(Vec2(3200, 3200));
+									isFind = true;
+									break;
+								}
+							}
+
+						}
+						auto tower = _towerList[player->getColor() ^ 1].front();
+						if (tower->getAttackTarget().size())
+						{
+							player->startMove(_towerList[player->getColor() ^ 1].front()->getPosition());
+							isFind = true;
+						}
+						else
+						{
+							for (auto& solider : _soldierList[player->getColor() ^ 1])
+							{
+								if ((solider->getPosition().x - tower->getPosition().x)*
+									(player->getPosition().x - tower->getPosition().x) > 0
+									&& !tower->insideAttack(solider))
+								{
+									player->startMove(solider->getPosition());
+									isFind = true;
+									break;
+								}
+
+							}
+							if (!isFind)
+							{
+								for (auto pair : playerManager->getPlayerList())
+								{
+									auto otherPlayer = pair.second;
+									if (otherPlayer->getColor() != player->getColor()
+										&& (otherPlayer->getPosition().x - tower->getPosition().x)*
+										(player->getPosition().x - tower->getPosition().x) > 0
+										&& !tower->insideAttack(otherPlayer))
+									{
+										player->startMove(otherPlayer->getPosition());
+										isFind = true;
+										break;
+									}
+								}
+								if (!isFind)
+								{
+									if (_towerList[player->getColor()].size())
+									{
+										auto mytower = _towerList[player->getColor()].front();
+										if (mytower->getBeAttackTarget().size())
+										{
+											player->startMove(mytower->getBeAttackTarget().front()->getPosition());
+											isFind = true;
+										}
+									}
+									else
+									{
+										float dx = rand() % 400 - 200;
+										float dy = rand() % 400 - 200;
+										player->startMove(Vec2(getPositionX() + dx, getPositionY() + dy));
+									}
+								}
+							}
+
+						}
+					}
 				}
 
 			}

@@ -18,12 +18,12 @@ private:
 	cocos2d::ValueMap tower_blue;
 	cocos2d::ValueMap store_red;
 	cocos2d::ValueMap store_blue;
-	cocos2d::ValueMap monster1_red;
-	cocos2d::ValueMap monster2_red;
-	cocos2d::ValueMap monster3_red;
-	cocos2d::ValueMap monster1_blue;
-	cocos2d::ValueMap monster2_blue;
-	cocos2d::ValueMap monster3_blue;
+	cocos2d::ValueMap monster1_red, monster1_blue;
+	cocos2d::ValueMap monster2_red, monster2_blue;
+	cocos2d::ValueMap monster3_red, monster3_blue;
+	cocos2d::ValueMap monster4_red, monster4_blue;
+	cocos2d::ValueMap redbuff1, redbuff2;
+	cocos2d::ValueMap bluebuff1, bluebuff2;;
 	cocos2d::Sprite* _centerSprite;
 
 	bool initGrid();
@@ -33,7 +33,7 @@ public:
 	enum Type
 	{
 		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue,
-		Monster_Red, Monster_Blue
+		Monster_Red,Monster_Blue
 	};
 
 

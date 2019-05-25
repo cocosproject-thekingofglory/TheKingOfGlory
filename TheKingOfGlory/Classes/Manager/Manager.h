@@ -22,8 +22,18 @@ const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";
 
-const std::string RED_MONSTER_FILENAME = "redMonsterStand (1).png";
-const std::string BLUE_MONSTER_FILENAME = "blueMonsterStand (1).png";
+const std::string MONSTER1_RED_FILENAME = "monster1RedStand (1).png";
+const std::string MONSTER1_BLUE_FILENAME = "monster1BlueStand (1).png";
+const std::string MONSTER2_RED_FILENAME = "monster2RedStand (1).png";
+const std::string MONSTER2_BLUE_FILENAME = "monster2BlueStand (1).png";
+const std::string MONSTER3_RED_FILENAME = "monster3RedStand (1).png";
+const std::string MONSTER3_BLUE_FILENAME = "monster3BlueStand (1).png";
+const std::string MONSTER4_RED_FILENAME = "monster4RedStand (1).png";
+const std::string MONSTER4_BLUE_FILENAME = "monster4BlueStand (1).png";
+const std::string REDBUFF1_FILENAME = "redBuff1Stand (1).png";
+const std::string REDBUFF2_FILENAME = "redBuff2Stand (1).png";
+const std::string BLUEBUFF1_FILENAME = "blueBuff1Stand (1).png";
+const std::string BLUEBUFF2_FILENAME = "blueBuff2Stand (1).png";
 
 class Manager :public cocos2d::Layer
 {
@@ -33,7 +43,7 @@ public:
 
 	Soldier* createSoldier(const std::string &filename, const int color);
 
-	Monster* createMonster(const std::string &filename, const int color);
+	Monster* createMonster(const std::string &filename, const int color, int pos);
 
 	Tower* createTower(const std::string &filename, const int color);
 
@@ -41,7 +51,7 @@ public:
 
 	void scheduleAttack();
 	void scheduleCreateSoldier();
-	void scheduleCreateMonster(); //À¿Õˆ∫Û¥¥Ω®
+	void scheduleCreateMonster();
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
 	void scheduleHomeRecover();
@@ -49,8 +59,8 @@ public:
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];
-	Vector<Tower*> _towerList[2];
 	Vector<Monster*> _monsterList[2];
+	Vector<Tower*> _towerList[2];
 	Vector<Home*> _homeList;
 	CREATE_FUNC(Manager);
 

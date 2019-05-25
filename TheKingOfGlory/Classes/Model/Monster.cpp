@@ -2,7 +2,7 @@
 #include"Model/GameMap.h"
 #include<cmath>
 
-bool Monster::init(int color)
+bool Monster::Soldier::init(int color)
 {
 	setColor(color);
 	setStatus(Status::STANDING);
@@ -18,22 +18,34 @@ bool Monster::init(int color)
 	return true;
 }
 
-void Monster::initAnimation()
+void Monster::Soldier::initAnimation()
 {
 
 	const float delay = 0.1;
 	loadAnimation("monsterStand", delay, 8);
 }
 
-//貌似不用
-void Monster::randomDestination()
+//移动寻路
+void Monster::Soldier::move()
 {
-	float dx = rand() % 400 - 200;
-	float dy = rand() % 400 - 200;
-	setDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+	if (getStatus() == Status::MOVING)
+	{
+		//在规定限定区域内遇到英雄攻击移动
+
+		auto position = this->getPosition();
+
+
+	}
 }
 
-bool Monster::attack()
+
+void Monster::Soldier::stopMove()
+{
+	setStatus(Monster::Status::STANDING);
+	unschedule("move");
+}
+
+bool Monster::Soldier::attack()
 {
 	if (_attackTargetList.size())
 	{
@@ -54,12 +66,12 @@ bool Monster::attack()
 	return false;
 }
 
-void Monster::stopAttack()
+void Monster::Soldier::stopAttack()
 {
 	stopAnimation("monsterAttack", this);
 }
 
-float Monster::beAttack(const float damage)
+float Monster::Soldier::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
 	nowHP -= damage;
@@ -76,12 +88,10 @@ float Monster::beAttack(const float damage)
 	return nowHP;
 }
 
-void Monster::setHPBar()
+void Monster::Soldier::setHPBar()
 {
-	if (getColor() == RED)
-		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
-	else if (getColor() == BLUE)
-		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
+
+	_HPBar = LoadingBar::create("Pictures/GameItem/blueBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -94,7 +104,7 @@ void Monster::setHPBar()
 
 }
 
-void Monster::updateHPBar()
+void Monster::Soldier::updateHPBar()
 {
 	if (_HPBar != NULL)
 	{

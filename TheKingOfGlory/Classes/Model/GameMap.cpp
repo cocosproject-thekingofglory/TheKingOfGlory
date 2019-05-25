@@ -51,9 +51,16 @@ void GameMap::setMap(const std::string& mapName)
 	monster1_red = objectLayer->getObject("monster1_red");
 	monster2_red = objectLayer->getObject("monster2_red");
 	monster3_red = objectLayer->getObject("monster3_red");
+	monster4_red = objectLayer->getObject("monster4_red");
 	monster1_blue = objectLayer->getObject("monster1_blue");
 	monster2_blue = objectLayer->getObject("monster2_blue");
 	monster3_blue = objectLayer->getObject("monster3_blue");
+	monster4_blue = objectLayer->getObject("monster4_blue");
+	redbuff1 = objectLayer->getObject("redbuff1");
+	redbuff2 = objectLayer->getObject("redbuff2");
+	bluebuff1 = objectLayer->getObject("bluebuff1");
+	bluebuff2 = objectLayer->getObject("bluebuff2");
+
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -172,28 +179,6 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 		sprite->setLocalZOrder(1);
 	}
 	break;
-		case Type::Monster_Red:
-	{
-		sprite->setPosition(Vec2(, ));
-	}
-	break;
-	case Type::Monster_Blue:
-	{
-		sprite->setPosition(Vec2(, ));
-	}
-	break;
-	case Type::Monster_Red:
-	{
-		sprite->setPosition(Vec2(, ));
-		sprite->setLocalZOrder(0);
-	}
-	break;
-	case Type::Monster_Blue:
-	{
-		sprite->setPosition(Vec2(, ));
-		sprite->setLocalZOrder(0);
-	}
-	break;
 	}
 
 }
@@ -233,16 +218,6 @@ void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
 		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
 	}
 	break;
-	case Type::Monster_Red:
-	{
-		sprite->setPosition(Vec2(, ));
-	}
-	break;
-	case Type::Monster_Blue:
-	{
-		sprite->setPosition(Vec2(, ));
-	}
-	break;
 	}
 }
 
@@ -280,16 +255,6 @@ cocos2d::Vec2 GameMap::getObjectPosition(Type type)
 	case Type::Tower_Red:
 	{
 		position = Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat());
-	}
-	break;
-	case Type::Monster_Red:
-	{
-		position = Vec2(,);
-	}
-	break;
-	case Type::Monster_Blue:
-	{
-		position = Vec2(, );
 	}
 	break;
 	}
