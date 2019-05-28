@@ -39,11 +39,11 @@ public:
 	void setStatus(Status status) { _status = status; }
 	Status getStatus() { return _status; }
 
-	void startMove();
-	void stopMove();
+	virtual void startMove();
+	virtual void stopMove();
 
 	virtual bool attack();//返回是否进行了攻击
-	void stopAttack();
+	virtual void stopAttack();
 
 	virtual float beAttack(const float damage);
 
@@ -67,7 +67,7 @@ public:
 	void randomSmallDestination();
 	void randomBigDestination();
 
-private:
+protected:
 	float _speed;
 	Vec2 _destination;
 	Vec2 _Destination;

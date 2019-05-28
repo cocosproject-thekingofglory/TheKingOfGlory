@@ -20,6 +20,18 @@ Soldier* Manager::createSoldier(const std::string &filename, const int color)
 	return nullptr;
 }
 
+GunCar* Manager::createGunCar(const std::string &filename, const int color)
+{
+	auto guncar = GunCar::createWithSpriteFrameName(filename, color);
+	if (guncar)
+	{
+		_guncarList[color].pushBack(guncar);
+		return guncar;
+	}
+	CC_SAFE_DELETE(guncar);
+	return nullptr;
+}
+
 
 Tower* Manager::createTower(const std::string &filename, const int color)
 {
@@ -97,8 +109,10 @@ bool Manager::init()
 				player->setAttack(true);
 			}
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
-			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleSoldierAttack, this), 1.0f, "UpdateSoldierAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleGunCarAttack, this), 1.0f, "UpdateGunCarAttack");
 			schedule(CC_CALLBACK_0(Manager::AIHero, this), 2.0f, "PlayerAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
@@ -112,7 +126,7 @@ bool Manager::init()
 	return true;
 }
 
-void Manager::scheduleAttack()
+void Manager::scheduleSoldierAttack()
 {
 
 	//清空攻击和被攻击列表
@@ -123,6 +137,7 @@ void Manager::scheduleAttack()
 			_soldierList[i].at(j)->getAttackTarget().clear();
 			_soldierList[i].at(j)->getBeAttackTarget().clear();
 
+		
 		}
 	}
 	for (auto pair : playerManager->getPlayerList())
@@ -155,6 +170,7 @@ void Manager::scheduleAttack()
 				}
 
 			}
+			//打兵
 			for (int k = 0; k < _soldierList[i ^ 1].size(); k++)
 			{
 				if (insideAttack(_soldierList[i ^ 1].at(k), _soldierList[i].at(j)))
@@ -164,6 +180,7 @@ void Manager::scheduleAttack()
 					break;
 				}
 			}
+			//打塔
 			for (int k = 0; k < _towerList[i ^ 1].size(); k++)
 			{
 				if (insideAttack(_towerList[i ^ 1].at(k), _soldierList[i].at(j))
@@ -171,6 +188,17 @@ void Manager::scheduleAttack()
 				{
 					_soldierList[i].at(j)->addAttackTarget(_towerList[i ^ 1].at(k));
 					_towerList[i ^ 1].at(k)->addBeAttackTarget(_soldierList[i].at(j));
+					break;
+				}
+			}
+			//打炮车
+			for (int k = 0; k < _guncarList[i ^ 1].size(); k++)
+			{
+				if (insideAttack(_guncarList[i ^ 1].at(k), _soldierList[i].at(j))
+					&& _guncarList[i ^ 1].at(k)->getNowHPValue() > 0)
+				{
+					_soldierList[i].at(j)->addAttackTarget(_guncarList[i ^ 1].at(k));
+					_guncarList[i ^ 1].at(k)->addBeAttackTarget(_soldierList[i].at(j));
 					break;
 				}
 			}
@@ -228,6 +256,83 @@ void Manager::scheduleAttack()
 
 
 }
+void Manager::scheduleGunCarAttack()
+{
+
+	//清空攻击和被攻击列表
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < _guncarList[i].size(); j++)
+		{
+
+			_guncarList[i].at(j)->getAttackTarget().clear();
+			_guncarList[i].at(j)->getBeAttackTarget().clear();
+		}
+	}
+
+	//寻找攻击和被攻击目标
+	for (int i = 0; i < 2; i++)
+	{
+		//为炮车找
+		for (int j = 0; j < _guncarList[i].size(); j++)
+		{
+			for (auto pair : playerManager->getPlayerList())
+			{
+				auto player = pair.second;
+				if (player->getColor() != _guncarList[i].at(j)->getColor() &&
+					insideAttack(player, _guncarList[i].at(j)) && player->getNowHPValue() > 0)
+				{
+					_guncarList[i].at(j)->addAttackTarget(player);
+					player->addBeAttackTarget(_guncarList[i].at(j));
+				}
+
+			}
+			for (int k = 0; k < _soldierList[i ^ 1].size(); k++)
+			{
+				if (_guncarList[i].at(j)->insideAttack(_soldierList[i ^ 1].at(k)))
+				{
+					_guncarList[i].at(j)->addAttackTarget(_soldierList[i ^ 1].at(k));
+					_soldierList[i ^ 1].at(k)->addBeAttackTarget(_guncarList[i].at(j));
+					break;
+				}
+			}
+			//打炮车
+			for (int k = 0; k < _guncarList[i ^ 1].size(); k++)
+			{
+				if (_guncarList[i].at(j)->insideAttack(_soldierList[i ^ 1].at(k)))
+				{
+					_soldierList[i].at(j)->addAttackTarget(_guncarList[i ^ 1].at(k));
+					_guncarList[i ^ 1].at(k)->addBeAttackTarget(_soldierList[i].at(j));
+					break;
+				}
+			}
+
+		}
+
+	}
+
+
+
+	for (int i = 0; i < 2; i++)
+	{
+		//炮车攻击
+		for (int j = 0; j < _guncarList[i].size(); j++)
+		{
+			//进行攻击就停止移动
+			if (_guncarList[i].at(j)->attack())
+			{
+				_guncarList[i].at(j)->stopMove();
+			}
+			else
+			{
+				_guncarList[i].at(j)->startMove();
+			}
+		}
+
+	}
+
+
+}
 
 void Manager::scheduleCreateSoldier()
 {
@@ -244,6 +349,25 @@ void Manager::scheduleCreateSoldier()
 		auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
 		soldier_blue->startMove();
 		GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Solider_Blue);
+
+	}
+}
+
+void Manager::scheduleCreateGunCar()
+{
+	if (_guncarList[RED].size() < 10)
+	{
+		auto guncar_red = createGunCar(RED_GUNCAR_FILENAME, RED);
+		guncar_red->startMove();
+		GameMap::getCurrentMap()->addSprite(guncar_red, GameMap::Type::Soldier_Red);
+
+	}
+
+	if (_guncarList[BLUE].size() < 10)
+	{
+		auto guncar_blue = createSoldier(BLUE_GUNCAR_FILENAME, BLUE);
+		guncar_blue->startMove();
+		GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
 
 	}
 }
@@ -279,8 +403,10 @@ void Manager::scheduleDeadDetect()
 			{
 				tower->destroy();
 				unschedule( "CreateSoldier");
+				unschedule("CreateGunCar");
 				unschedule( "TowertAttack");
-				unschedule( "UpdateAttack");
+				unschedule( "UpdateSoldierAttack");
+				unschedule("UpdateGunCarAttack");
 				unschedule( "PlayerAttack");
 				unschedule("Home");
 				unschedule( "DeadDetect");
@@ -342,6 +468,15 @@ void Manager::scheduleTowerAttack()
 				}
 			}
 
+			for (int k = 0; k < _guncarList[i ^ 1].size(); k++)
+			{
+				if (_towerList[i].at(j)->insideAttack(_guncarList[i ^ 1].at(k)))
+				{
+					_towerList[i].at(j)->addAttackTarget(_guncarList[i ^ 1].at(k));
+					_guncarList[i ^ 1].at(k)->addBeAttackTarget(_towerList[i].at(j));
+					break;
+				}
+			}
 		}
 
 

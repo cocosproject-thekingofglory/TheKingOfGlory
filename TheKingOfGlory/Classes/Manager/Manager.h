@@ -7,6 +7,7 @@
 #include "PlayerManager.h"
 #include "Model/Home.h"
 #include "Model/store/Store.h"
+#include "Model/GunCar.h"
 
 USING_NS_CC;
 
@@ -19,10 +20,13 @@ const Vec2 BLUE_BIRTH_POINT = Vec2(150.0, 150.0);
 const std::string RED_SOLDIER_FILENAME = "soldierMove (1).png";
 const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
 
+const std::string RED_GUNCAR_FILENAME = "soldierMove (1).png";
+const std::string BLUE_GUNCAR_FILENAME = "soldierMove (1).png";
+
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";
 
-const std::string RED_STORE_FILENAME = "1001.png";
+const std::string RED_STORE_FILENAME = "tower.png";
 const std::string BLUE_STORE_FILENAME = "tower.png";
 
 
@@ -34,12 +38,16 @@ public:
 
 	Soldier* createSoldier(const std::string &filename, const int color);
 
+	GunCar* createGunCar(const std::string &filename, const int color);
+
 	Tower* createTower(const std::string &filename, const int color);
 
 	Store* createStore(const std::string &filename, const int color);
 
-	void scheduleAttack();
+	void scheduleSoldierAttack();
+	void scheduleGunCarAttack();
 	void scheduleCreateSoldier();
+	void scheduleCreateGunCar();
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
 	void scheduleHomeRecover();
@@ -47,6 +55,7 @@ public:
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];
+	Vector<GunCar*> _guncarList[2];
 	Vector<Tower*> _towerList[2];
 	Vector<Home*> _homeList;
 	CREATE_FUNC(Manager);

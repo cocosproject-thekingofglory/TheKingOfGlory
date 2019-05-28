@@ -57,21 +57,22 @@ void Store::createBg()
 	_hasbg = true;
 
 	_bg = Sprite::create("Pictures/UI/Menu1.png");
-	//_bg->setPosition(Vec2(0, 0));
+	_bg->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height / 2));
 	_bg->setScaleX(3);
 	//this->addChild(_bg,1);
-	Manager::getInstance()->playerManager->getLocalPlayer()->addChild(_bg, 1);
+	//Manager::getInstance()->playerManager->getLocalPlayer()->addChild(_bg, 1);
+	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(_bg, 1);
 	//createCloseButton();
 	_closeButton = Button::create("Pictures/UI/Close.png");
 	_closeButton->setScale(1);
 	_closeButton->setPosition(Vec2(_bg->getContentSize().width - _closeButton->getContentSize().width
 		, _bg->getContentSize().height - _closeButton->getContentSize().height));
 
-	auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]()
+	/*auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]()
 	{
 		schedule(CC_CALLBACK_0(Store::bgMove, this), 0.1f, "bgMove");
 	}), NULL);
-	this->runAction(sequence);
+	this->runAction(sequence);*/
 
 	_closeButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
 	{
@@ -117,8 +118,9 @@ void Store::removeBg()
 		Director::getInstance()->getEventDispatcher()->removeEventListener(_equipmentList.at(i)->listener);
 	}
 	_bg->removeAllChildrenWithCleanup(true);
-	Manager::getInstance()->playerManager->getLocalPlayer()->removeChild(_bg, true);
+	//Manager::getInstance()->playerManager->getLocalPlayer()->removeChild(_bg, true);
 	//this->removeChild(_bg, true);
+	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->removeChild(_bg, true);
 }
 
 void Store::bgMove()

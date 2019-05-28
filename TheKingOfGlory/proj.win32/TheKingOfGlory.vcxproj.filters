@@ -69,6 +69,9 @@
     <ClCompile Include="..\Classes\Model\store\Store.cpp">
       <Filter>Model\store</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\GunCar.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -141,6 +144,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Model\store\Store.h">
       <Filter>Model\store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\GunCar.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
