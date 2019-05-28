@@ -4,6 +4,7 @@
 #include"Model/SpriteBase.h"
 #include "Model/Soldier.h"
 #include "Util/PathArithmetic.h"
+#include "store/EquipmentBase.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -152,6 +153,14 @@ public:
 	int getMoney() { return _money; }
 	void setMoney(int money) { _money = money; }
 
+	//装备
+	Map<int,EquipmentBase*> getEquipmentList() { return _equipmentMap; }
+
+	void addEquipment(EquipmentBase*equip, int id) { _equipmentMap.insert(id, equip); }
+	EquipmentBase* getEquipmentById(int id);
+	void removeEquipmentById(int id);
+	int getEquipmentCnt() { return _equipmentMap.size(); }
+
 private:
 	std::string _id;
 	std::string _roleName;
@@ -182,7 +191,6 @@ private:
 
 	void move();
 
-
 	//金钱、经验
 	int _money;
 	int _EXP;
@@ -190,4 +198,7 @@ private:
 	int _level;
 
 	LoadingBar* _EXPBar;
+
+	//装备
+	Map<int,EquipmentBase*>_equipmentMap;
 };

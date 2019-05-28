@@ -1,6 +1,7 @@
 ﻿#include "Manager.h"
 #include "Controller/GameController.h"
 #include "UI/CountDown.h"
+#include "../Model/store/EquipmentBase.h"
 
 USING_NS_CC;
 
@@ -76,9 +77,9 @@ bool Manager::init()
 		tower_red_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
 		//商店
-		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
+		/*auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
 		store_blue->setScale(1.8);
-		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Player_Blue);
+		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Player_Blue);*/
 
 		auto store_red = createStore(RED_STORE_FILENAME, RED);
 		store_red->setScale(1.8);
@@ -113,8 +114,6 @@ bool Manager::init()
 
 void Manager::scheduleAttack()
 {
-
-
 
 	//清空攻击和被攻击列表
 	for (int i = 0; i < 2; i++)

@@ -22,7 +22,7 @@ const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";
 
-const std::string RED_STORE_FILENAME = "tower.png";
+const std::string RED_STORE_FILENAME = "1001.png";
 const std::string BLUE_STORE_FILENAME = "tower.png";
 
 

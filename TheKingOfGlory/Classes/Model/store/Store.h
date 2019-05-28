@@ -5,6 +5,7 @@
 #include "../GameMap.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "StoreScene.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -19,17 +20,21 @@ public:
 
 	//CREATE_FUNC(Store);
 private:
+	
 	void createListener();
 	void onTouchEnded(Touch*touch, Event*event);
 	bool onTouchBegan(Touch*touch, Event*event);
-	void createMenu();
-	void createCloseButton();
 
 	Vector<EquipmentBase*> _equipmentList;
-	Size _visibleSize;
 
-	Text* _title;
-	Sprite* _storeMenu;
+
+	bool _hasbg;
+
+	void createBg();
+	void removeBg();
+	Size _visibleSize;
+	Sprite* _bg;
 	Button* _closeButton;
 
+	void bgMove();
 };

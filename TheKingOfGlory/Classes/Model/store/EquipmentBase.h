@@ -5,13 +5,15 @@
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
 #include "../SpriteBase.h"
-//#include "../../Manager/Manager.h"
+//#include "../../Manager/PlayerManager.h"
 
 const int EQUIPMENT_CNT = 2;
+const int PLAYER_MAX_EQUIPMENT_CNT = 6;
 
 const float HP[] = { 0,0,0 };
 const float DAMAGE[] = { 0,10,0 };
 const float DEFEND[] = { 0,0,0.05 };//ะกำฺ1;
+const int MONEY[] = { 0,10,10 };
 
 class Manager;
 
@@ -19,7 +21,7 @@ class EquipmentBase:public Sprite
 {
 public:
 
-	virtual bool init();
+	virtual bool init(int id);
 
 	void setHP(float HP) { _addHP = HP; }
 	float getHP() { return _addHP; }
@@ -36,7 +38,11 @@ public:
 	void setId(int id) { _id = id; }
 	int getId() { return _id; }
 
-	static EquipmentBase* createWithSpriteFrameName(const std::string& filename);
+	static EquipmentBase* createWithSpriteFrameName(const std::string& filename,int id);
+
+	EventListenerTouchOneByOne*listener;
+
+	//static void getLocalPlayer();
 
 private:
 
@@ -62,5 +68,7 @@ private:
 	bool onTouchBegin(Touch*touch, Event*event);
 	void onTouchEnded(Touch*touch, Event*event);
 
-	Size _size;
+	//static Player* _localplayer;
+	//static int _localMoney;
+
 };
