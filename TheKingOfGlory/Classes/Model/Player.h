@@ -1,26 +1,20 @@
 #pragma once
-
-
-
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
 #include"Model/SpriteBase.h"
+#include"Model/Hero.h"
 #include "Model/Soldier.h"
+#include"Controller/GameController.h"
+#include "Util/PathArithmetic.h"
 
 USING_NS_CC;
 using namespace ui;
 
-const float PLAYER_ATTACK_RADIUS = 5.0;
-const float PLAYER_DAMAGE = 10.0;
-const float PLAYER_HPVALUE = 200.0;
+const float PLAYER_ATTACK_RADIUS = 10;
+const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
-
-const float PLAYER_INITIAL_EXP = 100.0;
-const float PLAYER_LEVELUP_EXP = 100.0;
-const int PLAYER_MAX_LEVEL = 15;
-const int PLAYER_INITIAL_LEVEL = 1;
-
 
 class Player :public SpriteBase
 {
@@ -37,7 +31,10 @@ public:
 		ATTACKING,
 		DEAD,
 		BEINGHIT,
-		SKILL
+		SKILL1,
+		SKILL2,
+		SKILL3
+
 	};
 
 	enum class Direction : std::int8_t
@@ -74,29 +71,23 @@ public:
 		"archer"
 	};
 
-	static Player* createPlayer(const std::string& id, int role);
+	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role);//初始化一些条件
-	bool initWithRole(int role);//只是初始化名字
+	bool init(int role,int color);//初始化一些条件
+	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
 
-	void isLocal(bool a);
+	void isLocal(bool a);//是否为本地
 	bool isLocal();
 
 	void setHPBar();
 	void updateHPBar();
 
-	void setEXPBar();
-	void updateEXPBar();
-
-	void setLevel();
-	void updateLevel();
-
-	void setMove(bool move) { _move = move; }//是否能移动
-	bool isMove() { return _move; }
+	void setMove(bool move) { _isMove = move; }//是否能移动
+	bool isMove() { return _isMove; }
 
 	void setDirection(Direction direction) {
 		if (_direction != direction) _direction = direction,setStatus(getStatus());	}
@@ -108,17 +99,31 @@ public:
 
 	void stopMove();
 
-	bool attack();
+	bool attack();//参数待补充
 	void stopAttack();
 
-	void skill(const void* enemy);
+	void setAttack(bool isAttack) { _isAttack = isAttack; }
 
-	float beAttack(const float damage);
+	void skill();
 
-	void setDestination(Vec2 destination) { _destination = destination; }
-	Vec2 getDestination() { return _destination; }
+	virtual float beAttack(const float damage);
+
+	void setSmallDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getSmallDestination() { return _destination; }
+
+	void setBigDestination(Vec2 destination) { _Destination = destination; }
+	Vec2 getBigDestination() { return _Destination; }
+
+	void setRecover(bool recover) { _isRecover = recover; }
+	bool getRecover() { return _isRecover; }
 
 	void startMove(Vec2 destination);
+
+	void judgeDirection(float dx, float dy);
+
+	void randomSmallDestination();
+
+	void revival();
 
 private:
 	std::string _id;
@@ -135,15 +140,19 @@ private:
 	bool _isMove;
 	bool _isAttack;
 	bool _isSkill;
-
-	bool _move;
+	bool _isRecover;
 
 
 	Vec2 _destination;
+	Vec2 _Destination;
+	Vector<PointDelegate*> path;
 
-	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
+	int moveStep;
+
+	int _animationNum = 8;//动作帧数
 	std::vector<int> _animationFrameNum;
 	std::vector<std::string> _animationNames;
+
 
 	void move();
 
