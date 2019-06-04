@@ -7,13 +7,16 @@
 #include "../SpriteBase.h"
 //#include "../../Manager/PlayerManager.h"
 
-const int EQUIPMENT_CNT = 2;
-const int PLAYER_MAX_EQUIPMENT_CNT = 6;
+static int EQUIPMENT_CNT = 10;
+const int PLAYER_MAX_EQUIPMENT_CNT = 3;
 
-const float HP[] = { 0,0,0 };
-const float DAMAGE[] = { 0,10,0 };
-const float DEFEND[] = { 0,0,0.05 };//小于1;
-const int MONEY[] = { 0,10,10 };
+const float HP[] = { 0,0,0,0,0,0,200,240,280,320,360,100,140,180,220,260};
+const float DAMAGE[] = { 0,10,11,12,13,14,0,0,0,0,0,10,11,12,13,14 };
+const float DEFEND[] = { 0,0,0,0,0,0,0.1,0.12,0.14,0.16,0.20,0.05,0.06,0.07,0.08,0.09 };//小于1;
+const int MONEY[] = { 0,150,170,190,210,230,150,170,190,210,230,300,350,400,450,500 };
+
+
+static bool _hasbg = false;
 
 class Manager;
 
@@ -42,6 +45,8 @@ public:
 
 	EventListenerTouchOneByOne*listener;
 
+	void removeBg();
+	void buy();
 	//static void getLocalPlayer();
 
 private:
@@ -67,6 +72,9 @@ private:
 	void createListener();
 	bool onTouchBegin(Touch*touch, Event*event);
 	void onTouchEnded(Touch*touch, Event*event);
+
+	Sprite* _bg;
+	Text* createText(std::string context);
 
 	//static Player* _localplayer;
 	//static int _localMoney;

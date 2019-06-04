@@ -56,23 +56,19 @@ void Store::createBg()
 	if (_hasbg)return;
 	_hasbg = true;
 
-	_bg = Sprite::create("Pictures/UI/Menu1.png");
+	_bg = Sprite::createWithSpriteFrameName("bg_shop.png");
+	_bg->setScaleY(0.6);
 	_bg->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height / 2));
-	_bg->setScaleX(3);
-	//this->addChild(_bg,1);
-	//Manager::getInstance()->playerManager->getLocalPlayer()->addChild(_bg, 1);
+	
 	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(_bg, 1);
-	//createCloseButton();
-	_closeButton = Button::create("Pictures/UI/Close.png");
-	_closeButton->setScale(1);
-	_closeButton->setPosition(Vec2(_bg->getContentSize().width - _closeButton->getContentSize().width
+	
+	_closeButton = Button::create("Pictures/Store/closeButton1.png");
+	_closeButton->setScale(2);
+	_closeButton->setPosition(Vec2(_bg->getContentSize().width - _closeButton->getContentSize().width / 2
 		, _bg->getContentSize().height - _closeButton->getContentSize().height));
+	_closeButton->setEnabled(true);
+	_closeButton->setSwallowTouches(false);
 
-	/*auto sequence = Sequence::create(DelayTime::create(1.0f), CallFunc::create([=]()
-	{
-		schedule(CC_CALLBACK_0(Store::bgMove, this), 0.1f, "bgMove");
-	}), NULL);
-	this->runAction(sequence);*/
 
 	_closeButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
 	{
@@ -83,28 +79,61 @@ void Store::createBg()
 	});
 	_bg->addChild(_closeButton,4);
 
+	auto Title = Sprite::createWithSpriteFrameName("shop_title_bg.png");
+	Title->setPosition(Vec2(_bg->getContentSize().width / 2
+		, _bg->getContentSize().height - Title->getContentSize().height));
+	_bg->addChild(Title);
+
+	std::string tip = "Click to see details";
+	auto Tip = Text::create(tip, "arial.ttf", 15);
+	Tip->setScale(2);
+	Tip->setPosition(Vec2(_bg->getContentSize().width / 2
+		, _bg->getContentSize().height - Title->getContentSize().height*2));
+	_bg->addChild(Tip);
 	
+	float sy = _bg->getContentSize().height - Title->getContentSize().height * 2;
+	float dis = _bg->getContentSize().width / 6;
 	for (int i = 1; i <= EQUIPMENT_CNT; i++)
 	{
 		std::string equipName;
 		equipName.append(StringUtils::format("%d.png", i+1000));
 		auto equip = EquipmentBase::createWithSpriteFrameName(equipName, i + 1000);
-		equip->setScale(0.5);
-		equip->setPosition(Vec2(equip->getContentSize().width / 2 * (i % 5),
-			equip->getContentSize().height / 2 * (i + 5) / 5));
+		//equip->setScale(0.5);
+		equip->setPosition(Vec2(dis*(i % 5 +1), sy - equip->getContentSize().height * 2 * (((i - 1) / 5) + 1)));
+			
 		equip->listener->setEnabled(true);
 		_bg->addChild(equip, 5, equipName);
 		_equipmentList.pushBack(equip);
 	}
-	/*
-	auto equip = EquipmentBase::createWithSpriteFrameName("1001.png", 1001);
-	equip->setPosition(Vec2(0, 0));
-		
-	//equip->listener->setEnabled(true);
-	//log("!!!!!!!!!!!%d %f %f", equip->getDamage(),equip->getHP(),equip->getDefend());
-	equip->setScale(3);
-	_bg->addChild(equip, 5);
-	*/
+
+	if (!VIP)
+	{
+		VIP = true;
+		_vipButton = Button::create("Pictures/Store/text_be_vip.png");
+		_vipButton->setScale(2);
+		_vipButton->setPosition(Vec2(_bg->getContentSize().width / 2, _vipButton->getContentSize().height));
+		_vipButton->setEnabled(true);
+		_vipButton->setSwallowTouches(false);
+
+		_vipButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
+		{
+			if (type == Widget::TouchEventType::ENDED)
+			{
+				auto vipSprite = Sprite::createWithSpriteFrameName("vip.png");
+				vipSprite->setPosition(Vec2(_bg->getContentSize().width / 2, _bg->getContentSize().height / 2));
+				vipSprite->setScale(0.8);
+				_bg->addChild(vipSprite, 400);
+				EQUIPMENT_CNT = 15;//点充值多5件装备
+				auto sequence = Sequence::create(DelayTime::create(3.0f), CallFunc::create([=]()
+				{
+					_bg->removeChild(vipSprite, true);
+				}), NULL);
+				this->runAction(sequence);
+			}
+		});
+		_bg->addChild(_vipButton, 4);
+	}
+
 }
 
 void Store::removeBg()
@@ -112,42 +141,11 @@ void Store::removeBg()
 	if (!_hasbg)return;
 	_hasbg = false;
 
-	unschedule("bgMove");
 	for (int i = 0; i < _equipmentList.size(); i++)
 	{
 		Director::getInstance()->getEventDispatcher()->removeEventListener(_equipmentList.at(i)->listener);
 	}
+	_equipmentList.clear();
 	_bg->removeAllChildrenWithCleanup(true);
-	//Manager::getInstance()->playerManager->getLocalPlayer()->removeChild(_bg, true);
-	//this->removeChild(_bg, true);
 	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->removeChild(_bg, true);
-}
-
-void Store::bgMove()
-{
-	float x, y;
-	Vec2 playerpos = Manager::getInstance()->playerManager->getLocalPlayer()->getPosition();
-	Size mapsize = GameMap::getCurrentMap()->getMapSize();
-	mapsize.width *= 60; mapsize.height *= 60;
-	//log("%f %f %f", _visibleSize.width, mapsize.width, playerpos.x);
-	if (playerpos.x <= _visibleSize.width / 2)
-	{
-		x = _visibleSize.width / 2 - playerpos.x;
-	}
-	else if (_visibleSize.width / 2 + playerpos.x >= mapsize.width)
-	{
-		x = mapsize.width - (_visibleSize.width / 2 - playerpos.x);
-	}
-	else x = 0;
-
-	if (playerpos.y <= _visibleSize.height / 2)
-	{
-		y = _visibleSize.height / 2 - playerpos.y;
-	}
-	else if (_visibleSize.height / 2 + playerpos.y >= mapsize.height)
-	{
-		y = mapsize.height - (_visibleSize.height / 2 - playerpos.y);
-	}
-	else y = 0;
-	_bg->setPosition(Vec2(x, y));
 }

@@ -10,6 +10,8 @@
 USING_NS_CC;
 using namespace ui;
 
+static bool VIP = false;
+
 class EquipmentBase;
 
 class Store:public Tower
@@ -35,6 +37,5 @@ private:
 	Size _visibleSize;
 	Sprite* _bg;
 	Button* _closeButton;
-
-	void bgMove();
+	Button* _vipButton;
 };

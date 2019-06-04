@@ -96,6 +96,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/blast.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
+	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));

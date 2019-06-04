@@ -26,8 +26,8 @@ const std::string BLUE_GUNCAR_FILENAME = "soldierMove (1).png";
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";
 
-const std::string RED_STORE_FILENAME = "tower.png";
-const std::string BLUE_STORE_FILENAME = "tower.png";
+const std::string RED_STORE_FILENAME = "store.png";
+const std::string BLUE_STORE_FILENAME = "store.png";
 
 
 class Manager :public cocos2d::Layer
