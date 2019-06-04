@@ -27,6 +27,7 @@ public:
 	CREATE_FUNC(PlayerManager);
 
 private:
+	bool isOnline;
 	cocos2d::Map<std::string, Player*> _playerList;
 
 	Player* _localPlayer;

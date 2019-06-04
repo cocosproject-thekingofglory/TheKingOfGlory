@@ -1,5 +1,7 @@
 #pragma once
 #include "cocos2d.h"
+#include "Network/Server.h"
+#include "Network/Client.h"
 
 class GameScene:public cocos2d::Layer
 {
@@ -23,9 +25,10 @@ private:
 	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
 	cocos2d::Rect rectOfLabel(cocos2d::Label* label);
 public:
-	static cocos2d::Scene* createScene();
-	virtual bool init();
-	CREATE_FUNC(GameScene);
+	static cocos2d::Scene* createScene(Client* client, Server*server = nullptr);
+	static GameScene* create(Client* client, Server*server);
+	virtual bool init(Client* client, Server*server );
+	
 
 };
 

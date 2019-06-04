@@ -102,7 +102,6 @@ void Soldier::startMove()
 {
 	if (_isMove)
 	{
-		srand(time(NULL));
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/

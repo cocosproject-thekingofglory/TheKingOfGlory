@@ -126,7 +126,7 @@ void GameScene::createResultBox(EventCustom* event)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
-			Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+			//Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 		}
 	});
 
@@ -170,9 +170,9 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
 		//停用菜单事件监听器，重新开始游戏
-		menuListener->setEnabled(false);
-		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+		//menuListener->setEnabled(false);
+		//hasMenu = false;
+		//Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 	}
 	else if (this->rectOfLabel(returnLabel).containsPoint(nodeLocation))
 	{
@@ -191,19 +191,33 @@ cocos2d::Rect GameScene::rectOfLabel(cocos2d::Label * label)
 		label->getContentSize().height);
 }
 
-cocos2d::Scene * GameScene::createScene()
+cocos2d::Scene * GameScene::createScene(Client* client, Server*server )
 {
 	auto scene = Scene::create();
-	auto layer = GameScene::create();
+	auto layer = GameScene::create(client,server);
 	layer->setName("GameScene");
 	scene->addChild(layer);
 	return scene;
 }
 
-bool GameScene::init()
+GameScene * GameScene::create(Client * client, Server * server)
+{
+	GameScene *gamescene = new (std::nothrow) GameScene();
+	if (gamescene && gamescene->init(client, server))
+	{
+		gamescene->autorelease();
+		return gamescene;
+	}
+	CC_SAFE_DELETE(gamescene);
+
+	return nullptr;
+}
+
+bool GameScene::init(Client* client, Server*server)
 {
 	if (!Layer::init())
 		return false;
+
 
 	visible_Size = Director::getInstance()->getVisibleSize();
 
@@ -237,7 +251,8 @@ bool GameScene::init()
 	map->setScale(0.5f);
 	this->addChild(map, -1);
 
-	auto gameController = GameController::create();
+	auto gameController = GameController::create(client,server);
+
 	gameController->setMap(map);
 	this->addChild(gameController, -1);
 

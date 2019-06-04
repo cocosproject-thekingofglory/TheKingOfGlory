@@ -1,8 +1,9 @@
 #include "StartScene.h"
 #include "ui/CocosGUI.h"
 #include "Util/GameAudio.h"
-#include "GameScene.h"
+#include "SelectScene.h"
 #include "SettingsScene.h"
+#include "GameScene.h"
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -30,7 +31,7 @@ void StartScene::createPlayButton()
 	auto PlayButton=MenuItemLabel::create(Label::createWithTTF("Play",text_Font, text_Size),
 		[=](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
-		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+		Director::getInstance()->pushScene(TransitionFade::create(1, SelectScene::createScene()));
 		});
 	PlayButton->setColor(label_Color);
 	auto menu = Menu::createWithItem(PlayButton);
@@ -58,7 +59,7 @@ void StartScene::createHelpButton()
 	auto HelpButton = MenuItemLabel::create(Label::createWithTTF("Help", text_Font, text_Size),
 		[](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
-	//	Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
+		//Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
 	});
 	HelpButton->setColor(label_Color);
 	auto menu = Menu::createWithItem(HelpButton);

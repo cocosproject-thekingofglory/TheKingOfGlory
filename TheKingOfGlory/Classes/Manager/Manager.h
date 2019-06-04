@@ -49,7 +49,7 @@ public:
 
 	static Manager* getInstance();
 private:
-
+	bool isOnline;
 	bool insideAttack(SpriteBase* beAttack, SpriteBase* attack);
 
 	static Manager* _instance;

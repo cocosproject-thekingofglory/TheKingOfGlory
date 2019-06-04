@@ -69,6 +69,15 @@
     <ClCompile Include="..\Classes\Model\Skill.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Network\Client.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Network\Server.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\SelectScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -142,6 +151,21 @@
     <ClInclude Include="..\Classes\Model\Skill.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Network\Client.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\Server.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\socket_message.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SelectScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\GameMsg_generated.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
@@ -164,6 +188,9 @@
     </Filter>
     <Filter Include="UI">
       <UniqueIdentifier>{c2ccd54b-eeea-497a-a73b-4e10d994a5b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{686a3a61-f598-4dfe-b455-703aef8f516a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

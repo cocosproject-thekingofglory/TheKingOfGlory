@@ -124,6 +124,7 @@ public:
 	void revival();
 
 private:
+	bool isOnline;
 	std::string _id;
 	std::string _roleName;
 	PlayerType _type;

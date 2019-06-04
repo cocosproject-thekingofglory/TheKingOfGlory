@@ -11,6 +11,7 @@ bool PlayerManager::init()
 	{
 		return false;
 	}
+	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
 
 	addCustomEvent();
 
@@ -78,13 +79,20 @@ void PlayerManager::addCustomEvent()
 
 void PlayerManager::initPlayer(float delta)
 {
+	if (isOnline)
+	{
 
-	auto player = this->createPlayer("Haha", 0, BLUE);
-	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Player_Blue);
+	}
+	else
+	{
+		auto player = this->createPlayer("Enemy", 0, BLUE);
+		GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Player_Blue);
 
-	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0,RED);
-	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
-	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
+		this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0, RED);
+		GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
+		GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
+	}
+
 
 }
 
