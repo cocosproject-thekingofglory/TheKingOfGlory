@@ -154,12 +154,11 @@ public:
 	void setMoney(int money) { _money = money; }
 
 	//装备
-	Map<int,EquipmentBase*> getEquipmentList() { return _equipmentMap; }
+	Vector<EquipmentBase*> getEquipmentList() { return _equipmentList; }
 
-	void addEquipment(EquipmentBase*equip, int id) { _equipmentMap.insert(id, equip); }
-	EquipmentBase* getEquipmentById(int id);
-	void removeEquipmentById(int id);
-	int getEquipmentCnt() { return _equipmentMap.size(); }
+	void addEquipment(EquipmentBase*equip, int id) { _equipmentList.pushBack(equip); }
+	void removeEquipment(EquipmentBase*equip);
+	int getEquipmentCnt() { return _equipmentList.size(); }
 
 private:
 	std::string _id;
@@ -200,5 +199,5 @@ private:
 	LoadingBar* _EXPBar;
 
 	//装备
-	Map<int,EquipmentBase*>_equipmentMap;
+	Vector<EquipmentBase*>_equipmentList;
 };

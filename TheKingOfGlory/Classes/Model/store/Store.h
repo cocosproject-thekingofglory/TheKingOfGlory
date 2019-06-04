@@ -6,6 +6,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "StoreScene.h"
+#include "../StatusList.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -20,6 +21,8 @@ public:
 	static Store* createWithSpriteFrameName(const std::string& filename, int color);
 	virtual bool init(int color);
 
+	void addEquipment(EquipmentBase*equip) { _equipmentList.pushBack(equip); }//AAAAAAAAAAAAA
+
 	//CREATE_FUNC(Store);
 private:
 	
@@ -30,7 +33,6 @@ private:
 	Vector<EquipmentBase*> _equipmentList;
 
 
-	bool _hasbg;
 
 	void createBg();
 	void removeBg();

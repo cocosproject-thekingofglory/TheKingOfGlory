@@ -53,8 +53,8 @@ void Store::onTouchEnded(Touch*touch, Event*event)
 
 void Store::createBg()
 {
-	if (_hasbg)return;
-	_hasbg = true;
+	if (hasList)return;
+	hasList = true;
 
 	_bg = Sprite::createWithSpriteFrameName("bg_shop.png");
 	_bg->setScaleY(0.6);
@@ -67,7 +67,7 @@ void Store::createBg()
 	_closeButton->setPosition(Vec2(_bg->getContentSize().width - _closeButton->getContentSize().width / 2
 		, _bg->getContentSize().height - _closeButton->getContentSize().height));
 	_closeButton->setEnabled(true);
-	_closeButton->setSwallowTouches(false);
+	_closeButton->setSwallowTouches(true);
 
 
 	_closeButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
@@ -90,18 +90,26 @@ void Store::createBg()
 	Tip->setPosition(Vec2(_bg->getContentSize().width / 2
 		, _bg->getContentSize().height - Title->getContentSize().height*2));
 	_bg->addChild(Tip);
+
+	std::string money = "Money :";
+	money.append(StringUtils::format(" %d", Manager::getInstance()->playerManager->getLocalPlayer()->getMoney()));
+	auto Money = Text::create(money, "arial.ttf", 15);
+	Money->setScale(2);
+	Money->setPosition(Vec2(Money->getContentSize().width + Money->getContentSize().width / 2
+		, _bg->getContentSize().height - Money->getContentSize().height * 10));
+	_bg->addChild(Money);
 	
 	float sy = _bg->getContentSize().height - Title->getContentSize().height * 2;
 	float dis = _bg->getContentSize().width / 6;
+	//log("!!!!!%f %f", sy, dis);
 	for (int i = 1; i <= EQUIPMENT_CNT; i++)
 	{
 		std::string equipName;
 		equipName.append(StringUtils::format("%d.png", i+1000));
-		auto equip = EquipmentBase::createWithSpriteFrameName(equipName, i + 1000);
+		auto equip = EquipmentBase::createWithSpriteFrameName(equipName, i + 1000, this);
 		//equip->setScale(0.5);
 		equip->setPosition(Vec2(dis*(i % 5 +1), sy - equip->getContentSize().height * 2 * (((i - 1) / 5) + 1)));
 			
-		equip->listener->setEnabled(true);
 		_bg->addChild(equip, 5, equipName);
 		_equipmentList.pushBack(equip);
 	}
@@ -113,7 +121,7 @@ void Store::createBg()
 		_vipButton->setScale(2);
 		_vipButton->setPosition(Vec2(_bg->getContentSize().width / 2, _vipButton->getContentSize().height));
 		_vipButton->setEnabled(true);
-		_vipButton->setSwallowTouches(false);
+		_vipButton->setSwallowTouches(true);
 
 		_vipButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
 		{
@@ -138,8 +146,8 @@ void Store::createBg()
 
 void Store::removeBg()
 {
-	if (!_hasbg)return;
-	_hasbg = false;
+	if (!hasList)return;
+	hasList = false;
 
 	for (int i = 0; i < _equipmentList.size(); i++)
 	{

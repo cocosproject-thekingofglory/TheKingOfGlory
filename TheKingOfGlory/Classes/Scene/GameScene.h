@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 
+
 class GameScene:public cocos2d::Layer
 {
 private:
@@ -16,6 +17,7 @@ private:
 
 	void onEnter();
 	void createMenuButton();
+	void createStatusButton();
 	void updateMenu();
 	void createMenu();
 	void removeMenu();

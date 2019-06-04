@@ -616,21 +616,9 @@ void Player::addEXP(int addEXP)
 }
 
 //装备
-EquipmentBase* Player::getEquipmentById(int id)
+void Player::removeEquipment(EquipmentBase*equip)
 {
-	if (_equipmentMap.find(id) != _equipmentMap.end())
-	{
-		return _equipmentMap.at(id);
-	}
-	else return nullptr;
-}
-
-void Player::removeEquipmentById(int id)
-{
-	if (getEquipmentById(id) != nullptr)
-	{
-		_equipmentMap.erase(id);
-	}
+	_equipmentList.eraseObject(equip);
 }
 
 void Player::isLocal(bool a)

@@ -45,7 +45,7 @@
                 <key>spriteSourceSize</key>
                 <string>{540,122}</string>
                 <key>textureRect</key>
-                <string>{{1183,61},{540,122}}</string>
+                <string>{{1303,61},{540,122}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -90,7 +90,7 @@
                 <key>spriteSourceSize</key>
                 <string>{200,60}</string>
                 <key>textureRect</key>
-                <string>{{1252,0},{200,60}}</string>
+                <string>{{1098,0},{200,60}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -105,7 +105,7 @@
                 <key>spriteSourceSize</key>
                 <string>{154,60}</string>
                 <key>textureRect</key>
-                <string>{{1098,0},{154,60}}</string>
+                <string>{{1298,0},{154,60}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -150,7 +150,7 @@
                 <key>spriteSourceSize</key>
                 <string>{167,119}</string>
                 <key>textureRect</key>
-                <string>{{1016,61},{167,119}}</string>
+                <string>{{1136,61},{167,119}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,7 +165,22 @@
                 <key>spriteSourceSize</key>
                 <string>{167,119}</string>
                 <key>textureRect</key>
-                <string>{{849,61},{167,119}}</string>
+                <string>{{969,61},{167,119}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>sellButton.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{120,85}</string>
+                <key>spriteSourceSize</key>
+                <string>{120,85}</string>
+                <key>textureRect</key>
+                <string>{{548,61},{120,85}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -180,7 +195,7 @@
                 <key>spriteSourceSize</key>
                 <string>{415,446}</string>
                 <key>textureRect</key>
-                <string>{{1140,183},{415,446}}</string>
+                <string>{{1323,183},{415,446}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -195,7 +210,22 @@
                 <key>spriteSourceSize</key>
                 <string>{301,106}</string>
                 <key>textureRect</key>
-                <string>{{548,61},{301,106}}</string>
+                <string>{{668,61},{301,106}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>statusBG.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{183,225}</string>
+                <key>spriteSourceSize</key>
+                <string>{183,225}</string>
+                <key>textureRect</key>
+                <string>{{622,183},{183,225}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -210,7 +240,7 @@
                 <key>spriteSourceSize</key>
                 <string>{518,245}</string>
                 <key>textureRect</key>
-                <string>{{622,183},{518,245}}</string>
+                <string>{{805,183},{518,245}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -361,9 +391,9 @@
             <key>realTextureFileName</key>
             <string>store.png</string>
             <key>size</key>
-            <string>{1723,1979}</string>
+            <string>{1843,1979}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2914ed1f77e39cfcc283a30821c6d81c:ed06db75399e65a4044e104c246a7094:ee0860f12ea04ba9ef83abc23bb8c439$</string>
+            <string>$TexturePacker:SmartUpdate:9a905d6eace86b204a95b79103e9d9ff:dcbe0809ef0e90c207faf1a40f37c858:ee0860f12ea04ba9ef83abc23bb8c439$</string>
             <key>textureFileName</key>
             <string>store.png</string>
         </dict>

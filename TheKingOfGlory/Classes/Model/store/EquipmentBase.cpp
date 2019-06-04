@@ -1,13 +1,15 @@
 #include "EquipmentBase.h"
 #include "../../Manager/Manager.h"
+#include "store.h"
 
-bool EquipmentBase::init(int id)
+bool EquipmentBase::init(int id, Store*store)
 {
 	if (!Sprite::init())
 	{
 		return false;
 	}
 	setId(id);
+	_store = store;
 
 	createListener();
 
@@ -15,14 +17,15 @@ bool EquipmentBase::init(int id)
 	setDamage(DAMAGE[_id - 1000]);
 	setDefend(DEFEND[_id - 1000]);
 	setCostMoney(MONEY[_id - 1000]);
+
 	
 	return true;
 }
 
-EquipmentBase* EquipmentBase::createWithSpriteFrameName(const std::string& filename, int id)
+EquipmentBase* EquipmentBase::createWithSpriteFrameName(const std::string& filename, int id, Store*store)
 {
 	auto sprite = new EquipmentBase();
-	if (sprite  && sprite->init(id))
+	if (sprite  && sprite->init(id, store))
 	{
 		if (sprite->initWithSpriteFrameName(filename))
 		{
@@ -41,8 +44,8 @@ void EquipmentBase::createListener()
 	listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(EquipmentBase::onTouchBegin, this);
 	listener->onTouchEnded = CC_CALLBACK_2(EquipmentBase::onTouchEnded, this);
-	listener->setEnabled(false);
-	listener->setSwallowTouches(false);
+	listener->setEnabled(true);
+	listener->setSwallowTouches(true);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 10);
 }
 
@@ -114,8 +117,10 @@ void EquipmentBase::onTouchEnded(Touch*touch, Event*event)
 	text1->setPosition(Vec2(bg->getContentSize().width / 2, text1->getContentSize().height * 4));
 	bg->addChild(text1, 40);
 
-	//auto sprite = Sprite::createWithSpriteFrameName("text_sm_goumai.png");
-	auto buyButton = Button::create("Pictures/Store/text_sm_goumai.png");
+	Button* buyButton;
+
+	buyButton = Button::create("Pictures/Store/text_sm_goumai.png");
+
 	buyButton->setScaleX(2.0);
 	buyButton->setPosition(Vec2(bg->getContentSize().width / 2, text1->getContentSize().height * 2.5));
 	buyButton->setEnabled(true);
@@ -144,7 +149,8 @@ void EquipmentBase::removeBg()
 	_hasbg = false;
 
 	_bg->removeAllChildrenWithCleanup(true);
-	this->getParent()->removeChild(_bg, true);
+	_bg->removeFromParent();
+	
 }
 
 void EquipmentBase::buy()
@@ -160,7 +166,17 @@ void EquipmentBase::buy()
 			_localplayer->addDamage(getDamage());
 			_localplayer->addDefend(getDefend());
 			_localplayer->addHPValue(getHP());
-			_localplayer->addEquipment(this, _id);
+
+			std::string equipName;
+			equipName.append(StringUtils::format("%d.png", _id));
+			auto equip = EquipmentBase::createWithSpriteFrameName(equipName,_id ,_store);
+			int i = _id - 1000;
+			float sy = 748, dis = 106.66666;
+			equip->setPosition(Vec2(dis*(i % 5 + 1), sy - equip->getContentSize().height * 2 * (((i - 1) / 5) + 1)));
+			this->getParent()->addChild(equip, 5);
+			_store->addEquipment(equip);
+			this->removeFromParent();
+			removeBg();
 		}
 		else
 		{

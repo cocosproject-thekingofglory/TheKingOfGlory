@@ -5,26 +5,28 @@
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
 #include "../SpriteBase.h"
+#include <string>
 //#include "../../Manager/PlayerManager.h"
 
-static int EQUIPMENT_CNT = 10;
-const int PLAYER_MAX_EQUIPMENT_CNT = 3;
+static int EQUIPMENT_CNT = 14;
+const int PLAYER_MAX_EQUIPMENT_CNT = 6;
 
-const float HP[] = { 0,0,0,0,0,0,200,240,280,320,360,100,140,180,220,260};
-const float DAMAGE[] = { 0,10,11,12,13,14,0,0,0,0,0,10,11,12,13,14 };
-const float DEFEND[] = { 0,0,0,0,0,0,0.1,0.12,0.14,0.16,0.20,0.05,0.06,0.07,0.08,0.09 };//小于1;
-const int MONEY[] = { 0,150,170,190,210,230,150,170,190,210,230,300,350,400,450,500 };
+const float HP[] = { 0,0,0,0,0,0,200,240,280,320,360,100,140,180,220,500};
+const float DAMAGE[] = { 0,10,11,12,13,14,0,0,0,0,0,10,11,12,13,30 };
+const float DEFEND[] = { 0,0,0,0,0,0,0.1,0.12,0.14,0.16,0.20,0.05,0.06,0.07,0.08,0.30 };//小于1;
+const int MONEY[] = { 0,10,170,190,210,230,150,170,190,210,230,300,350,400,450,1000 };
 
 
 static bool _hasbg = false;
 
 class Manager;
+class Store;
 
 class EquipmentBase:public Sprite
 {
 public:
 
-	virtual bool init(int id);
+	virtual bool init(int id, Store*store);
 
 	void setHP(float HP) { _addHP = HP; }
 	float getHP() { return _addHP; }
@@ -41,15 +43,18 @@ public:
 	void setId(int id) { _id = id; }
 	int getId() { return _id; }
 
-	static EquipmentBase* createWithSpriteFrameName(const std::string& filename,int id);
+	static EquipmentBase* createWithSpriteFrameName(const std::string& filename, int id, Store*store);
 
 	EventListenerTouchOneByOne*listener;
 
 	void removeBg();
 	void buy();
+	void sell();
+
 	//static void getLocalPlayer();
 
 private:
+
 
 	int _id;//从1001开始
 
@@ -75,6 +80,8 @@ private:
 
 	Sprite* _bg;
 	Text* createText(std::string context);
+	Store*_store;
+
 
 	//static Player* _localplayer;
 	//static int _localMoney;
