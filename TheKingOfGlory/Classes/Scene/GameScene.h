@@ -1,6 +1,6 @@
 #pragma once
 #include "cocos2d.h"
-
+#include "ui/CocosGUI.h"
 
 class GameScene:public cocos2d::Layer
 {
@@ -14,6 +14,7 @@ private:
 	cocos2d::Label* returnLabel;
 	cocos2d::EventListenerTouchOneByOne* menuListener;
 	cocos2d::Rect menuRect;
+	cocos2d::ui::Button* statusButton;
 
 	void onEnter();
 	void createMenuButton();

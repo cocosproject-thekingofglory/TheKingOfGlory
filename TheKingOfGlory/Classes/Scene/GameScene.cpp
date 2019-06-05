@@ -1,6 +1,5 @@
 #include "GameScene.h"
 #include "Util/GameAudio.h"
-#include "ui/CocosGUI.h"
 #include "StartScene.h"
 #include "SettingsScene.h"
 #include "Model/GameMap.h"
@@ -19,14 +18,14 @@ void GameScene::onEnter()
 
 void GameScene::createStatusButton()
 {
-	auto button = Button::create("Pictures/StatusList/statusButton.png");
-	button->setScaleX(2.0);
-	button->setPosition(Vec2(this->getContentSize().width - button->getContentSize().width * 2
+	statusButton = Button::create("Pictures/StatusList/statusButton.png");
+	statusButton->setScaleX(2.0);
+	statusButton->setPosition(Vec2(this->getContentSize().width - statusButton->getContentSize().width * 2
 		, this->getContentSize().height / 4 * 3));
-	button->setEnabled(true);
-	button->setSwallowTouches(true);
+	statusButton->setEnabled(false);
+	statusButton->setSwallowTouches(true);
 
-	button->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
+	statusButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
@@ -36,7 +35,7 @@ void GameScene::createStatusButton()
 			this->addChild(list, 4);
 		}
 	});
-	this->addChild(button, 4);
+	this->addChild(statusButton, 4);
 }
 
 void GameScene::createMenuButton()
@@ -236,6 +235,11 @@ bool GameScene::init()
 	menuListener->setSwallowTouches(true);
 	menuListener->setEnabled(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(menuListener, -1);
+
+	auto gameStartListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom* event) {
+		statusButton->setEnabled(true);
+	});
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameStartListener, 1);
 
 	//创建自定义事件监听器，用于打开关闭菜单
 	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));

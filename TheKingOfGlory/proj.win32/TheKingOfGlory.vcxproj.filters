@@ -75,6 +75,18 @@
     <ClCompile Include="..\Classes\Model\StatusList.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\Hero.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Skill.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\SkillBase.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\Tip.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -83,9 +95,6 @@
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Util\GameAudio.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\User.h">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\BulletBase.h">
@@ -152,6 +161,21 @@
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\StatusList.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Hero.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Skill.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\SkillBase.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Tip.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\User.h">
       <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>

@@ -27,10 +27,11 @@ Player* Player::createPlayer(const std::string& id, int role,int color)
 //初始化信息，对这个角色初始化信息
 bool Player::init(int role,int color)
 {
+	setColor(color);
+
 	setHPBar();
 	setEXPBar();
 
-	setColor(color);
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
@@ -210,7 +211,7 @@ float Player::beAttack(const float damage)
 				}
 				break;
 				}
-				frameName += " (7).png";
+				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
 				if (isLocal())
 				{
@@ -421,10 +422,10 @@ void Player::move()
 
 void Player::setHPBar()
 {
-	if(getColor()==BLUE)
-		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
-	else if(getColor()==RED)
+	if(getColor()==RED)
 		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
+	else
+		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -452,7 +453,7 @@ void Player::updateHPBar()
 //金钱、经验
 void Player::setEXPBar()
 {
-	_EXPBar = LoadingBar::create("Pictures/GamesItem/redBar.png");
+	_EXPBar = LoadingBar::create("Pictures/GameItem/blueBar.png");
 
 	_EXPBar->setScale(0.1);
 	_EXPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -460,7 +461,7 @@ void Player::setEXPBar()
 	_EXPBar->setPercent(0);
 
 	Vec2 EXPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
-		this->getPositionY() + this->getContentSize().height*1.1);
+		this->getPositionY() + this->getContentSize().height*1.235);
 
 	_EXPBar->setPosition(EXPpos);
 

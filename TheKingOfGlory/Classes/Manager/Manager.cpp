@@ -107,8 +107,9 @@ bool Manager::init()
 				auto player = pair.second;
 				player->setMove(true);
 				player->setAttack(true);
-        player->setSkill(true);
+				player->setSkill(true);
 			}
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
