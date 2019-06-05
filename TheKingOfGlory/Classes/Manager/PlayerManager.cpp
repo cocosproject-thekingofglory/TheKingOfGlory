@@ -1,6 +1,10 @@
 #include"PlayerManager.h"
+#include "Model/GameMap.h"
+#include "Model/Hero.h"
 
 USING_NS_CC;
+
+
 
 bool PlayerManager::init()
 {
@@ -12,14 +16,19 @@ bool PlayerManager::init()
 	addCustomEvent();
 
 
-	scheduleOnce(schedule_selector(PlayerManager::initPlayer), 1.0f);
+	scheduleOnce(schedule_selector(PlayerManager::initPlayer),0.1f);
 
 	return true;
 }
 
-Player* PlayerManager::createPlayer(const std::string& id, int role)
+Player* PlayerManager::createPlayer(const std::string& id, int role,int color)
 {
-	auto player = Player::createPlayer(id, role);
+	Player *player;
+	switch (role)
+	{
+	case 0: {player = Warrior::create(id, color);	break; }
+	case 1: {player = Aviator::create(id, color);	break; }
+	}
 	if (player)
 	{
 		player->isLocal(false);
@@ -31,10 +40,14 @@ Player* PlayerManager::createPlayer(const std::string& id, int role)
 	return nullptr;
 }
 
-Player* PlayerManager::createLocalPlayer(const std::string& id, int role)
+Player* PlayerManager::createLocalPlayer(const std::string& id, int role,int color)
 {
-
-	auto localPlayer = Player::createPlayer(id, role);
+	Player *localPlayer;
+	switch (role)
+	{
+	case 0: {localPlayer = Warrior::create(id, color);	break; }
+	case 1: {localPlayer = Aviator::create(id, color);	break; }
+	}
 	if (localPlayer)
 	{
 		_localPlayer = localPlayer;
@@ -59,7 +72,7 @@ Player * PlayerManager::getPlayer(const std::string& id)
 }
 
 
-Map<std::string, Player*> PlayerManager::getPlayerList()
+Map<std::string, Player*>& PlayerManager::getPlayerList()
 {
 	return _playerList;
 }
@@ -75,7 +88,13 @@ void PlayerManager::addCustomEvent()
 
 void PlayerManager::initPlayer(float delta)
 {
-	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0);
-	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Tower_Blue);
+
+	auto player = this->createPlayer("Haha", 0, BLUE);
+	GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Player_Blue);
+
+	this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 1,RED);
+	GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
+	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
 
 }
+

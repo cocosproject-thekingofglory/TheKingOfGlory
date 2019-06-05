@@ -2,9 +2,7 @@
 #include"cocos2d.h"
 #include"ui/CocosGUI.h"
 #include"Model/SpriteBase.h"
-#include"Model/Hero.h"
 #include "Model/Soldier.h"
-#include"Controller/GameController.h"
 #include "Util/PathArithmetic.h"
 
 USING_NS_CC;
@@ -67,21 +65,22 @@ public:
 
 	char* roleName[3] = {
 		"warrior",
-		"mage",
-		"archer"
+		"aviator",
+		"Archer"
 	};
 
 	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role,int color);//初始化一些条件
+	virtual bool init(int role,int color);//初始化一些条件
 	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
 
-	void isLocal(bool a);//是否为本地
+	void isLocal(bool a);//？
 	bool isLocal();
+
 
 	void setHPBar();
 	void updateHPBar();
@@ -103,8 +102,11 @@ public:
 	void stopAttack();
 
 	void setAttack(bool isAttack) { _isAttack = isAttack; }
+	void setSkill(bool isSkill) { _isSkill = isSkill; }
 
-	void skill();
+	virtual void skill1() {};
+	virtual void skill2() {};
+	virtual void skill3() {};
 
 	virtual float beAttack(const float damage);
 
@@ -125,22 +127,29 @@ public:
 
 	void revival();
 
-private:
-	std::string _id;
-	std::string _roleName;
-	PlayerType _type;
-
-	Status _status;
-	time_t directions[4];
-	Direction _direction;
-
-	float _speed;
-
+protected:
 	bool _isLocal;
 	bool _isMove;
 	bool _isAttack;
 	bool _isSkill;
 	bool _isRecover;
+
+	std::string _id;
+	std::string _roleName;
+	std::vector<int> _animationFrameNum;
+	std::vector<std::string> _animationNames;
+
+private:
+
+
+	PlayerType _type;
+
+	Status _status;
+	Direction _direction;
+
+	float _speed;
+
+
 
 
 	Vec2 _destination;
@@ -149,9 +158,7 @@ private:
 
 	int moveStep;
 
-	int _animationNum = 8;//动作帧数
-	std::vector<int> _animationFrameNum;
-	std::vector<std::string> _animationNames;
+
 
 
 	void move();

@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>warrior_attack_up_1.png</key>
+            <key>warrior_attack_up (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_2.png</key>
+            <key>warrior_attack_up (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -30,11 +30,11 @@
                 <key>spriteSourceSize</key>
                 <string>{62,89}</string>
                 <key>textureRect</key>
-                <string>{{66,0},{62,89}}</string>
+                <string>{{68,0},{62,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_3.png</key>
+            <key>warrior_attack_up (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -45,11 +45,11 @@
                 <key>spriteSourceSize</key>
                 <string>{68,86}</string>
                 <key>textureRect</key>
-                <string>{{128,0},{68,86}}</string>
+                <string>{{136,0},{68,86}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_4.png</key>
+            <key>warrior_attack_up (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -60,11 +60,11 @@
                 <key>spriteSourceSize</key>
                 <string>{66,91}</string>
                 <key>textureRect</key>
-                <string>{{196,0},{66,91}}</string>
+                <string>{{204,0},{66,91}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_5.png</key>
+            <key>warrior_attack_up (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -75,11 +75,11 @@
                 <key>spriteSourceSize</key>
                 <string>{65,86}</string>
                 <key>textureRect</key>
-                <string>{{262,0},{65,86}}</string>
+                <string>{{272,0},{65,86}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_6.png</key>
+            <key>warrior_attack_up (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -90,11 +90,11 @@
                 <key>spriteSourceSize</key>
                 <string>{62,84}</string>
                 <key>textureRect</key>
-                <string>{{327,0},{62,84}}</string>
+                <string>{{340,0},{62,84}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_7.png</key>
+            <key>warrior_attack_up (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -105,11 +105,11 @@
                 <key>spriteSourceSize</key>
                 <string>{59,83}</string>
                 <key>textureRect</key>
-                <string>{{389,0},{59,83}}</string>
+                <string>{{408,0},{59,83}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_attack_up_8.png</key>
+            <key>warrior_attack_up (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -120,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{62,87}</string>
                 <key>textureRect</key>
-                <string>{{448,0},{62,87}}</string>
+                <string>{{476,0},{62,87}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -136,9 +136,9 @@
             <key>realTextureFileName</key>
             <string>warrior_attack_up.png</string>
             <key>size</key>
-            <string>{510,91}</string>
+            <string>{544,91}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:2b444e9e07420593e9929567941f90ee:444b95e1b40ebb53d5291a290e13a28b:f1bcf0a2b74b4e877470fe11bc3b4942$</string>
+            <string>$TexturePacker:SmartUpdate:7e643408dc45757148305d0b7cf0c5bc:444b95e1b40ebb53d5291a290e13a28b:f1bcf0a2b74b4e877470fe11bc3b4942$</string>
             <key>textureFileName</key>
             <string>warrior_attack_up.png</string>
         </dict>

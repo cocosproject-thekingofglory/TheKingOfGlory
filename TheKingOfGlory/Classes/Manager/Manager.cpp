@@ -19,17 +19,6 @@ Soldier* Manager::createSoldier(const std::string &filename, const int color)
 	return nullptr;
 }
 
-Monster* Manager::createMonster(const std::string &filename, const int color, int pos)
-{
-	auto monster = Monster::createWithSpriteFrameName(filename, color);
-	if (monster)
-	{
-		_monsterList[color].insert(_monsterList[color].begin() + pos, monster);
-		return monster;
-	}
-	CC_SAFE_DELETE(monster);
-	return nullptr;
-}
 
 Tower* Manager::createTower(const std::string &filename, const int color)
 {
@@ -84,9 +73,11 @@ bool Manager::init()
 				auto player = pair.second;
 				player->setMove(true);
 				player->setAttack(true);
+				player->setSkill(true);
+				
 			}
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
-			schedule(CC_CALLBACK_0(Manager::scheduleCreateMonster, this), 5.0f, "CreateMonster");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleAttack, this), 1.0f, "UpdateAttack");
 			schedule(CC_CALLBACK_0(Manager::AIHero, this), 0.5f, "PlayerAttack");
@@ -117,15 +108,6 @@ void Manager::scheduleAttack()
 
 		}
 	}
-	for (int i = 0; i < 2; i++)
-	{
-		for (int j = 0; j < _monsterList[i].size(); j++)
-		{
-			_monsterList[i].at(j)->getAttackTarget().clear();
-			_monsterList[i].at(j)->getBeAttackTarget().clear();
-
-		}
-	}
 	for (auto pair : playerManager->getPlayerList())
 	{
 		auto player = pair.second;
@@ -143,7 +125,7 @@ void Manager::scheduleAttack()
 			{
 				auto player = pair.second;
 				if (player->getColor() != _soldierList[i].at(j)->getColor() &&
-					insideAttack(_soldierList[i].at(j), player) && _soldierList[i].at(j)->getNowHPValue() > 0)
+					insideAttack(_soldierList[i].at(j), player) && _soldierList[i].at(j)->getNowHPValue() >0)
 				{
 					player->addAttackTarget(_soldierList[i].at(j));
 					_soldierList[i].at(j)->addBeAttackTarget(player);
@@ -180,33 +162,6 @@ void Manager::scheduleAttack()
 
 	}
 
-	for (int i = 0; i < 2; i++)
-	{
-		//为野怪找
-		for (int j = 0; j < _monsterList[i].size(); j++)
-		{
-			for (auto pair : playerManager->getPlayerList())
-			{
-				auto player = pair.second;
-				if (player->getColor() != _monsterList[i].at(j)->getColor() &&
-					insideAttack(_monsterList[i].at(j), player) && _monsterList[i].at(j)->getNowHPValue() > 0)
-				{
-					player->addAttackTarget(_monsterList[i].at(j));
-					_monsterList[i].at(j)->addBeAttackTarget(player);
-				}
-				if (player->getColor() != _monsterList[i].at(j)->getColor() &&
-					insideAttack(player, _monsterList[i].at(j)) && player->getNowHPValue() > 0)
-				{
-					_monsterList[i].at(j)->addAttackTarget(player);
-					player->addBeAttackTarget(_monsterList[i].at(j));
-				}
-
-			}
-
-		}
-
-	}
-
 	//为英雄找
 	for (auto pair1 : playerManager->getPlayerList())
 	{
@@ -214,7 +169,7 @@ void Manager::scheduleAttack()
 		for (auto pair2 : playerManager->getPlayerList())
 		{
 			auto player2 = pair2.second;
-			if (player1->getColor() != player2->getColor() && insideAttack(player2, player1))
+			if (player1->getColor() != player2->getColor() && insideAttack(player2, player1)&&player2->getNowHPValue()>0)
 			{
 				player1->addAttackTarget(player2);
 				player2->addBeAttackTarget(player1);
@@ -223,7 +178,7 @@ void Manager::scheduleAttack()
 		}
 		for (auto tower : _towerList[player1->getColor() ^ 1])
 		{
-			if (insideAttack(tower, player1) && tower->getNowHPValue() > 0)
+			if (insideAttack(tower, player1) && tower->getNowHPValue() >= 0)
 			{
 				player1->addAttackTarget(tower);
 				tower->addBeAttackTarget(player1);
@@ -276,29 +231,6 @@ void Manager::scheduleCreateSoldier()
 	}
 }
 
-void Manager::scheduleCreateMonster()
-{
-
-	for (int i = 0; i < _monsterList[i].size; i++)
-	{
-		if (_monsterList[RED].at(i)->getNowHPValue <= 0)
-		{
-			auto monster = createMonster(MONSTER1_RED_FILENAME, RED, i);
-			GameMap::getCurrentMap()->addSprite(monster, GameMap::Type::Monster_Red);
-		}
-	}
-
-	for (int i = 0; i < _monsterList[i].size; i++)
-	{
-		if (_monsterList[BLUE].at(i)->getNowHPValue <= 0)
-		{
-			auto monster = createMonster(MONSTER1_BLUE_FILENAME, BLUE, i);
-			GameMap::getCurrentMap()->addSprite(monster, GameMap::Type::Monster_Blue);
-		}
-	}
-}
-
-
 void Manager::scheduleDeadDetect()
 {
 	//从列表中删除死去的兵和塔
@@ -323,18 +255,6 @@ void Manager::scheduleDeadDetect()
 			}
 		}
 
-		//删野
-		for (int j = 0; j < _monsterList[i].size(); j++)
-		{
-			if (_monsterList[i].at(j)->getNowHPValue() <= 0.0)
-			{
-				auto monster = _monsterList[i].at(j);
-
-				monster->removeFromParentAndCleanup(true);
-				_monsterList[i].eraseObject(monster);
-			}
-		}
-
 		//删塔
 		for (auto tower : _towerList[i])
 		{
@@ -342,7 +262,6 @@ void Manager::scheduleDeadDetect()
 			{
 				tower->destroy();
 				unschedule( "CreateSoldier");
-				unschedule( "CreateMonster");
 				unschedule( "TowertAttack");
 				unschedule( "UpdateAttack");
 				unschedule( "PlayerAttack");

@@ -11,6 +11,7 @@ bool GameController::init()
 	this->setName("GameController");
 	map = nullptr;
 
+
 	createTouchListener();
 	createKeyListener();
 	scheduleOnce(schedule_selector(GameController::initGame), 1.5f);
@@ -18,7 +19,7 @@ bool GameController::init()
 	auto gameStartListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom* event) {
 		touchListener->setEnabled(true);
 		keyListener->setEnabled(true);
-		for (auto&skill : _skillList)
+		for (auto& skill : _skillList)
 		{
 			skill->setEnabled(true);
 		}
@@ -43,7 +44,7 @@ void GameController::createTouchListener()
 {
 	touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
-	touchListener->onTouchEnded = [=](cocos2d::Touch * touch, cocos2d::Event * event) {
+	touchListener->onTouchEnded =[=](cocos2d::Touch * touch, cocos2d::Event * event) {
 		auto touchLocation = touch->getLocation();
 		auto nodeLocation = map->convertToNodeSpace(touchLocation);
 		auto worldLocation = map->convertToWorldSpace(touchLocation);
@@ -63,49 +64,9 @@ void GameController::createKeyListener()
 	keyListener = EventListenerKeyboard::create();
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event)
 	{
-		/*if (keyCode == EventKeyboard::KeyCode::KEY_W)
-		{
-			map->setPositionY(map->getPositionY() - 100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_S)
-		{
-			map->setPositionY(map->getPositionY() + 100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		{
-			map->setPositionX(map->getPositionX() +100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		{
-			map->setPositionX(map->getPositionX() -100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_T)
-		{
-			map->setPositionY(map->getPositionY() - 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_G)
-		{
-			map->setPositionY(map->getPositionY() + 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_F)
-		{
-			map->setPositionX(map->getPositionX() + 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_H)
-		{
-			map->setPositionX(map->getPositionX() - 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_J)
-		{
-			map->setScale(map->getScale()*1.1);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_K)
-		{
-			map->setScale(map->getScale()/1.1);
-		}*/
 		if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
-			if (getSkillList().size() >= 1)
+			if(getSkillList().size()>=1)
 				getSkillList().at(0)->touch();
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_Q)
@@ -123,7 +84,6 @@ void GameController::createKeyListener()
 			if (getSkillList().size() >= 3)
 				getSkillList().at(3)->touch();
 		}
-
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
 		{
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
@@ -137,11 +97,11 @@ void GameController::addSkill()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto skill1 = Skill::create("Skill1", "Pictures/GameItem/warrior_skill1.png", 0.1f);
-	skill1->setPosition(Vec2(visibleSize.width*0.9, visibleSize.height*0.1));
+	skill1->setPosition(Vec2(visibleSize.width*0.9,visibleSize.height*0.1));
 	skill1->setScale(0.8);
-	skill1->onTouch = [=]()
+	skill1->onTouch = [=]() 
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+			manager->playerManager->getLocalPlayer()->attack(); 
 	};
 	_skillList.pushBack(skill1);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill1);
@@ -152,7 +112,7 @@ void GameController::addSkill()
 	skill2->setScale(0.8);
 	skill2->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill1();
 	};
 	_skillList.pushBack(skill2);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill2);
@@ -163,7 +123,7 @@ void GameController::addSkill()
 	skill3->setScale(0.8);
 	skill3->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill2();
 	};
 	_skillList.pushBack(skill3);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill3);
@@ -174,7 +134,7 @@ void GameController::addSkill()
 	skill4->setScale(0.8);
 	skill4->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill3();
 	};
 	_skillList.pushBack(skill4);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);
@@ -189,7 +149,6 @@ void GameController::onEnter()
 
 void GameController::update(float delta)
 {
-
 	isResult(delta);
 }
 

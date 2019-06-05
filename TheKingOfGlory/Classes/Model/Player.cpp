@@ -8,6 +8,7 @@
 USING_NS_CC;
 
 //role值同enum分类，为0，1,2
+
 Player* Player::createPlayer(const std::string& id, int role,int color) 
 {
 	auto player = new (std::nothrow) Player();
@@ -19,6 +20,7 @@ Player* Player::createPlayer(const std::string& id, int role,int color)
 	}
 	CC_SAFE_DELETE(player);
 	return nullptr;
+
 
 }
 
@@ -42,51 +44,7 @@ bool Player::init(int role,int color)
 
 	this->setScale(2);
 
-	std::string animationNames[] = { "move","attack","dead","behit","stand","skill", "skill1","skill2"};
-	_animationNames.assign(animationNames, animationNames + 5);
 
-	std::string directions[] = {"up","down","left","right","leftdown","leftup","rightdown","rightup"};
-
-	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
-	for (int i = 0; i < 7; i++)
-	{
-		switch (i)
-		{
-		case 0:
-			_animationNum = 10;
-			break;
-		case 1:
-			_animationNum = 8;
-			break;
-		case 2:
-			_animationNum = 7;
-			break;
-		case 3:
-			_animationNum = 4;
-			break;
-		case 4:
-			_animationNum = 10;
-			break;
-		case 5:
-			_animationNum = 14;
-			break;
-		case 6:
-			_animationNum = 7;
-			break;
-		case 7:
-			_animationNum = 14;
-			break;
-		}
-		for (int j = 0; j < 8; j++)
-		{
-			std::string animationName = _roleName +"_" +animationNames[i]+"_" + directions[j];
-			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
-		}
-
-	}
-
-	setDirection(Direction::RIGHTUP);
-	setStatus(Player::Status::STANDING);
 
 
 	return true;
@@ -98,12 +56,16 @@ bool Player::initWithRole(int role,int color)
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
-	auto file = _roleName + "_stand_down (1).png";
+	auto file = _roleName;
+	switch (role)
+	{
+	case 0: {file += "_stand_down (1).png"; break; }
+	case 1: {file += "_move_down (1).png"; break; }
+	case 2: {file += "_stand_down (1).png"; break; }
+	}
 
 	if (this->initWithSpriteFrameName(file) && this->init(role,color))
-
 	{
-		// do something here
 		return true;
 	}
 	return false;
@@ -113,97 +75,15 @@ bool Player::initWithRole(int role,int color)
 //与动作有关,设置状态，传入状态，初始化动画,状态读取
 void Player::setStatus(Player::Status status)
 {
+
 	this->_status = status;
-	std::string animation=_roleName+"_";
+	std::string animation = _roleName + "_";
 	//Or do animation here:
-	switch (_status)
-	{
-	case Player::Status::STANDING:
-	{
-		animation += "stand_";
-	}
-		break;
-	case Player::Status::MOVING:
-	{
-		animation += "move_";
-	}
-		break;
-	case Player::Status::ATTACKING:
-	{
-		animation += "attack_";
-	}
-	break;
-	case Player::Status::DEAD:
-	{
-		animation += "dead_";
-	}
-		break;
-	case Player::Status::BEINGHIT:
-	{
-		animation += "behit_";
-	}
-		break;
-	case Player::Status::SKILL1:
-	{
-		animation += "skill_";
-	}
-		break;
-	case Player::Status::SKILL2:
-	{
-		animation += "skill1_";
-	}
-	break;
-	case Player::Status::SKILL3:
-	{
-		animation += "skill2_";
-	}
-	break;
-	default:
-		break;
-	}
-	switch (getDirection())
-	{
-	case Direction::DOWN:
-	{
-		animation += "down";
-	}
-	break;
-	case Direction::UP:
-	{
-		animation += "up";
-	}
-	break;
-	case Direction::LEFT:
-	{
-		animation += "left";
-	}
-	break;
-	case Direction::RIGHT:
-	{
-		animation += "right";
-	}
-	break;
-	case Direction::LEFTDOWN:
-	{
-		animation += "leftdown";
-	}
-	break;
-	case Direction::LEFTUP:
-	{
-		animation += "leftup";
-	}
-	break;
-	case Direction::RIGHTDOWN:
-	{
-		animation += "rightdown";
-	}
-	break;
-	case Direction::RIGHTUP:
-	{
-		animation += "rightup";
-	}
-	break;
-	}
+	animation += _animationNames.at(int(status))+"_";
+
+	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
+	animation += directionName[int(_direction)];
+
 	AnimationLoader::runAnimation(animation, this);
 }
 
@@ -224,6 +104,7 @@ void Player::stopMove()
 }
 
 
+//血条问题仍要讨论
 bool Player::attack()
 {
 	if (_isAttack&&getStatus()!=Status::ATTACKING)
@@ -254,6 +135,7 @@ void Player::stopAttack()
 		setStatus(Status::STANDING);
 	}
 }
+
 
 float Player::beAttack(const float damage)
 {
@@ -316,7 +198,7 @@ float Player::beAttack(const float damage)
 				}
 				break;
 				}
-				frameName += " (7).png";
+				frameName += " ("+std::to_string(_animationFrameNum.at(int(Status::DEAD)))+").png";
 				this->setSpriteFrame(frameName);
 				auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
 					[=]() {
@@ -418,7 +300,7 @@ void Player::revival()
 
 	_isMove = true;
 	_isAttack = true;
-	_isSkill = false;
+	_isSkill = true;
 
 
 	setDirection(Direction::RIGHTUP);

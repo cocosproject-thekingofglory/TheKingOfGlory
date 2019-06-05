@@ -1,49 +1,69 @@
 #pragma once
-#include"cocos2d.h"
-#include"ui/CocosGUI.h"
-#include"Model/SpriteBase.h"
 #include"Model/Player.h"
-#include"Model/Skill.h"
-#include"Controller/GameController.h"
 
 USING_NS_CC;
 
-const float WARRIOR_DAMAGE = 10.0;
-const float ARCHER_DAMAGE = 8.0;
-const float MAGE_DAMAGE = 12.0;
 
 class Warrior :public Player
 {
-public:
-	static Warrior* createWarrior(const std::string& id, int role, int color);
-
-	virtual bool launchSkill();
-	virtual void stopSkill();
-
 private:
-	std::string id;
+	enum Damage
+	{
+		SKILL1 = 50,
+		SKILL2=80,
+		SKILL3=100
+	};
+public:
+	static Warrior* create(const std::string& id,  int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+
 };
 
-class Archer :public Player
+class Aviator :public Player
 {
-public:
-	static Archer* createArcher(const std::string& id, int role, int color);
-
-	virtual bool launchSkill();
-	virtual void stopSkill();
-
 private:
-	std::string id;
+	enum Damage
+	{
+		SKILL1 = 10,
+		SKILL2 = 10,
+		SKILL3 = 10
+	};
+	enum Radius
+	{
+		One = 200,
+		Two = 200,
+		Three = 1000
+	};
+public:
+	static Aviator* create(const std::string& id, int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+
 };
 
 class Mage :public Player
 {
-public:
-	static Mage* createMage(const std::string& id, int role, int color);
-
-	virtual bool launchSkill();
-	virtual void stopSkill();
-
 private:
-	std::string id;
+	enum Damage
+	{
+		SKILL1 = 50,
+		SKILL2 = 80,
+		SKILL3 = 100
+	};
+
+public:
+	static Mage* create(const std::string& id, int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+
 };
