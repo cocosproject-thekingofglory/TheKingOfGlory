@@ -2,6 +2,7 @@
 #include "SimpleAudioEngine.h"
 #include "LoginScene.h"
 #include "GameScene.h"
+#include "SelectScene.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -263,8 +264,8 @@ void LoadingScene::progressUpdate()
 		auto callFunc = CallFunc::create([=] {
 
 			auto delay = DelayTime::create(2.0f);
-			//const auto transition = TransitionFade::create(1, LoginScene::createScene());
-			const auto transition = TransitionFade::create(1, GameScene::createScene());
+			const auto transition = TransitionFade::create(1, LoginScene::createScene());
+			//const auto transition = TransitionFade::create(1, SelectScene::createScene());
 			auto action = Sequence::create(delay, transition, NULL);
 			Director::getInstance()->replaceScene(transition);
 		});

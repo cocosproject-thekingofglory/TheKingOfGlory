@@ -1,6 +1,7 @@
 #include "Manager.h"
 #include "Controller/GameController.h"
 #include "UI/CountDown.h"
+#include "Model/User.h"
 #include "../Model/store/EquipmentBase.h"
 
 USING_NS_CC;
@@ -65,6 +66,7 @@ bool Manager::init()
 	{
 		return false;
 	}
+	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
 
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
@@ -100,6 +102,14 @@ bool Manager::init()
 		playerManager = PlayerManager::create();
 		this->addChild(playerManager, -1);
 	
+		if (isOnline)
+		{
+			static_cast<GameController*>(Director::getInstance()->getRunningScene()->
+				getChildByName("GameScene")->getChildByName("GameController"))->
+				gameClient->sendMessage("Init " + User::getInstance()->getName() + " 0");
+		}
+
+
 		auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Game start after ", "fonts/arial.ttf", 32, 5, false,
 			[=]() {		
 			for (auto pair : playerManager->getPlayerList())
@@ -113,9 +123,10 @@ bool Manager::init()
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
+			if (!isOnline)
+				schedule(CC_CALLBACK_0(Manager::AIHero, this), 0.5f, "PlayerAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleSoldierAttack, this), 1.0f, "UpdateSoldierAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleGunCarAttack, this), 1.0f, "UpdateGunCarAttack");
-			schedule(CC_CALLBACK_0(Manager::AIHero, this), 2.0f, "PlayerAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
 		});

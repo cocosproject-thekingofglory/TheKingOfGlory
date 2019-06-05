@@ -5,10 +5,10 @@
 #include "Model/GameMap.h"
 #include "Controller/GameController.h"
 #include "../Model/StatusList.h"
-
-
 USING_NS_CC;
 using namespace CocosDenshion;
+
+
 
 void GameScene::onEnter()
 {
@@ -37,10 +37,9 @@ void GameScene::createStatusButton()
 	});
 	this->addChild(statusButton, 4);
 }
-
 void GameScene::createMenuButton()
 {
-	//Ìí¼Ó²Ëµ¥°´Å¥
+	//æ·»åŠ èœå•æŒ‰é’®
 	auto menuItem = MenuItemImage::create(
 		"Pictures/UI/SettingNormal.png",
 		"Pictures/UI/SettingSelected.png",
@@ -56,7 +55,7 @@ void GameScene::createMenuButton()
 
 void GameScene::updateMenu()
 {
-	//¸üÐÂ²Ëµ¥£¬½ÓÊÕµ½UpdateMenuÊÂ¼þÊÇÏìÓ¦
+	//æ›´æ–°èœå•ï¼ŒæŽ¥æ”¶åˆ°UpdateMenuäº‹ä»¶æ˜¯å“åº”
 	if (hasMenu)
 		removeMenu();
 	else
@@ -67,7 +66,7 @@ void GameScene::createMenu()
 {
 	if (hasMenu)
 		return;
-	//Ìí¼Ó²Ëµ¥Í¼Æ¬
+	//æ·»åŠ èœå•å›¾ç‰‡
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu,4);
@@ -79,25 +78,25 @@ void GameScene::createMenu()
 	Size menuSize = menu->getContentSize();
 	float menuBottom = visible_Size.height / 2 - menuSize.height / 2;
 
-	//Ìí¼Ó¼ÌÐøÓÎÏ·ÎÄ×Ö
+	//æ·»åŠ ç»§ç»­æ¸¸æˆæ–‡å­—
 	continueLabel = Label::createWithTTF("Continue", text_Font, text_Size);
 	continueLabel->setTextColor(text_Color);
 	continueLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.8));
 	this->addChild(continueLabel, 4);
 
-	//Ìí¼ÓÓÎÏ·ÉèÖÃÎÄ×Ö
+	//æ·»åŠ æ¸¸æˆè®¾ç½®æ–‡å­—
 	settingLabel = Label::createWithTTF("Setting", text_Font, text_Size);
 	settingLabel->setTextColor(text_Color);
 	settingLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
 	this->addChild(settingLabel, 4);
 
-	//Ìí¼ÓÖØÐÂ¿ªÊ¼ÎÄ×Ö
+	//æ·»åŠ é‡æ–°å¼€å§‹æ–‡å­—
 	restartLabel = Label::createWithTTF("Restart", text_Font, text_Size);
 	restartLabel->setTextColor(text_Color);
 	restartLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
 	this->addChild(restartLabel, 4);
 
-	//Ìí¼Ó·µ»ØÖ÷²Ëµ¥ÎÄ×Ö
+	//æ·»åŠ è¿”å›žä¸»èœå•æ–‡å­—
 	returnLabel = Label::createWithTTF("Main Menu", text_Font, text_Size);
 	returnLabel->setTextColor(text_Color);
 	returnLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
@@ -112,7 +111,7 @@ void GameScene::removeMenu()
 {
 	if (!hasMenu)
 		return;
-	//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬É¾³ý²Ëµ¥
+	//åœç”¨èœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œåˆ é™¤èœå•
 	menuListener->setEnabled(false);
 	this->removeChild(menu, true);
 	this->removeChild(continueLabel, true);
@@ -147,7 +146,7 @@ void GameScene::createResultBox(EventCustom* event)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
-			Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+			//Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 		}
 	});
 
@@ -184,20 +183,20 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	}
 	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬É¾³ý²Ëµ¥,½øÈëÓÎÏ·ÉèÖÃ½çÃæ
+		//åœç”¨èœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œåˆ é™¤èœå•,è¿›å…¥æ¸¸æˆè®¾ç½®ç•Œé¢
 		removeMenu();
 		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
 	}
 	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬ÖØÐÂ¿ªÊ¼ÓÎÏ·
-		menuListener->setEnabled(false);
-		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+		//åœç”¨èœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œé‡æ–°å¼€å§‹æ¸¸æˆ
+		//menuListener->setEnabled(false);
+		//hasMenu = false;
+		//Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
 	}
 	else if (this->rectOfLabel(returnLabel).containsPoint(nodeLocation))
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬·µ»ØÖ÷²Ëµ¥
+		//åœç”¨èœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œè¿”å›žä¸»èœå•
 		menuListener->setEnabled(false);
 		hasMenu = false;
 		Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
@@ -212,23 +211,37 @@ cocos2d::Rect GameScene::rectOfLabel(cocos2d::Label * label)
 		label->getContentSize().height);
 }
 
-cocos2d::Scene * GameScene::createScene()
+cocos2d::Scene * GameScene::createScene(Client* client, Server*server )
 {
 	auto scene = Scene::create();
-	auto layer = GameScene::create();
+	auto layer = GameScene::create(client,server);
 	layer->setName("GameScene");
 	scene->addChild(layer);
 	return scene;
 }
 
-bool GameScene::init()
+GameScene * GameScene::create(Client * client, Server * server)
+{
+	GameScene *gamescene = new (std::nothrow) GameScene();
+	if (gamescene && gamescene->init(client, server))
+	{
+		gamescene->autorelease();
+		return gamescene;
+	}
+	CC_SAFE_DELETE(gamescene);
+
+	return nullptr;
+}
+
+bool GameScene::init(Client* client, Server*server)
 {
 	if (!Layer::init())
 		return false;
 
+
 	visible_Size = Director::getInstance()->getVisibleSize();
 
-	//´´½¨²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬ÏÈ²»ÆôÓÃ
+	//åˆ›å»ºèœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œå…ˆä¸å¯ç”¨
 	menuListener = EventListenerTouchOneByOne::create();
 	menuListener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
 	menuListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
@@ -241,11 +254,12 @@ bool GameScene::init()
 	});
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameStartListener, 1);
 
-	//´´½¨×Ô¶¨ÒåÊÂ¼þ¼àÌýÆ÷£¬ÓÃÓÚ´ò¿ª¹Ø±Õ²Ëµ¥
+
+	//åˆ›å»ºè‡ªå®šä¹‰äº‹ä»¶ç›‘å¬å™¨ï¼Œç”¨äºŽæ‰“å¼€å…³é—­èœå•
 	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener, 1);
 
-	//´´½¨×Ô¶¨ÒåÊÂ¼þ¼àÌýÆ÷£¬ÓÎÏ·½áÊøÊ±µ¯³ö¶Ô»°¿ò
+	//åˆ›å»ºè‡ªå®šä¹‰äº‹ä»¶ç›‘å¬å™¨ï¼Œæ¸¸æˆç»“æŸæ—¶å¼¹å‡ºå¯¹è¯æ¡†
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
 
@@ -256,19 +270,19 @@ bool GameScene::init()
 	//this->setAnchorPoint(Vec2::ZERO);
 	log("visible:x:%f  y:%f", visible_Size.width, visible_Size.height);
 
-	//Ìí¼ÓµØÍ¼
+	//æ·»åŠ åœ°å›¾
 	auto map = GameMap::create();
 	map->setMap("1v1");
 	map->setPosition(Vec2::ZERO);
 	map->setScale(0.5f);
 	this->addChild(map, -1);
 
-	auto gameController = GameController::create();
+	auto gameController = GameController::create(client,server);
+
 	gameController->setMap(map);
 	this->addChild(gameController, -1);
 
 	createMenuButton();
-
 	createStatusButton();
 
 	return true;

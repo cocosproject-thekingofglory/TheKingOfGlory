@@ -137,6 +137,8 @@ public:
 
 	void revival();
 
+private:
+	bool isOnline;
 	//金钱、经验
 	void setEXPBar();
 	LoadingBar* getEXPBar() { return _EXPBar; }

@@ -9,10 +9,10 @@ USING_NS_CC;
 
 //role值同enum分类，为0，1,2
 
-Player* Player::createPlayer(const std::string& id, int role,int color) 
+Player* Player::createPlayer(const std::string& id, int role, int color)
 {
 	auto player = new (std::nothrow) Player();
-	if (player&&player->initWithRole(role,color))
+	if (player&&player->initWithRole(role, color))
 	{
 		player->_id = id;
 		player->autorelease();
@@ -25,7 +25,7 @@ Player* Player::createPlayer(const std::string& id, int role,int color)
 }
 
 //初始化信息，对这个角色初始化信息
-bool Player::init(int role,int color)
+bool Player::init(int role, int color)
 {
 	setColor(color);
 
@@ -54,11 +54,13 @@ bool Player::init(int role,int color)
 	this->setScale(2);
 
 
+	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
+
 	return true;
 }
 
 //只是获得名字
-bool Player::initWithRole(int role,int color)
+bool Player::initWithRole(int role, int color)
 {
 	//设置路径
 	_roleName = std::string(roleName[role]);
@@ -71,7 +73,8 @@ bool Player::initWithRole(int role,int color)
 	case 2: {file += "_stand_down (1).png"; break; }
 	}
 
-	if (this->initWithSpriteFrameName(file) && this->init(role,color))
+	if (this->initWithSpriteFrameName(file) && this->init(role, color))
+
 	{
 		return true;
 	}
@@ -90,7 +93,6 @@ void Player::setStatus(Player::Status status)
 
 	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
 	animation += directionName[int(_direction)];
-
 
 	AnimationLoader::runAnimation(animation, this);
 }
@@ -116,7 +118,7 @@ void Player::stopMove()
 //血条问题仍要讨论
 bool Player::attack()
 {
-	if (_isAttack&&getStatus()!=Status::ATTACKING)
+	if (_isAttack&&getStatus() != Status::ATTACKING)
 	{
 		stopMove();
 		setStatus(Status::ATTACKING);
@@ -168,49 +170,10 @@ float Player::beAttack(const float damage)
 			auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
 				this->stopAnimation(this);
 				std::string frameName = _roleName + "_dead_";
-				switch (getDirection())
-				{
-				case Direction::DOWN:
-				{
-					frameName += "down";
-				}
-				break;
-				case Direction::UP:
-				{
-					frameName += "up";
-				}
-				break;
-				case Direction::LEFT:
-				{
-					frameName += "left";
-				}
-				break;
-				case Direction::RIGHT:
-				{
-					frameName += "right";
-				}
-				break;
-				case Direction::LEFTDOWN:
-				{
-					frameName += "leftdown";
-				}
-				break;
-				case Direction::LEFTUP:
-				{
-					frameName += "leftup";
-				}
-				break;
-				case Direction::RIGHTDOWN:
-				{
-					frameName += "rightdown";
-				}
-				break;
-				case Direction::RIGHTUP:
-				{
-					frameName += "rightup";
-				}
-				break;
-				}
+
+				std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
+				frameName += directionName[int(_direction)];
+
 				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
 				if (isLocal())
@@ -250,9 +213,8 @@ void Player::startMove(Vec2 destination)
 	if (_isMove)
 	{
 		//设置一个大目的地和小目的地，大目的地为实际目的地，将大目的地分为小目的地
-		if (isLocal())
+		if (isOnline)
 		{
-			//本地英雄使用寻路算法
 			auto pathArithmetic = PathArithmetic::create();
 			auto map = GameMap::getCurrentMap();
 			path = pathArithmetic->getPath(map->positionToTileCoord(getPosition()), map->positionToTileCoord(destination), map->getGridVector());
@@ -267,12 +229,30 @@ void Player::startMove(Vec2 destination)
 		}
 		else
 		{
-			srand(time(NULL));
-			setBigDestination(destination);
-			setSmallDestination(destination);
-			setStatus(Status::MOVING);
-			schedule(CC_CALLBACK_0(Player::move, this), "move");
+			if (isLocal())
+			{
+				//本地英雄使用寻路算法
+				auto pathArithmetic = PathArithmetic::create();
+				auto map = GameMap::getCurrentMap();
+				path = pathArithmetic->getPath(map->positionToTileCoord(getPosition()), map->positionToTileCoord(destination), map->getGridVector());
+				if (path.size())
+				{
+					moveStep = 0;
+					setBigDestination(destination);
+					setSmallDestination(getPosition());
+					setStatus(Status::MOVING);
+					schedule(CC_CALLBACK_0(Player::move, this), "move");
+				}
+			}
+			else
+			{
+				setBigDestination(destination);
+				setSmallDestination(destination);
+				setStatus(Status::MOVING);
+				schedule(CC_CALLBACK_0(Player::move, this), "move");
+			}
 		}
+
 
 	}
 }
@@ -350,9 +330,8 @@ void Player::move()
 			stopMove();
 			return;
 		}
-		if (isLocal())
+		if (isOnline)
 		{
-			//将寻路算法求得的路径中的每步设为小目的地，小目的地的移动采用直线移动
 			if (moveStep >= path.size())
 			{
 				stopMove();
@@ -381,41 +360,80 @@ void Player::move()
 				Vec2 target = Vec2(position.x + dx, position.y + dy);
 				this->setPosition(target);
 
-				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
+				if (isLocal())
+					Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
 			}
 		}
 		else
 		{
-			//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
-
-			if (position.equals(getSmallDestination()))
+			if (isLocal())
 			{
-				setSmallDestination(getBigDestination());
-			}
+				//将寻路算法求得的路径中的每步设为小目的地，小目的地的移动采用直线移动
+				if (moveStep >= path.size())
+				{
+					stopMove();
+					return;
+				}
+				if (path.size())
+				{
 
-			Vec2 smallDestination = getSmallDestination();
+					if (position.equals(getSmallDestination()))
+					{
+						auto point = path.at(moveStep++);
+						Vec2 coord = Vec2(point->getX(), point->getY());
+						setSmallDestination(GameMap::getCurrentMap()->tileCoordToPosition(coord));
+					}
 
-			int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+					Vec2 smallDestination = getSmallDestination();
 
-			float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
-			float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+					int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
 
-			judgeDirection(dx, dy);
+					float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+					float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+					judgeDirection(dx, dy);
 
 
-			Vec2 target = Vec2(position.x + dx, position.y + dy);
+					Vec2 target = Vec2(position.x + dx, position.y + dy);
+					this->setPosition(target);
 
-			auto map = GameMap::getCurrentMap();
-
-			if (map->isCanAssess(map->positionToTileCoord(target)))
-			{
-				this->setPosition(target);
+					Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ViewCenter");
+				}
 			}
 			else
 			{
-				randomSmallDestination();
+				//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
+
+				if (position.equals(getSmallDestination()))
+				{
+					setSmallDestination(getBigDestination());
+				}
+
+				Vec2 smallDestination = getSmallDestination();
+
+				int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+
+				float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+				float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+				judgeDirection(dx, dy);
+
+
+				Vec2 target = Vec2(position.x + dx, position.y + dy);
+
+				auto map = GameMap::getCurrentMap();
+
+				if (map->isCanAssess(map->positionToTileCoord(target)))
+				{
+					this->setPosition(target);
+				}
+				else
+				{
+					randomSmallDestination();
+				}
 			}
 		}
+
 
 	}
 }

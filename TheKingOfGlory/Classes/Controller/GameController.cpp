@@ -1,16 +1,31 @@
 #include "GameController.h"
 #include "Util/GameAudio.h"
+#include "Model/User.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
 
-bool GameController::init()
+GameController * GameController::create(Client* client, Server*server)
+{
+	GameController *gamecontroller = new (std::nothrow) GameController();
+	if (gamecontroller && gamecontroller->init(client, server))
+	{
+		gamecontroller->autorelease();
+		return gamecontroller;
+	}
+	CC_SAFE_DELETE(gamecontroller);
+
+	return nullptr;
+}
+bool GameController::init(Client* client, Server*server)
 {
 	if (!Layer::init())
 		return false;
 	this->setName("GameController");
 	map = nullptr;
-
+	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
+	gameClient = client;
+	gameServer = server;
 
 	createTouchListener();
 	createKeyListener();
@@ -28,6 +43,16 @@ bool GameController::init()
 
 	auto gameOverListener = EventListenerCustom::create("ToOver", CC_CALLBACK_1(GameController::toOver, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
+
+	if (isOnline)
+	{
+		CLIENT_ON(GameMsg::MsgType_MsgType_GameInit, GameController::onGameInit,gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerMove, GameController::onPlayerMove, gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerAttack, GameController::onPlayerAttack, gameClient);
+
+		schedule(CC_CALLBACK_0(GameController::processMsg,this),0.01f,"ProcessMsg");
+
+	}
 
 	return true;
 }
@@ -50,9 +75,29 @@ void GameController::createTouchListener()
 		auto worldLocation = map->convertToWorldSpace(touchLocation);
 		if (map->isCanAssess(map->positionToTileCoord(nodeLocation)))
 		{
-			auto localplayer = manager->playerManager->getLocalPlayer();
-			if(localplayer&&localplayer->getStatus()!=Player::Status::DEAD)
-				localplayer->startMove(nodeLocation);
+			if (isOnline)
+			{
+				flatbuffers::FlatBufferBuilder builder(1024);
+				using namespace GameMsg;
+				auto name = builder.CreateString(User::getInstance()->getName());
+				auto pos = GameMsg::Point(nodeLocation.x, nodeLocation.y);
+				auto playerMove = CreatePlayerMove(builder, name,&pos);
+		
+				auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerMove, Date::Date_playerMove, playerMove.Union());
+				builder.Finish(msg);
+				uint8_t* buff = builder.GetBufferPointer();
+				size_t size = builder.GetSize();
+				socket_message message((const char*)buff, size);
+				gameClient->sendMessage(message);
+				hasSend = true;
+			}
+			else
+			{
+				auto localplayer = manager->playerManager->getLocalPlayer();
+				if (localplayer&&localplayer->getStatus() != Player::Status::DEAD)
+					localplayer->startMove(nodeLocation);
+			}
+
 		}
 	};
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener,this);
@@ -101,6 +146,22 @@ void GameController::addSkill()
 	skill1->setScale(0.8);
 	skill1->onTouch = [=]() 
 	{
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerAttack = CreatePlayerAttack(builder, name);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerAttack, Date::Date_playerAttack, playerAttack.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
 			manager->playerManager->getLocalPlayer()->attack(); 
 	};
 	_skillList.pushBack(skill1);
@@ -164,10 +225,92 @@ void GameController::toOver(cocos2d::EventCustom* event)
 	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
 }
 
+void GameController::sendEmptyMsg()
+{
+	if (!hasSend)
+	{
+		flatbuffers::FlatBufferBuilder builder(1024);
+		using namespace GameMsg;
+
+		auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_None, Date::Date_NONE);
+		builder.Finish(msg);
+		uint8_t* buff = builder.GetBufferPointer();
+		size_t size = builder.GetSize();
+		socket_message message((const char*)buff, size);
+		gameClient->sendMessage(message);
+	}
+	hasSend = false;
+}
+
+void GameController::processMsg()
+{
+
+	using namespace::GameMsg;
+	if (gameClient->remainMessage())
+	{
+
+		auto msg=gameClient->getMessage();
+		gameClient->onMessage(GetMsg(msg.c_str())->msg(), msg.c_str());
+	}
+}
+
+void GameController::onGameInit(const void * msg)
+{
+	using namespace GameMsg;
+	auto data = GetMsg(msg)->data_as_gameInit();
+	srand(data->randSeed());
+	auto players = data->players();
+	for (auto player : *players)
+	{
+		auto name = player->name()->c_str();
+		auto color = static_cast<int>(player->color());
+		auto role = static_cast<int>(player->role());
+		if (name == User::getInstance()->getName())
+		{
+			auto hero=manager->playerManager->createLocalPlayer(name, role, color);
+
+
+			GameMap::getCurrentMap()->addSprite(hero,(color)?GameMap::Type::Player_Blue: GameMap::Type::Player_Red);
+			GameMap::getCurrentMap()->addCenterSprite(hero);
+		}
+		else
+		{
+			auto hero = manager->playerManager->createPlayer(name, role, color);
+			GameMap::getCurrentMap()->addSprite(hero, (color) ? GameMap::Type::Player_Blue : GameMap::Type::Player_Red);
+		}
+	}
+	hasSend = true;
+	schedule(CC_CALLBACK_0(GameController::sendEmptyMsg, this), 0.02f,"SendEmpty");
+
+}
+
+void GameController::onPlayerMove(const void * msg)
+{
+
+	auto data = GameMsg::GetMsg(msg)->data_as_playerMove();
+	auto player = manager->playerManager->getPlayer(data->name()->c_str());
+	auto pos = Vec2(data->pos()->x(), data->pos()->y());
+	if (player&&player->getStatus() != Player::Status::DEAD)
+		player->startMove(pos);
+
+}
+
+void GameController::onPlayerAttack(const void * msg)
+{
+	auto data = GameMsg::GetMsg(msg)->data_as_playerAttack();
+	auto player = manager->playerManager->getPlayer(data->name()->c_str());
+	if (player)
+		player->attack();
+
+}
+
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
 	this->addChild(manager, -1,"Manager");
-
 	addSkill();
+	
+	
+	
+
 }

@@ -3,13 +3,19 @@
 #include "../Model/GameMap.h"
 #include "Manager/Manager.h"
 #include "Model/Skill.h"
+#include "Network/Server.h"
+#include "Network/Client.h"
 
 class GameController:public cocos2d::Layer
 {
 public:
+	bool isOnline;
+	bool hasSend;
+	Server* gameServer;
+	Client* gameClient;
 	Manager* manager = Manager::getInstance();
-	virtual bool init();
-	CREATE_FUNC(GameController);
+	static GameController* create(Client* client, Server*server );
+	virtual bool init(Client* client, Server*server);
 
 	void setMap(GameMap* map);
 	void initGame(float delta);
@@ -21,6 +27,7 @@ private:
 	cocos2d::EventListenerTouchOneByOne* touchListener;
 	cocos2d::EventListenerKeyboard* keyListener;
 
+
 	void createTouchListener();
 	void createKeyListener();
 	void addSkill();
@@ -28,5 +35,11 @@ private:
 	void update(float delta);
 	void isResult(float delta);
 	void toOver(cocos2d::EventCustom* event);
+
+	void sendEmptyMsg();
+	void processMsg();
+	void onGameInit(const void * msg);
+	void onPlayerMove(const void *msg);
+	void onPlayerAttack(const void* msg);
 
 };
