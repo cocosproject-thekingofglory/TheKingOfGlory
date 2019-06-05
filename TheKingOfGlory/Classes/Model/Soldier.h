@@ -12,7 +12,10 @@ const float SOLDIER_DAMAGE = 5.0;
 const float SOLDIER_HPVALUE = 50.0;
 const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
-const float SOLDIER_EXPVALUE = 5.0;
+const float SOLDIER_DEFEND = 0.1;
+//击杀经验、金钱
+const int SOLDIER_KILL_EXPRIENCE = 5;
+const int SOLDIER_KILL_MONEY = 10;
 
 const int SOLDIER_MOVE_ACTION = 1;
 
@@ -36,11 +39,11 @@ public:
 	void setStatus(Status status) { _status = status; }
 	Status getStatus() { return _status; }
 
-	void startMove();
-	void stopMove();
+	virtual void startMove();
+	virtual void stopMove();
 
 	virtual bool attack();//返回是否进行了攻击
-	void stopAttack();
+	virtual void stopAttack();
 
 	virtual float beAttack(const float damage);
 
@@ -64,11 +67,12 @@ public:
 	void randomSmallDestination();
 	void randomBigDestination();
 
-private:
+protected:
 	float _speed;
 	Vec2 _destination;
 	Vec2 _Destination;
 	Status _status;
 	//Sprite* _bullet;
 	//Sprite* _soldier;
+
 };

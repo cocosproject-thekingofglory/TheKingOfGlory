@@ -15,7 +15,6 @@ Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 
 bool Tower::init(int color)
 {
-	setName("Tower");
 	setAnchorPoint(Vec2::ZERO);
 	setColor(color);
 	setAttackRadius(TOWER_ATTACK_RADIUS);
@@ -23,7 +22,9 @@ bool Tower::init(int color)
 	setNowHPValue(TOWER_HPVALUE);
 	setDamage(TOWER_DAMAGE);
 	setAttackInterval(TOWER_ATTACK_INTERVAL);
-
+	setDefend(TOWER_DEFEND);
+	setKillExperience(TOWER_KILL_EXPRIENCE);
+	setKillMoney(TOWER_KILL_MONEY);
 
 	initAnimation();
 	setHPBar();
@@ -109,4 +110,5 @@ bool Tower::insideAttack(SpriteBase*beAttacker)
 	Vec2 towerPos = this->getPosition(), pos = beAttacker->getPosition();
 	float dx = towerPos.x - pos.x, dy = towerPos.y - pos.y;
 	return dx * dx + dy * dy <= getAttackRadius()*getAttackRadius();
+
 }

@@ -97,4 +97,3 @@ void PlayerManager::initPlayer(float delta)
 	GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
 
 }
-

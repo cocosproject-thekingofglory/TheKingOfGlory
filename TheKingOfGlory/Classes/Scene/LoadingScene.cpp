@@ -32,7 +32,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	Layer::onEnterTransitionDidFinish();
 	
 
-	//将游戏资源文件名放入ValueVector中
+	//����Ϸ��Դ�ļ������ValueVector��
 	ValueVector spriteSheets, effects, musics;
 
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_down.plist"));
@@ -178,6 +178,8 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Skill/skillbone.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillstab.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
+	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
+	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));
@@ -190,18 +192,18 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 	sourceCount = spriteSheets.size() + effects.size() + musics.size();
 
-	progress_Interval = 100.0 / sourceCount;
+	progress_Interval = 100 / sourceCount;
 	
+	loadSpriteSheets(spriteSheets);
 	loadMusic(musics);
 	loadEffect(effects);
-	loadSpriteSheets(spriteSheets);
 	
 
 }
 
 void LoadingScene::createBackground()
 {
-	//添加背景图
+	//��ӱ���ͼ
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -209,7 +211,7 @@ void LoadingScene::createBackground()
 
 void LoadingScene::createProgressBar()
 {
-	//创建进度条
+	//���������
 	auto barSprite = Sprite::create("Pictures/UI/Bar.png");
 	progress = ProgressTimer::create(barSprite);
 	progress->setPercentage(0.0f);
@@ -222,7 +224,7 @@ void LoadingScene::createProgressBar()
 
 void LoadingScene::loadMusic(ValueVector musicFiles)
 {
-	//加载音乐
+	//��������
 	for (Value& v : musicFiles)
 	{
 		SimpleAudioEngine::getInstance()->preloadBackgroundMusic(v.asString().c_str());
@@ -232,7 +234,7 @@ void LoadingScene::loadMusic(ValueVector musicFiles)
 
 void LoadingScene::loadEffect(ValueVector effectFiles)
 {
-	//加载音效
+	//������Ч
 	for (Value &v : effectFiles) {
 		SimpleAudioEngine::getInstance()->preloadEffect(v.asString().c_str());
 		progressUpdate();
@@ -241,7 +243,7 @@ void LoadingScene::loadEffect(ValueVector effectFiles)
 
 void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 {
-	//加载精灵表单
+	//���ؾ����
 	for (Value &v : spriteFiles) {
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile(v.asString().c_str());
 		progressUpdate();
@@ -251,11 +253,11 @@ void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 void LoadingScene::progressUpdate()
 {
 	if (--sourceCount) {
-		//根据剩余的资源数设置进度条进度
+		//���ʣ�����Դ�����ý������
 		progress->setPercentage(100.0f - (progress_Interval * sourceCount));
 	}
 	else {
-		//游戏资源加载完毕，切换场景
+		//��Ϸ��Դ������ϣ��л�����
 		auto pft = ProgressFromTo::create(0.5f, progress->getPercentage(), 100);
 
 		auto callFunc = CallFunc::create([=] {
@@ -271,3 +273,4 @@ void LoadingScene::progressUpdate()
 		progress->runAction(action);
 	}
 }
+

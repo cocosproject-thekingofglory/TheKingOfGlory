@@ -2,7 +2,6 @@
 #include "Util/GameAudio.h"
 #include "StartScene.h"
 #include "Model/User.h"
-#include "Model/Skill.h"
 
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -27,6 +26,7 @@ bool LoginScene::init()
 	initUserBox();
 
 
+
 	return true;
 }
 
@@ -34,14 +34,14 @@ void LoginScene::onEnter()
 {
 	Layer::onEnter();
 
-	//²¥·Å±³¾°ÒôÀÖ
+	//æ’­æ”¾èƒŒæ™¯éŸ³ä¹
 	GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
 
 }
 
 void LoginScene::createBackground()
 {
-	//Ìí¼Ó±³¾°Í¼
+	//æ·»åŠ èƒŒæ™¯å›¾
 	auto background = Sprite::create("Pictures/Background/LoginBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -49,14 +49,14 @@ void LoginScene::createBackground()
 
 void LoginScene::createLoginButton()
 {
-	//´´½¨µÇÂ¼°´Å¥
+	//åˆ›å»ºç™»å½•æŒ‰é’®
 	auto loginButton = ui::Button::create("Pictures/UI/button_normal.png", "Pictures/UI/button_selected.png");
 	loginButton->setTitleText("Login");
 	loginButton->setTitleFontSize(32);
 	loginButton->setPosition(Vec2(visible_Size.width / 2, visible_Size.height*0.35f));
 	loginButton->setOpacity(233);
 
-	//°´ÏÂµÇÂ¼°´Å¥£¬Èç¹ûÎÄ±¾¿òÎª¿Õ£¬Ôòµ¯³ö¶Ô»°¿ò¾¯¸æ£¬·ñÔò±£´æÓÃ»§Ãû£¬ÇÐ»»³¡¾°
+	//æŒ‰ä¸‹ç™»å½•æŒ‰é’®ï¼Œå¦‚æžœæ–‡æœ¬æ¡†ä¸ºç©ºï¼Œåˆ™å¼¹å‡ºå¯¹è¯æ¡†è­¦å‘Šï¼Œå¦åˆ™ä¿å­˜ç”¨æˆ·åï¼Œåˆ‡æ¢åœºæ™¯
 	loginButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
@@ -67,7 +67,7 @@ void LoginScene::createLoginButton()
 		}
 		else
 		{
-			//²¥·Åµã»÷ÒôÐ§
+			//æ’­æ”¾ç‚¹å‡»éŸ³æ•ˆ
 			GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
 			username.substr(0, 16);
 			UserDefault::getInstance()->setStringForKey("username", username);
@@ -80,7 +80,7 @@ void LoginScene::createLoginButton()
 
 void LoginScene::initUserBox()
 {
-	//´´½¨ÎÄ±¾ÊäÈë¿ò
+	//åˆ›å»ºæ–‡æœ¬è¾“å…¥æ¡†
 	usernameBG = Sprite::create("Pictures/UI/input_normal.png");
 	usernameBG->setScale(1.2f);
 	usernameBG->setOpacity(200);
@@ -107,7 +107,7 @@ void LoginScene::initUserBox()
 
 void LoginScene::textFieldEvent(Ref* sender, ui::TextField::EventType event)
 {
-	//ÎÄ±¾¿ò×´Ì¬¸Ä±äÊ±¸ü»»Í¼Æ¬
+	//æ–‡æœ¬æ¡†çŠ¶æ€æ”¹å˜æ—¶æ›´æ¢å›¾ç‰‡
 	switch (event) {
 	case ui::TextField::EventType::ATTACH_WITH_IME:
 		usernameBG->setTexture("Pictures/UI/input_active.png");
@@ -117,3 +117,4 @@ void LoginScene::textFieldEvent(Ref* sender, ui::TextField::EventType event)
 		break;
 	}
 }
+

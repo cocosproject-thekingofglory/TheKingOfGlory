@@ -5,10 +5,11 @@
 #include "SettingsScene.h"
 #include "Model/GameMap.h"
 #include "Controller/GameController.h"
+#include "../Model/StatusList.h"
+
+
 USING_NS_CC;
 using namespace CocosDenshion;
-
-
 
 void GameScene::onEnter()
 {
@@ -16,6 +17,27 @@ void GameScene::onEnter()
 	GameAudio::getInstance()->playBgm("Sounds/GameBgm.mp3");
 }
 
+void GameScene::createStatusButton()
+{
+	auto button = Button::create("Pictures/StatusList/statusButton.png");
+	button->setScaleX(2.0);
+	button->setPosition(Vec2(this->getContentSize().width - button->getContentSize().width * 2
+		, this->getContentSize().height / 4 * 3));
+	button->setEnabled(true);
+	button->setSwallowTouches(true);
+
+	button->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
+	{
+		if (type == Widget::TouchEventType::ENDED)
+		{
+			if (hasList)return;
+			auto list =StatusList::createStatusList();
+			list->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+			this->addChild(list, 4);
+		}
+	});
+	this->addChild(button, 4);
+}
 
 void GameScene::createMenuButton()
 {
@@ -243,6 +265,7 @@ bool GameScene::init()
 
 	createMenuButton();
 
+	createStatusButton();
 
 	return true;
 }

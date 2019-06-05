@@ -30,4 +30,3 @@ private:
 	void toOver(cocos2d::EventCustom* event);
 
 };
-

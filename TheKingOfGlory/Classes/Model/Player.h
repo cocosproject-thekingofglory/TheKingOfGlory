@@ -4,23 +4,32 @@
 #include"Model/SpriteBase.h"
 #include "Model/Soldier.h"
 #include "Util/PathArithmetic.h"
+#include "store/EquipmentBase.h"
 
 USING_NS_CC;
 using namespace ui;
 
+//基础属性
 const float PLAYER_ATTACK_RADIUS = 10;
 const float PLAYER_DAMAGE = 20.0;
 const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
+const float PLAYER_DEFEND = 0.2;
+//经验、金钱
+const int PLAYER_INITIAL_EXP = 0;
+const int PLAYER_LEVEL_UP_EXP = 8;
+const int PLAYER_MAX_LEVEL = 15;
+const int PLAYER_INITIAL_LEVEL = 1;
+const int PLAYER_INITIAL_MONEY = 100;
+//升级加属性
+const float PLAYER_LEVEL_UP_DAMAGE = 5.0;
+const float PLAYER_LEVEL_UP_DEFEND = 0.01;
+const float PLAYER_LEVEL_UP_HPVALUE = 20;
 
 class Player :public SpriteBase
 {
 public:
-	/**
-	 * create Player with role
-	 * @return Player Object
-	 */
 
 	enum class Status : std::int8_t
 	{
@@ -102,6 +111,7 @@ public:
 	void stopAttack();
 
 	void setAttack(bool isAttack) { _isAttack = isAttack; }
+
 	void setSkill(bool isSkill) { _isSkill = isSkill; }
 
 	virtual void skill1() {};
@@ -127,6 +137,32 @@ public:
 
 	void revival();
 
+	//金钱、经验
+	void setEXPBar();
+	LoadingBar* getEXPBar() { return _EXPBar; }
+	void updateEXPBar();
+
+	void setLevel(int level) { _level = level; }
+	int getLevel() { return _level; }
+	void updateLevel();
+
+	void setEXPValue(int EXP) { _EXP = EXP; }
+	int getEXPValue() { return _EXP; }
+
+	void setNowEXPValue(int EXP) { _nowEXP = EXP; }
+	int getNowEXPValue() { return _nowEXP; }
+	void addEXP(int addEXP);
+
+	void addMoney(int money) { _money += money; }
+	int getMoney() { return _money; }
+	void setMoney(int money) { _money = money; }
+
+	//装备
+	Vector<EquipmentBase*> getEquipmentList() { return _equipmentList; }
+
+	void addEquipment(EquipmentBase*equip, int id) { _equipmentList.pushBack(equip); }
+	void removeEquipment(EquipmentBase*equip);
+	int getEquipmentCnt() { return _equipmentList.size(); }
 protected:
 	bool _isLocal;
 	bool _isMove;
@@ -140,16 +176,12 @@ protected:
 	std::vector<std::string> _animationNames;
 
 private:
-
-
 	PlayerType _type;
 
 	Status _status;
 	Direction _direction;
 
 	float _speed;
-
-
 
 
 
@@ -160,7 +192,17 @@ private:
 	int moveStep;
 
 
-
 	void move();
 
+	//金钱、经验
+	int _money;
+	int _EXP;
+	int _nowEXP = 0;
+	int _level;
+
+	LoadingBar* _EXPBar;
+
+	//装备
+	Vector<EquipmentBase*>_equipmentList;
 };
+

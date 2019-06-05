@@ -49,7 +49,6 @@ void GameMap::setMap(const std::string& mapName)
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
 
-
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
 	{
