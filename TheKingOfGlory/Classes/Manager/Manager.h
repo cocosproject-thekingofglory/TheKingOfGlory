@@ -2,7 +2,7 @@
 
 #include "cocos2d.h"
 #include "Model/Soldier.h"
-#include "Model/Monster.h"
+//#include "Model/Monster.h"
 #include "Model/GameMap.h"
 #include "Model/Tower.h"
 #include "PlayerManager.h"
@@ -43,7 +43,7 @@ public:
 
 	Soldier* createSoldier(const std::string &filename, const int color);
 
-	Monster* createMonster(const std::string &filename, const int color, int pos);
+	//Monster* createMonster(const std::string &filename, const int color, int pos);
 
 	Tower* createTower(const std::string &filename, const int color);
 
@@ -51,7 +51,7 @@ public:
 
 	void scheduleAttack();
 	void scheduleCreateSoldier();
-	void scheduleCreateMonster();
+	//void scheduleCreateMonster();
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
 	void scheduleHomeRecover();
@@ -59,7 +59,7 @@ public:
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];
-	Vector<Monster*> _monsterList[2];
+	//Vector<Monster*> _monsterList[2];
 	Vector<Tower*> _towerList[2];
 	Vector<Home*> _homeList;
 	CREATE_FUNC(Manager);
