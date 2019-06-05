@@ -30,20 +30,17 @@ const float PLAYER_LEVEL_UP_HPVALUE = 20;
 class Player :public SpriteBase
 {
 public:
-	/**
-	 * create Player with role
-	 * @return Player Object
-	 */
 
 	enum class Status : std::int8_t
 	{
 		STANDING,
-
 		MOVING,
 		ATTACKING,
 		DEAD,
 		BEINGHIT,
-		SKILL
+		SKILL1,
+		SKILL2,
+		SKILL3
 
 	};
 
@@ -77,14 +74,14 @@ public:
 
 	char* roleName[3] = {
 		"warrior",
-		"Mage",
+		"aviator",
 		"Archer"
 	};
 
 	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role,int color);//初始化一些条件
+	virtual bool init(int role,int color);//初始化一些条件
 	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
@@ -115,7 +112,11 @@ public:
 
 	void setAttack(bool isAttack) { _isAttack = isAttack; }
 
-	void skill(const void* enemy);
+	void setSkill(bool isSkill) { _isSkill = isSkill; }
+
+	virtual void skill1() {};
+	virtual void skill2() {};
+	virtual void skill3() {};
 
 	virtual float beAttack(const float damage);
 
@@ -124,6 +125,9 @@ public:
 
 	void setBigDestination(Vec2 destination) { _Destination = destination; }
 	Vec2 getBigDestination() { return _Destination; }
+
+	void setRecover(bool recover) { _isRecover = recover; }
+	bool getRecover() { return _isRecover; }
 
 	void startMove(Vec2 destination);
 
@@ -159,22 +163,26 @@ public:
 	void addEquipment(EquipmentBase*equip, int id) { _equipmentList.pushBack(equip); }
 	void removeEquipment(EquipmentBase*equip);
 	int getEquipmentCnt() { return _equipmentList.size(); }
-
-private:
-	std::string _id;
-	std::string _roleName;
-	PlayerType _type;
-
-	Status _status;
-	time_t directions[4];
-	Direction _direction;
-
-	float _speed;
-
+protected:
 	bool _isLocal;
 	bool _isMove;
 	bool _isAttack;
 	bool _isSkill;
+	bool _isRecover;
+
+	std::string _id;
+	std::string _roleName;
+	std::vector<int> _animationFrameNum;
+	std::vector<std::string> _animationNames;
+
+private:
+	PlayerType _type;
+
+	Status _status;
+	Direction _direction;
+
+	float _speed;
+
 
 
 	Vec2 _destination;
@@ -182,10 +190,6 @@ private:
 	Vector<PointDelegate*> path;
 
 	int moveStep;
-
-	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
-	std::vector<int> _animationFrameNum;
-	std::vector<std::string> _animationNames;
 
 
 	void move();
@@ -201,3 +205,4 @@ private:
 	//装备
 	Vector<EquipmentBase*>_equipmentList;
 };
+

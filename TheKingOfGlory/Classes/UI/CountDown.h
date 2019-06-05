@@ -7,7 +7,7 @@ class CountDown:public cocos2d::Sprite
 {
 public:
 	static CountDown* create(const std::string& filename,const std::string& text,const std::string& fontFilePath,
-		float fontSize,int delay,bool isMark,const std::function<void(void)>& callback);
+	float fontSize,int delay,bool isMark,const std::function<void(void)>& callback);
 	virtual bool init(const std::string& text, const std::string& fontFilePath,float fontSize,int delay,bool isMark, const std::function<void(void)>&callback);
 private:
 	bool isMark;
@@ -18,4 +18,3 @@ private:
 
 	void updateText();
 };
-
