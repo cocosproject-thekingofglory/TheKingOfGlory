@@ -110,4 +110,5 @@ bool Tower::insideAttack(SpriteBase*beAttacker)
 	Vec2 towerPos = this->getPosition(), pos = beAttacker->getPosition();
 	float dx = towerPos.x - pos.x, dy = towerPos.y - pos.y;
 	return dx * dx + dy * dy <= getAttackRadius()*getAttackRadius();
+
 }

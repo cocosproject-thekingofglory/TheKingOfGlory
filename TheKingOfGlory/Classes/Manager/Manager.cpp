@@ -1,4 +1,4 @@
-﻿#include "Manager.h"
+#include "Manager.h"
 #include "Controller/GameController.h"
 #include "UI/CountDown.h"
 #include "../Model/store/EquipmentBase.h"
@@ -107,6 +107,7 @@ bool Manager::init()
 				auto player = pair.second;
 				player->setMove(true);
 				player->setAttack(true);
+        player->setSkill(true);
 			}
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");

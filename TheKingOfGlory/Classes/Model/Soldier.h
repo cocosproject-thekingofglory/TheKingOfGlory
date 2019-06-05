@@ -74,4 +74,5 @@ protected:
 	Status _status;
 	//Sprite* _bullet;
 	//Sprite* _soldier;
+
 };

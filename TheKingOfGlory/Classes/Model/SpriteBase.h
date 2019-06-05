@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include "cocos2d.h"
@@ -110,4 +110,5 @@ private:
 
 	int _killExperience;
 	int _killMoney;
+
 };
