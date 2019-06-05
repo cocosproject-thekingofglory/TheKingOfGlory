@@ -29,7 +29,7 @@ public:
 private:
 	cocos2d::Map<std::string, Player*> _playerList;
 
-	Player* _localPlayer;
+	Player* _localPlayer=NULL;
 	
 	void addCustomEvent();
 	void initPlayer(float delta);

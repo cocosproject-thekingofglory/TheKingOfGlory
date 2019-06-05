@@ -31,7 +31,7 @@ void GameScene::createStatusButton()
 		if (type == Widget::TouchEventType::ENDED)
 		{
 			if (hasList)return;
-			auto list =StatusList::createStatusList();
+			auto list = StatusList::createStatusList();
 			list->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
 			this->addChild(list, 4);
 		}

@@ -69,6 +69,11 @@ Map<std::string, Player*>& PlayerManager::getPlayerList()
 
 Player * PlayerManager::getLocalPlayer()
 {
+	if (!_localPlayer)
+	{
+		auto delay = DelayTime::create(5.0);
+		this->runAction(delay);
+	}
 	return _localPlayer;
 }
 

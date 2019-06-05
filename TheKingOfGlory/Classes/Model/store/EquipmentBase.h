@@ -49,7 +49,8 @@ public:
 
 	void removeBg();
 	void buy();
-	void sell();
+	
+	//listener
 
 	//static void getLocalPlayer();
 

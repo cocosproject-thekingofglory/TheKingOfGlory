@@ -156,6 +156,7 @@ void EquipmentBase::removeBg()
 void EquipmentBase::buy()
 {
 	auto _localplayer = Manager::getInstance()->playerManager->getLocalPlayer();
+	if (!_localplayer)return;
 	if (_localplayer->getEquipmentCnt() < PLAYER_MAX_EQUIPMENT_CNT)
 	{
 		if (_localplayer->getMoney() >= getCostMoney())
@@ -190,3 +191,4 @@ void EquipmentBase::buy()
 		log("You already have three equipments!");
 	}
 }
+
