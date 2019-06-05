@@ -135,38 +135,23 @@ void GameScene::createResultBox(EventCustom* event)
 	resultText->setColor(Color3B(0, 0, 255));
 	resultText->setPosition(Vec2(boxSize.width / 2, boxSize.height*0.7));
 
-	auto restartButton = ui::Button::create("Pictures/UI/button.png");
-	restartButton->setScale(1.2);
-	restartButton->setTitleFontName("fonts/Marker Felt.ttf");
-	restartButton->setTitleText("Restart");
-	restartButton->setTitleColor(Color3B(255, 250, 205));
-	restartButton->setTitleFontSize(20);
-	restartButton->setPosition(Vec2(boxSize.width*0.3, boxSize.height*0.3));
-	restartButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
-	{
-		if (type == Widget::TouchEventType::ENDED)
-		{
-			//Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
-		}
-	});
 
 	auto returnButton = ui::Button::create("Pictures/UI/button.png");
 	returnButton->setScale(1.2);
 	returnButton->setTitleFontName("fonts/Marker Felt.ttf");
-	returnButton->setTitleText("Main Menu");
+	returnButton->setTitleText("Exit");
 	returnButton->setTitleColor(Color3B(255, 250, 205));
-	returnButton->setTitleFontSize(18);
-	returnButton->setPosition(Vec2(boxSize.width*0.7, boxSize.height*0.3));
+	returnButton->setTitleFontSize(24);
+	returnButton->setPosition(Vec2(boxSize.width*0.5, boxSize.height*0.3));
 	returnButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
-			Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
+			Director::getInstance()->end();
 		}
 	});
 
 	box->addChild(resultText, 4);
-	box->addChild(restartButton, 4);
 	box->addChild(returnButton, 4);
 
 }

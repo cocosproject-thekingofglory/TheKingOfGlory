@@ -24,13 +24,12 @@ bool LoadingScene::init()
 	
 	createBackground();
 	createProgressBar();
-
+	loadResources();
 	return true;
 }
 
-void LoadingScene::onEnterTransitionDidFinish()
+void LoadingScene::loadResources()
 {
-	Layer::onEnterTransitionDidFinish();
 	
 
 	//����Ϸ��Դ�ļ������ValueVector��

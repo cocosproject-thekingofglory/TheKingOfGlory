@@ -32,8 +32,6 @@ private:
 	void createKeyListener();
 	void addSkill();
 	void onEnter();
-	void update(float delta);
-	void isResult(float delta);
 	void toOver(cocos2d::EventCustom* event);
 
 	void sendEmptyMsg();
@@ -41,5 +39,6 @@ private:
 	void onGameInit(const void * msg);
 	void onPlayerMove(const void *msg);
 	void onPlayerAttack(const void* msg);
+	void onPlayerSkill(const void* msg);
 
 };

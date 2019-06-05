@@ -49,6 +49,7 @@ bool GameController::init(Client* client, Server*server)
 		CLIENT_ON(GameMsg::MsgType_MsgType_GameInit, GameController::onGameInit,gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerMove, GameController::onPlayerMove, gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerAttack, GameController::onPlayerAttack, gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerSkill, GameController::onPlayerSkill, gameClient);
 
 		schedule(CC_CALLBACK_0(GameController::processMsg,this),0.01f,"ProcessMsg");
 
@@ -141,7 +142,10 @@ void GameController::createKeyListener()
 void GameController::addSkill()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	auto skill1 = Skill::create("Skill1", "Pictures/GameItem/warrior_skill1.png", 0.1f);
+	auto role = User::getInstance()->getRole();
+	std::string roleNames[] = { "warrior","aviator" };
+	auto roleName = roleNames[role];
+	auto skill1 = Skill::create("Skill1", "Pictures/GameItem/"+roleName+"_skill1.png", 0.1f);
 	skill1->setPosition(Vec2(visibleSize.width*0.9,visibleSize.height*0.1));
 	skill1->setScale(0.8);
 	skill1->onTouch = [=]() 
@@ -168,34 +172,82 @@ void GameController::addSkill()
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill1);
 	skill1->setEnabled(false);
 
-	auto skill2 = Skill::create("Skill2", "Pictures/GameItem/warrior_skill2.png", 15.0f);
+	auto skill2 = Skill::create("Skill2", "Pictures/GameItem/" + roleName + "_skill2.png", 15.0f);
 	skill2->setPosition(Vec2(visibleSize.width*0.78, visibleSize.height*0.05));
 	skill2->setScale(0.8);
 	skill2->onTouch = [=]()
 	{
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerSkill = CreatePlayerSkill(builder, name,SkillType::SkillType_One);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerSkill, Date::Date_playerSkill, playerSkill.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
 		manager->playerManager->getLocalPlayer()->skill1();
 	};
 	_skillList.pushBack(skill2);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill2);
 	skill2->setEnabled(false);
 
-	auto skill3 = Skill::create("Skill3", "Pictures/GameItem/warrior_skill3.png", 20.0f);
+	auto skill3 = Skill::create("Skill3", "Pictures/GameItem/" + roleName + "_skill3.png", 20.0f);
 	skill3->setPosition(Vec2(visibleSize.width*0.815, visibleSize.height*0.185));
 	skill3->setScale(0.8);
 	skill3->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->skill2();
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerSkill = CreatePlayerSkill(builder, name, SkillType::SkillType_Two);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerSkill, Date::Date_playerSkill, playerSkill.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
+			manager->playerManager->getLocalPlayer()->skill2();
 	};
 	_skillList.pushBack(skill3);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill3);
 	skill3->setEnabled(false);
 
-	auto skill4 = Skill::create("Skill4", "Pictures/GameItem/warrior_skill4.png", 50.0f);
+	auto skill4 = Skill::create("Skill4", "Pictures/GameItem/" + roleName + "_skill4.png", 50.0f);
 	skill4->setPosition(Vec2(visibleSize.width*0.92, visibleSize.height*0.235));
 	skill4->setScale(0.8);
 	skill4->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->skill3();
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerSkill = CreatePlayerSkill(builder, name, SkillType::SkillType_Three);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerSkill, Date::Date_playerSkill, playerSkill.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
+			manager->playerManager->getLocalPlayer()->skill3();
 	};
 	_skillList.pushBack(skill4);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);
@@ -208,14 +260,6 @@ void GameController::onEnter()
 	Layer::onEnter();
 }
 
-void GameController::update(float delta)
-{
-	isResult(delta);
-}
-
-void GameController::isResult(float delta)
-{
-}
 
 void GameController::toOver(cocos2d::EventCustom* event)
 {
@@ -304,6 +348,21 @@ void GameController::onPlayerAttack(const void * msg)
 
 }
 
+void GameController::onPlayerSkill(const void * msg)
+{
+	auto data = GameMsg::GetMsg(msg)->data_as_playerSkill();
+	auto player = manager->playerManager->getPlayer(data->name()->c_str());
+	if (player)
+	{
+		switch (data->type())
+		{
+		case GameMsg::SkillType::SkillType_One:{player->skill1();break;}
+		case GameMsg::SkillType::SkillType_Two:{player->skill2();break;}
+		case GameMsg::SkillType::SkillType_Three:{player->skill3();break;}
+		}
+	}
+}
+
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
@@ -311,6 +370,4 @@ void GameController::initGame(float delta)
 	addSkill();
 	
 	
-	
-
 }

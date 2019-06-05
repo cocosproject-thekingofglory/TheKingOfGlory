@@ -3,6 +3,7 @@
 #include "Scene/LoadingScene.h"
 #include "Scene/GameScene.h"
 #include "Scene/SelectScene.h"
+#include "Scene/SelectPlayerScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
