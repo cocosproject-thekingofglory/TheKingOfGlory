@@ -25,12 +25,13 @@ public:
 	enum class Status : std::int8_t
 	{
 		STANDING,
-
 		MOVING,
 		ATTACKING,
 		DEAD,
 		BEINGHIT,
-		SKILL
+		SKILL1,
+		SKILL2,
+		SKILL3
 
 	};
 
@@ -64,14 +65,14 @@ public:
 
 	char* roleName[3] = {
 		"warrior",
-		"Mage",
+		"aviator",
 		"Archer"
 	};
 
 	static Player* createPlayer(const std::string& id, int role,int color);
 
 
-	bool init(int role,int color);//初始化一些条件
+	virtual bool init(int role,int color);//初始化一些条件
 	bool initWithRole(int role,int color);//只是初始化名字
 
 	void setStatus(Status);//设置状态
@@ -101,8 +102,11 @@ public:
 	void stopAttack();
 
 	void setAttack(bool isAttack) { _isAttack = isAttack; }
+	void setSkill(bool isSkill) { _isSkill = isSkill; }
 
-	void skill(const void* enemy);
+	virtual void skill1() {};
+	virtual void skill2() {};
+	virtual void skill3() {};
 
 	virtual float beAttack(const float damage);
 
@@ -123,22 +127,30 @@ public:
 
 	void revival();
 
-private:
-	std::string _id;
-	std::string _roleName;
-	PlayerType _type;
-
-	Status _status;
-	time_t directions[4];
-	Direction _direction;
-
-	float _speed;
-
+protected:
 	bool _isLocal;
 	bool _isMove;
 	bool _isAttack;
 	bool _isSkill;
 	bool _isRecover;
+
+	std::string _id;
+	std::string _roleName;
+	std::vector<int> _animationFrameNum;
+	std::vector<std::string> _animationNames;
+
+private:
+
+
+	PlayerType _type;
+
+	Status _status;
+	Direction _direction;
+
+	float _speed;
+
+
+
 
 
 	Vec2 _destination;
@@ -147,9 +159,6 @@ private:
 
 	int moveStep;
 
-	int _animationNum = 8;//动作次数？同动作帧数，需分别定义？
-	std::vector<int> _animationFrameNum;
-	std::vector<std::string> _animationNames;
 
 
 	void move();

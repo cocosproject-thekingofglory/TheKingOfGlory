@@ -64,46 +64,6 @@ void GameController::createKeyListener()
 	keyListener = EventListenerKeyboard::create();
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event)
 	{
-		/*if (keyCode == EventKeyboard::KeyCode::KEY_W)
-		{
-			map->setPositionY(map->getPositionY() - 100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_S)
-		{
-			map->setPositionY(map->getPositionY() + 100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_A)
-		{
-			map->setPositionX(map->getPositionX() +100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_D)
-		{
-			map->setPositionX(map->getPositionX() -100);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_T)
-		{
-			map->setPositionY(map->getPositionY() - 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_G)
-		{
-			map->setPositionY(map->getPositionY() + 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_F)
-		{
-			map->setPositionX(map->getPositionX() + 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_H)
-		{
-			map->setPositionX(map->getPositionX() - 10);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_J)
-		{
-			map->setScale(map->getScale()*1.1);
-		}
-		else if (keyCode == EventKeyboard::KeyCode::KEY_K)
-		{
-			map->setScale(map->getScale()/1.1);
-		}*/
 		if (keyCode == EventKeyboard::KeyCode::KEY_A)
 		{
 			if(getSkillList().size()>=1)
@@ -121,7 +81,7 @@ void GameController::createKeyListener()
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_E)
 		{
-			if (getSkillList().size() >= 3)
+			if (getSkillList().size() >= 4)
 				getSkillList().at(3)->touch();
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
@@ -152,7 +112,7 @@ void GameController::addSkill()
 	skill2->setScale(0.8);
 	skill2->onTouch = [=]()
 	{
-			manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill1();
 	};
 	_skillList.pushBack(skill2);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill2);
@@ -163,7 +123,7 @@ void GameController::addSkill()
 	skill3->setScale(0.8);
 	skill3->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill2();
 	};
 	_skillList.pushBack(skill3);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill3);
@@ -174,7 +134,7 @@ void GameController::addSkill()
 	skill4->setScale(0.8);
 	skill4->onTouch = [=]()
 	{
-		manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill3();
 	};
 	_skillList.pushBack(skill4);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);

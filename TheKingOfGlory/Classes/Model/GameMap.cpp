@@ -48,6 +48,19 @@ void GameMap::setMap(const std::string& mapName)
 	tower_blue = objectLayer->getObject("tower_blue");
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
+	monster1_red = objectLayer->getObject("monster1_red");
+	monster2_red = objectLayer->getObject("monster2_red");
+	monster3_red = objectLayer->getObject("monster3_red");
+	monster4_red = objectLayer->getObject("monster4_red");
+	monster1_blue = objectLayer->getObject("monster1_blue");
+	monster2_blue = objectLayer->getObject("monster2_blue");
+	monster3_blue = objectLayer->getObject("monster3_blue");
+	monster4_blue = objectLayer->getObject("monster4_blue");
+	redbuff1 = objectLayer->getObject("redbuff1");
+	redbuff2 = objectLayer->getObject("redbuff2");
+	bluebuff1 = objectLayer->getObject("bluebuff1");
+	bluebuff2 = objectLayer->getObject("bluebuff2");
+
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)

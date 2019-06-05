@@ -73,6 +73,8 @@ bool Manager::init()
 				auto player = pair.second;
 				player->setMove(true);
 				player->setAttack(true);
+				player->setSkill(true);
+				
 			}
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");

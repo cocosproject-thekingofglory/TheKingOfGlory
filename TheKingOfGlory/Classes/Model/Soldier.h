@@ -12,6 +12,7 @@ const float SOLDIER_DAMAGE = 5.0;
 const float SOLDIER_HPVALUE = 50.0;
 const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
+const float SOLDIER_EXPVALUE = 5.0;
 
 const int SOLDIER_MOVE_ACTION = 1;
 

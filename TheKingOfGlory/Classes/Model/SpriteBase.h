@@ -51,6 +51,8 @@ public:
 	static SpriteBase* createWithSpriteFrameName(const std::string& filename);
 
 	virtual void updateHPBar(){}
+	virtual void updateEXPBar(){}
+
 
 	virtual bool attack() { return true; }
 
@@ -75,6 +77,7 @@ public:
 protected:
 
 	LoadingBar* _HPBar=NULL;
+	LoadingBar* _EXPBar = NULL;
 	Vector<SpriteBase*> _beAttackTargetList;
 	Vector<SpriteBase*> _attackTargetList;
 	Vector<BulletBase*> _beAttackBulletList;
@@ -83,8 +86,11 @@ private:
 
 
 	float _HPValue;
+	float _EXPValue = 0.0;
 	
+	int _nowLevel;
 	float _nowHPValue;
+	float _nowEXPValue = 0.0;
 	int _color;
 	float _damage;
 	float _attackRadius;

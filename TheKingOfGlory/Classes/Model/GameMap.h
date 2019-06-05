@@ -26,7 +26,8 @@ private:
 public:
 	enum Type
 	{
-		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue
+		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue,
+		Monster_Red,Monster_Blue
 	};
 
 
