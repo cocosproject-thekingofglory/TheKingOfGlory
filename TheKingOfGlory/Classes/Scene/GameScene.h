@@ -15,9 +15,11 @@ private:
 	cocos2d::Label* returnLabel;
 	cocos2d::EventListenerTouchOneByOne* menuListener;
 	cocos2d::Rect menuRect;
+	cocos2d::ui::Button* statusButton;
 
 	void onEnter();
 	void createMenuButton();
+	void createStatusButton();
 	void updateMenu();
 	void createMenu();
 	void removeMenu();
@@ -31,4 +33,3 @@ public:
 	
 
 };
-

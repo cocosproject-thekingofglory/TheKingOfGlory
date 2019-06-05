@@ -1,5 +1,6 @@
 #include"PlayerManager.h"
 #include "Model/GameMap.h"
+#include "Model/Hero.h"
 
 USING_NS_CC;
 
@@ -23,7 +24,12 @@ bool PlayerManager::init()
 
 Player* PlayerManager::createPlayer(const std::string& id, int role,int color)
 {
-	auto player = Player::createPlayer(id, role,color);
+	Player *player;
+	switch (role)
+	{
+	case 0: {player = Warrior::create(id, color);	break; }
+	case 1: {player = Aviator::create(id, color);	break; }
+	}
 	if (player)
 	{
 		player->isLocal(false);
@@ -37,8 +43,12 @@ Player* PlayerManager::createPlayer(const std::string& id, int role,int color)
 
 Player* PlayerManager::createLocalPlayer(const std::string& id, int role,int color)
 {
-
-	auto localPlayer = Player::createPlayer(id, role,color);
+	Player *localPlayer;
+	switch (role)
+	{
+	case 0: {localPlayer = Warrior::create(id, color);	break; }
+	case 1: {localPlayer = Aviator::create(id, color);	break; }
+	}
 	if (localPlayer)
 	{
 		_localPlayer = localPlayer;
@@ -95,4 +105,3 @@ void PlayerManager::initPlayer(float delta)
 
 
 }
-

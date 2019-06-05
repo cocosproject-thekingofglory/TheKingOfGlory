@@ -28,58 +28,31 @@ Player* Player::createPlayer(const std::string& id, int role, int color)
 bool Player::init(int role, int color)
 {
 	setColor(color);
-	setRecover(false);
+
+	setHPBar();
+	setEXPBar();
+
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
 	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
+	setDefend(PLAYER_DEFEND);
+	//金钱、经验
+	setNowEXPValue(PLAYER_INITIAL_EXP);
+	setEXPValue(PLAYER_LEVEL_UP_EXP);
+	setLevel(PLAYER_INITIAL_LEVEL);
+
+	setMoney(PLAYER_INITIAL_MONEY);
 
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
 
-	setHPBar();
-
+	
 	this->setScale(2);
 
-	std::string animationNames[] = { "move","attack","dead","behit","stand" };
-	_animationNames.assign(animationNames, animationNames + 5);
-
-	std::string directions[] = { "up","down","left","right","leftdown","leftup","rightdown","rightup" };
-
-	//对某一个动作,加载动作，delay也需要考虑，不止0.2f
-	for (int i = 0; i < 5; i++)
-	{
-		switch (i)
-		{
-		case 0:
-			_animationNum = 10;
-			break;
-		case 1:
-			_animationNum = 8;
-			break;
-		case 2:
-			_animationNum = 7;
-			break;
-		case 3:
-			_animationNum = 4;
-			break;
-		case 4:
-			_animationNum = 10;
-			break;
-		}
-		for (int j = 0; j < 8; j++)
-		{
-			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
-			AnimationLoader::loadAnimation(animationName, 0.1f, _animationNum);
-		}
-
-	}
-
-	setDirection(Direction::RIGHTUP);
-	setStatus(Player::Status::STANDING);
 
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
 
@@ -92,12 +65,17 @@ bool Player::initWithRole(int role, int color)
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
-	auto file = _roleName + "_stand_down (1).png";
+	auto file = _roleName;
+	switch (role)
+	{
+	case 0: {file += "_stand_down (1).png"; break; }
+	case 1: {file += "_move_down (1).png"; break; }
+	case 2: {file += "_stand_down (1).png"; break; }
+	}
 
 	if (this->initWithSpriteFrameName(file) && this->init(role, color))
 
 	{
-		// do something here
 		return true;
 	}
 	return false;
@@ -107,17 +85,18 @@ bool Player::initWithRole(int role, int color)
 //与动作有关,设置状态，传入状态，初始化动画,状态读取
 void Player::setStatus(Player::Status status)
 {
+
 	this->_status = status;
 	std::string animation = _roleName + "_";
 	//Or do animation here:
-	std::string statusName[]{ "stand_","move_","attack_","dead_","behit_","skill_" };
-	animation += statusName[int(_status)];
+	animation += _animationNames.at(int(status))+"_";
 
 	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
 	animation += directionName[int(_direction)];
 
 	AnimationLoader::runAnimation(animation, this);
 }
+
 
 
 Player::Status Player::getStatus()
@@ -149,7 +128,11 @@ bool Player::attack()
 			{
 				auto target = _attackTargetList.at(i);
 				target->beAttack(this->getDamage());
-
+				if (target->getNowHPValue() <= 0.0)
+				{
+					addEXP(target->getKillExperience());
+					addMoney(target->getKillMoney());
+				}
 			}
 		}
 		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
@@ -168,23 +151,13 @@ void Player::stopAttack()
 	}
 }
 
-void Player::skill(const void* enemy)
-{
-	_status = (Status)SKILL;
-	_isSkill = true;
-	if (_isSkill)
-	{
-		AnimationLoader::runAnimation(_roleName + "skill", this);
-		_isSkill = false;
-	}
-}
 
 float Player::beAttack(const float damage)
 {
 	if (!(getStatus() == Status::DEAD || getStatus() == Status::BEINGHIT))
 	{
 		float nowHP = getNowHPValue();
-		nowHP -= damage;
+		nowHP -= damage * (1 - getDefend());
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
 		if (nowHP <= 0.0)
@@ -201,16 +174,23 @@ float Player::beAttack(const float damage)
 				std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
 				frameName += directionName[int(_direction)];
 
-				frameName += " (7).png";
+				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
-				auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
-					[=]() {
-					revival();
-				});
-				cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
-
-				if (!isLocal())
-					countDown->setVisible(false);
+				if (isLocal())
+				{
+					auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
+						[=]() {
+						revival();
+					});
+					cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
+				}
+				else
+				{
+					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
+						revival();
+					}, NULL);
+					this->runAction(sequence);
+				}
 
 			}), NULL);
 			this->runAction(sequence);
@@ -460,10 +440,10 @@ void Player::move()
 
 void Player::setHPBar()
 {
-	if (getColor() == BLUE)
-		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
-	else if (getColor() == RED)
+	if(getColor()==RED)
 		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
+	else
+		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -471,7 +451,7 @@ void Player::setHPBar()
 	_HPBar->setPercent(100);
 
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
-		this->getPositionY() + this->getContentSize().height*1.1);
+		this->getPositionY() + this->getContentSize().height*1.3);
 
 	_HPBar->setPosition(HPpos);
 
@@ -486,6 +466,65 @@ void Player::updateHPBar()
 		_HPBar->setPercent(100.0*getNowHPValue() / getHPValue());
 	}
 
+}
+
+//金钱、经验
+void Player::setEXPBar()
+{
+	_EXPBar = LoadingBar::create("Pictures/GameItem/blueBar.png");
+
+	_EXPBar->setScale(0.1);
+	_EXPBar->setDirection(LoadingBar::Direction::LEFT);
+
+	_EXPBar->setPercent(0);
+
+	Vec2 EXPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
+		this->getPositionY() + this->getContentSize().height*1.235);
+
+	_EXPBar->setPosition(EXPpos);
+
+	this->addChild(_EXPBar);
+}
+
+void Player::updateEXPBar()
+{
+	//log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+	if (_EXPBar != NULL)
+	{
+		//log("######################");
+		_EXPBar->setPercent((float)100.0*getNowEXPValue() / getEXPValue());
+	}
+}
+
+void Player::updateLevel()
+{
+	if (_level < PLAYER_MAX_LEVEL)
+	{
+		_level++;
+		addDamage(PLAYER_LEVEL_UP_DAMAGE);
+		addDefend(PLAYER_LEVEL_UP_DEFEND);
+		addHPValue(PLAYER_LEVEL_UP_HPVALUE);
+	}
+}
+
+void Player::addEXP(int addEXP)
+{
+	if (getLevel() < PLAYER_MAX_LEVEL)
+	{
+		_nowEXP += addEXP;
+		while (_nowEXP >= _EXP)
+		{
+			_nowEXP -= _EXP;
+			updateLevel();
+		}
+		updateEXPBar();
+	}
+}
+
+//装备
+void Player::removeEquipment(EquipmentBase*equip)
+{
+	_equipmentList.eraseObject(equip);
 }
 
 void Player::isLocal(bool a)

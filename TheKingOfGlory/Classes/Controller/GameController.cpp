@@ -126,7 +126,7 @@ void GameController::createKeyListener()
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_E)
 		{
-			if (getSkillList().size() >= 3)
+			if (getSkillList().size() >= 4)
 				getSkillList().at(3)->touch();
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
@@ -173,7 +173,7 @@ void GameController::addSkill()
 	skill2->setScale(0.8);
 	skill2->onTouch = [=]()
 	{
-			//manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill1();
 	};
 	_skillList.pushBack(skill2);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill2);
@@ -184,7 +184,7 @@ void GameController::addSkill()
 	skill3->setScale(0.8);
 	skill3->onTouch = [=]()
 	{
-		//manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill2();
 	};
 	_skillList.pushBack(skill3);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill3);
@@ -195,7 +195,7 @@ void GameController::addSkill()
 	skill4->setScale(0.8);
 	skill4->onTouch = [=]()
 	{
-		//manager->playerManager->getLocalPlayer()->attack();
+		manager->playerManager->getLocalPlayer()->skill3();
 	};
 	_skillList.pushBack(skill4);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);

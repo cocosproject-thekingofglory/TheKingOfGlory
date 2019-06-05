@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"cocos2d.h"
 #include"Model/Player.h"
@@ -27,7 +27,7 @@ public:
 	CREATE_FUNC(PlayerManager);
 
 private:
-	bool isOnline;
+  bool isOnline;
 	cocos2d::Map<std::string, Player*> _playerList;
 
 	Player* _localPlayer;
@@ -36,4 +36,3 @@ private:
 	void initPlayer(float delta);
 
 };
-

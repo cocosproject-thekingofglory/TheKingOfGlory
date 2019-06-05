@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <string>
 #include "cocos2d.h"
@@ -72,6 +72,20 @@ public:
 
 	CREATE_FUNC(SpriteBase);
 
+	void setDefend(float defend) { _defend = defend; }
+	float getDefend() { return _defend; }
+	//击杀经验
+	void setKillExperience(int killExperience) { _killExperience = killExperience; }
+	int getKillExperience() { return _killExperience; }
+	//击杀金钱
+	void setKillMoney(int killMoney) { _killMoney = killMoney; }
+	int getKillMoney() { return _killMoney; }
+	//武器装备
+	void addDefend(float add) { _defend += add; }
+	void addDamage(float add) { _damage += add; }
+	void addHPValue(float add);
+	void addNowHPValue(float add);
+
 protected:
 
 	LoadingBar* _HPBar=NULL;
@@ -88,8 +102,13 @@ private:
 	int _color;
 	float _damage;
 	float _attackRadius;
+	float _defend;//伤害等于damage*(1-defend)
 
 	int _attackInterval;
 
 	Vec2 _position;
+
+	int _killExperience;
+	int _killMoney;
+
 };

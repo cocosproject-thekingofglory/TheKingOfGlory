@@ -12,14 +12,14 @@ void StartScene::onEnter()
 {
 	Layer::onEnter();
 
-	//²¥·Å±³¾°ÒôÀÖ
+	//æ’­æ”¾èƒŒæ™¯éŸ³ä¹
 	GameAudio::getInstance()->playBgm("Sounds/StartBgm.mp3");
 
 }
 
 void StartScene::createBackground()
 {
-	//Ìí¼Ó±³¾°Í¼
+	//æ·»åŠ èƒŒæ™¯å›¾
 	auto background = Sprite::create("Pictures/Background/StartBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -27,7 +27,7 @@ void StartScene::createBackground()
 
 void StartScene::createPlayButton()
 {
-	//´´½¨¿ªÊ¼ÓÎÏ·°´Å¥
+	//åˆ›å»ºå¼€å§‹æ¸¸æˆæŒ‰é’®
 	auto PlayButton=MenuItemLabel::create(Label::createWithTTF("Play",text_Font, text_Size),
 		[=](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
@@ -41,7 +41,7 @@ void StartScene::createPlayButton()
 
 void StartScene::createSettingButton()
 {
-	//´´½¨ÓÎÏ·ÉèÖÃ°´Å¥
+	//åˆ›å»ºæ¸¸æˆè®¾ç½®æŒ‰é’®
 	auto SettingButton= MenuItemLabel::create(Label::createWithTTF("Setting", text_Font, text_Size),
 		[](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
@@ -55,7 +55,7 @@ void StartScene::createSettingButton()
 
 void StartScene::createHelpButton()
 {
-	//´´½¨ÓÎÏ·°ïÖú°´Å¥
+	//åˆ›å»ºæ¸¸æˆå¸®åŠ©æŒ‰é’®
 	auto HelpButton = MenuItemLabel::create(Label::createWithTTF("Help", text_Font, text_Size),
 		[](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
@@ -69,7 +69,7 @@ void StartScene::createHelpButton()
 
 void StartScene::createExitButton()
 {
-	//´´½¨ÍË³öÓÎÏ·°´Å¥
+	//åˆ›å»ºé€€å‡ºæ¸¸æˆæŒ‰é’®
 	auto ExitButton = MenuItemLabel::create(Label::createWithTTF("Exit", text_Font, text_Size),
 		[](Ref* pSender) {
 		Director::getInstance()->end();
@@ -107,6 +107,6 @@ bool StartScene::init()
 	createExitButton();
 
 
-
 	return true;
 }
+

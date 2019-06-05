@@ -33,7 +33,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	Layer::onEnterTransitionDidFinish();
 	
 
-	//½«ÓÎÏ·×ÊÔ´ÎÄ¼þÃû·ÅÈëValueVectorÖÐ
+	//ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ô´ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ValueVectorï¿½ï¿½
 	ValueVector spriteSheets, effects, musics;
 
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_down.plist"));
@@ -44,6 +44,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_rightup.plist"));
+  
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_right.plist"));
@@ -52,6 +53,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_rightup.plist"));
+
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_right.plist"));
@@ -60,6 +62,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_dead_rightup.plist"));
+
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_right.plist"));
@@ -68,6 +71,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_rightup.plist"));
+
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_right.plist"));
@@ -76,14 +80,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_behit_rightup.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_down.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_left.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_right.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_up.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_leftdown.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_leftup.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_rightdown.plist"));
-	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill_rightup.plist"));
+
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_right.plist"));
@@ -92,11 +89,98 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_stand_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill1_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_skill2_rightup.plist"));
+
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/blast.plist"));
 
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_attack_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_dead_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_behit_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill1_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill2_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_skill3_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Skill/skillbone.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillstab.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
+	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
+	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));
@@ -120,7 +204,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 void LoadingScene::createBackground()
 {
-	//Ìí¼Ó±³¾°Í¼
+	//ï¿½ï¿½Ó±ï¿½ï¿½ï¿½Í¼
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -128,7 +212,7 @@ void LoadingScene::createBackground()
 
 void LoadingScene::createProgressBar()
 {
-	//´´½¨½ø¶ÈÌõ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	auto barSprite = Sprite::create("Pictures/UI/Bar.png");
 	progress = ProgressTimer::create(barSprite);
 	progress->setPercentage(0.0f);
@@ -141,7 +225,7 @@ void LoadingScene::createProgressBar()
 
 void LoadingScene::loadMusic(ValueVector musicFiles)
 {
-	//¼ÓÔØÒôÀÖ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	for (Value& v : musicFiles)
 	{
 		SimpleAudioEngine::getInstance()->preloadBackgroundMusic(v.asString().c_str());
@@ -151,7 +235,7 @@ void LoadingScene::loadMusic(ValueVector musicFiles)
 
 void LoadingScene::loadEffect(ValueVector effectFiles)
 {
-	//¼ÓÔØÒôÐ§
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
 	for (Value &v : effectFiles) {
 		SimpleAudioEngine::getInstance()->preloadEffect(v.asString().c_str());
 		progressUpdate();
@@ -160,7 +244,7 @@ void LoadingScene::loadEffect(ValueVector effectFiles)
 
 void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 {
-	//¼ÓÔØ¾«Áé±íµ¥
+	//ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½ï¿½
 	for (Value &v : spriteFiles) {
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile(v.asString().c_str());
 		progressUpdate();
@@ -170,11 +254,11 @@ void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 void LoadingScene::progressUpdate()
 {
 	if (--sourceCount) {
-		//¸ù¾ÝÊ£ÓàµÄ×ÊÔ´ÊýÉèÖÃ½ø¶ÈÌõ½ø¶È
+		//ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½Ã½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		progress->setPercentage(100.0f - (progress_Interval * sourceCount));
 	}
 	else {
-		//ÓÎÏ·×ÊÔ´¼ÓÔØÍê±Ï£¬ÇÐ»»³¡¾°
+		//ï¿½ï¿½Ï·ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï£ï¿½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
 		auto pft = ProgressFromTo::create(0.5f, progress->getPercentage(), 100);
 
 		auto callFunc = CallFunc::create([=] {
@@ -190,3 +274,4 @@ void LoadingScene::progressUpdate()
 		progress->runAction(action);
 	}
 }
+

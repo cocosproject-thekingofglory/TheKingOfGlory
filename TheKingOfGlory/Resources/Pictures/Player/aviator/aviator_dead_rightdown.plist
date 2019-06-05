@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>aviator_dead_rightdown (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{86,55}</string>
+                <key>spriteSourceSize</key>
+                <string>{86,55}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{86,55}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>aviator_dead_rightdown (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{88,56}</string>
+                <key>spriteSourceSize</key>
+                <string>{88,56}</string>
+                <key>textureRect</key>
+                <string>{{0,55},{88,56}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>aviator_dead_rightdown.png</string>
+            <key>size</key>
+            <string>{88,111}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:c0187ff91247c5fc08bcccf72964ef2b:9138006b625261867a4a0ba39d629649:c33e2a924ba496da3b6a25ea1e79fb5e$</string>
+            <key>textureFileName</key>
+            <string>aviator_dead_rightdown.png</string>
+        </dict>
+    </dict>
+</plist>

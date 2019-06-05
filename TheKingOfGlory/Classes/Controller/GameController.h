@@ -43,4 +43,3 @@ private:
 	void onPlayerAttack(const void* msg);
 
 };
-

@@ -1,4 +1,4 @@
-﻿#include "Soldier.h"
+#include "Soldier.h"
 #include "Model/GameMap.h"
 #include <cmath>
 
@@ -16,6 +16,10 @@ bool Soldier::init(int color)
 	setDamage(SOLDIER_DAMAGE);
 	setAttackInterval(SOLDIER_ATTACK_INTERVAL);
 	setSpeed(SOLDIER_MOVE_SPEED);
+	setDefend(SOLDIER_DEFEND);
+
+	setKillExperience(SOLDIER_KILL_EXPRIENCE); 
+	setKillMoney(SOLDIER_KILL_MONEY);
 
 	initAnimation();
 	setHPBar();
@@ -102,6 +106,7 @@ void Soldier::startMove()
 {
 	if (_isMove)
 	{
+		srand(time(NULL));
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
