@@ -158,7 +158,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Model\Hero.cpp" />
     <ClCompile Include="..\Classes\Model\Home.cpp" />
     <ClCompile Include="..\Classes\Model\Player.cpp" />
-    <ClCompile Include="..\Classes\Model\Skill.cpp" />
     <ClCompile Include="..\Classes\Model\SkillBase.cpp" />
     <ClCompile Include="..\Classes\Model\Soldier.cpp" />
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp" />
@@ -176,6 +175,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Scene\SettingsScene.cpp" />
     <ClCompile Include="..\Classes\Scene\StartScene.cpp" />
     <ClCompile Include="..\Classes\UI\CountDown.cpp" />
+    <ClCompile Include="..\Classes\UI\Skill.cpp" />
     <ClCompile Include="..\Classes\UI\Tip.cpp" />
     <ClCompile Include="..\Classes\Util\AnimationLoader.cpp" />
     <ClCompile Include="..\Classes\Util\GameAudio.cpp" />
@@ -193,7 +193,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Model\Hero.h" />
     <ClInclude Include="..\Classes\Model\Home.h" />
     <ClInclude Include="..\Classes\Model\Player.h" />
-    <ClInclude Include="..\Classes\Model\Skill.h" />
     <ClInclude Include="..\Classes\Model\SkillBase.h" />
     <ClInclude Include="..\Classes\Model\Soldier.h" />
     <ClInclude Include="..\Classes\Model\SpriteBase.h" />
@@ -214,6 +213,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scene\SettingsScene.h" />
     <ClInclude Include="..\Classes\Scene\StartScene.h" />
     <ClInclude Include="..\Classes\UI\CountDown.h" />
+    <ClInclude Include="..\Classes\UI\Skill.h" />
     <ClInclude Include="..\Classes\UI\Tip.h" />
     <ClInclude Include="..\Classes\Util\AnimationLoader.h" />
     <ClInclude Include="..\Classes\Util\GameAudio.h" />

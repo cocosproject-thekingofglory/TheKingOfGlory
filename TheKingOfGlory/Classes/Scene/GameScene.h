@@ -1,5 +1,6 @@
 #pragma once
 #include "cocos2d.h"
+#include "UI/CocosGUI.h"
 #include "Network/Server.h"
 #include "Network/Client.h"
 

@@ -137,8 +137,6 @@ public:
 
 	void revival();
 
-private:
-	bool isOnline;
 	//金钱、经验
 	void setEXPBar();
 	LoadingBar* getEXPBar() { return _EXPBar; }
@@ -178,6 +176,8 @@ protected:
 	std::vector<std::string> _animationNames;
 
 private:
+	bool isOnline;
+
 	PlayerType _type;
 
 	Status _status;

@@ -2,7 +2,7 @@
 #include "cocos2d.h"
 #include "../Model/GameMap.h"
 #include "Manager/Manager.h"
-#include "Model/Skill.h"
+#include "UI/Skill.h"
 #include "Network/Server.h"
 #include "Network/Client.h"
 
