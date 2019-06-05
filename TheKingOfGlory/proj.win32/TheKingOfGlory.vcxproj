@@ -151,32 +151,53 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Controller\GameController.cpp" />
     <ClCompile Include="..\Classes\Manager\Manager.cpp" />
+    <ClCompile Include="..\Classes\Manager\PlayerManager.cpp" />
+    <ClCompile Include="..\Classes\Model\BulletBase.cpp" />
     <ClCompile Include="..\Classes\Model\GameMap.cpp" />
+    <ClCompile Include="..\Classes\Model\Home.cpp" />
+    <ClCompile Include="..\Classes\Model\Player.cpp" />
+    <ClCompile Include="..\Classes\Model\Skill.cpp" />
     <ClCompile Include="..\Classes\Model\Soldier.cpp" />
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp" />
-    <ClCompile Include="..\Classes\Model\tower.cpp" />
+    <ClCompile Include="..\Classes\Model\Tower.cpp" />
     <ClCompile Include="..\Classes\Scene\GameScene.cpp" />
     <ClCompile Include="..\Classes\Scene\HelloWorldScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoadingScene.cpp" />
     <ClCompile Include="..\Classes\Scene\LoginScene.cpp" />
+    <ClCompile Include="..\Classes\Scene\SettingsScene.cpp" />
     <ClCompile Include="..\Classes\Scene\StartScene.cpp" />
+    <ClCompile Include="..\Classes\UI\CountDown.cpp" />
+    <ClCompile Include="..\Classes\UI\Tip.cpp" />
     <ClCompile Include="..\Classes\Util\AnimationLoader.cpp" />
+    <ClCompile Include="..\Classes\Util\GameAudio.cpp" />
+    <ClCompile Include="..\Classes\Util\PathArithmetic.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Controller\GameController.h" />
     <ClInclude Include="..\Classes\Manager\Manager.h" />
+    <ClInclude Include="..\Classes\Manager\PlayerManager.h" />
+    <ClInclude Include="..\Classes\Model\BulletBase.h" />
     <ClInclude Include="..\Classes\Model\GameMap.h" />
+    <ClInclude Include="..\Classes\Model\Home.h" />
+    <ClInclude Include="..\Classes\Model\Player.h" />
+    <ClInclude Include="..\Classes\Model\Skill.h" />
     <ClInclude Include="..\Classes\Model\Soldier.h" />
     <ClInclude Include="..\Classes\Model\SpriteBase.h" />
-    <ClInclude Include="..\Classes\Model\tower.h" />
+    <ClInclude Include="..\Classes\Model\User.h" />
+    <ClInclude Include="..\Classes\Model\Tower.h" />
     <ClInclude Include="..\Classes\Scene\GameScene.h" />
     <ClInclude Include="..\Classes\Scene\HelloWorldScene.h" />
     <ClInclude Include="..\Classes\Scene\LoadingScene.h" />
     <ClInclude Include="..\Classes\Scene\LoginScene.h" />
+    <ClInclude Include="..\Classes\Scene\SettingsScene.h" />
     <ClInclude Include="..\Classes\Scene\StartScene.h" />
+    <ClInclude Include="..\Classes\UI\CountDown.h" />
+    <ClInclude Include="..\Classes\UI\Tip.h" />
     <ClInclude Include="..\Classes\Util\AnimationLoader.h" />
+    <ClInclude Include="..\Classes\Util\GameAudio.h" />
+    <ClInclude Include="..\Classes\Util\PathArithmetic.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
   <ItemGroup>

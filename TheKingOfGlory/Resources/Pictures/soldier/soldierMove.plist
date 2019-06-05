@@ -4,7 +4,7 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>soldierMove_01.png</key>
+            <key>soldierMove (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -19,7 +19,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_02.png</key>
+            <key>soldierMove (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -34,7 +34,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_03.png</key>
+            <key>soldierMove (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -49,7 +49,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_04.png</key>
+            <key>soldierMove (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -64,7 +64,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_05.png</key>
+            <key>soldierMove (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -79,7 +79,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_06.png</key>
+            <key>soldierMove (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -94,7 +94,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_07.png</key>
+            <key>soldierMove (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -109,7 +109,7 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>soldierMove_08.png</key>
+            <key>soldierMove (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
@@ -144,3 +144,4 @@
         </dict>
     </dict>
 </plist>
+

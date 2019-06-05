@@ -152,12 +152,12 @@ private:
 
 
 
+
 	Vec2 _destination;
 	Vec2 _Destination;
 	Vector<PointDelegate*> path;
 
 	int moveStep;
-
 
 
 

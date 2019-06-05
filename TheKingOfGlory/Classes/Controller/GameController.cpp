@@ -81,7 +81,7 @@ void GameController::createKeyListener()
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_E)
 		{
-			if (getSkillList().size() >= 3)
+			if (getSkillList().size() >= 4)
 				getSkillList().at(3)->touch();
 		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)

@@ -47,6 +47,7 @@ bool Player::init(int role,int color)
 
 
 
+
 	return true;
 }
 
@@ -83,6 +84,7 @@ void Player::setStatus(Player::Status status)
 
 	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
 	animation += directionName[int(_direction)];
+
 
 	AnimationLoader::runAnimation(animation, this);
 }

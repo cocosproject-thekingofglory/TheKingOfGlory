@@ -4,153 +4,123 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>warrior_walk_right_1.png</key>
+            <key>blast (1).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{70,75}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{70,75}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{70,155},{70,75}}</string>
+                <string>{{0,0},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_10.png</key>
+            <key>blast (2).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{57,76}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{57,76}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{169,0},{57,76}}</string>
+                <string>{{500,0},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_2.png</key>
+            <key>blast (3).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{57,76}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{57,76}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{112,0},{57,76}}</string>
+                <string>{{1000,0},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_3.png</key>
+            <key>blast (4).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{59,79}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{59,79}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{0,76},{59,79}}</string>
+                <string>{{1500,0},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_4.png</key>
+            <key>blast (5).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{61,78}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{61,78}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{59,76},{61,78}}</string>
+                <string>{{0,500},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_5.png</key>
+            <key>blast (6).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{70,76}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{70,76}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{0,155},{70,76}}</string>
+                <string>{{500,500},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_6.png</key>
+            <key>blast (7).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{56,75}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{56,75}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{56,0},{56,75}}</string>
+                <string>{{1000,500},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>warrior_walk_right_7.png</key>
+            <key>blast (8).png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{56,76}</string>
+                <string>{500,500}</string>
                 <key>spriteSourceSize</key>
-                <string>{56,76}</string>
+                <string>{500,500}</string>
                 <key>textureRect</key>
-                <string>{{0,0},{56,76}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>warrior_walk_right_8.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{64,77}</string>
-                <key>spriteSourceSize</key>
-                <string>{64,77}</string>
-                <key>textureRect</key>
-                <string>{{120,76},{64,77}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>warrior_walk_right_9.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{70,75}</string>
-                <key>spriteSourceSize</key>
-                <string>{70,75}</string>
-                <key>textureRect</key>
-                <string>{{140,155},{70,75}}</string>
+                <string>{{1500,500},{500,500}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -164,13 +134,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>warrior_walk_right.png</string>
+            <string>blast.png</string>
             <key>size</key>
-            <string>{226,231}</string>
+            <string>{2000,1000}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:3e99c5e9d0f1cbd12e424508867b03cc:755d305b7acc3afbdfe9db44909fd064:6848358153a77e6b2ef76fd9942b0fa2$</string>
+            <string>$TexturePacker:SmartUpdate:10c8d1824d50aebe4565ca077031edad:b1ae897b9d81f958c09621fdaafbc5ae:e88d2f13f546b76d18e9c0c35551aac7$</string>
             <key>textureFileName</key>
-            <string>warrior_walk_right.png</string>
+            <string>blast.png</string>
         </dict>
     </dict>
 </plist>

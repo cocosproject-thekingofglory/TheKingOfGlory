@@ -32,7 +32,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	Layer::onEnterTransitionDidFinish();
 	
 
-	//½«ÓÎÏ·×ÊÔ´ÎÄ¼þÃû·ÅÈëValueVectorÖÐ
+	//å°†æ¸¸æˆèµ„æºæ–‡ä»¶åæ”¾å…¥ValueVectorä¸­
 	ValueVector spriteSheets, effects, musics;
 
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_down.plist"));
@@ -43,7 +43,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_rightup.plist"));
-
+  
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_down.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_left.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_attack_right.plist"));
@@ -201,7 +201,7 @@ void LoadingScene::onEnterTransitionDidFinish()
 
 void LoadingScene::createBackground()
 {
-	//Ìí¼Ó±³¾°Í¼
+	//æ·»åŠ èƒŒæ™¯å›¾
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -209,7 +209,7 @@ void LoadingScene::createBackground()
 
 void LoadingScene::createProgressBar()
 {
-	//´´½¨½ø¶ÈÌõ
+	//åˆ›å»ºè¿›åº¦æ¡
 	auto barSprite = Sprite::create("Pictures/UI/Bar.png");
 	progress = ProgressTimer::create(barSprite);
 	progress->setPercentage(0.0f);
@@ -222,7 +222,7 @@ void LoadingScene::createProgressBar()
 
 void LoadingScene::loadMusic(ValueVector musicFiles)
 {
-	//¼ÓÔØÒôÀÖ
+	//åŠ è½½éŸ³ä¹
 	for (Value& v : musicFiles)
 	{
 		SimpleAudioEngine::getInstance()->preloadBackgroundMusic(v.asString().c_str());
@@ -232,7 +232,7 @@ void LoadingScene::loadMusic(ValueVector musicFiles)
 
 void LoadingScene::loadEffect(ValueVector effectFiles)
 {
-	//¼ÓÔØÒôÐ§
+	//åŠ è½½éŸ³æ•ˆ
 	for (Value &v : effectFiles) {
 		SimpleAudioEngine::getInstance()->preloadEffect(v.asString().c_str());
 		progressUpdate();
@@ -241,7 +241,7 @@ void LoadingScene::loadEffect(ValueVector effectFiles)
 
 void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 {
-	//¼ÓÔØ¾«Áé±íµ¥
+	//åŠ è½½ç²¾çµè¡¨å•
 	for (Value &v : spriteFiles) {
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile(v.asString().c_str());
 		progressUpdate();
@@ -251,11 +251,11 @@ void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 void LoadingScene::progressUpdate()
 {
 	if (--sourceCount) {
-		//¸ù¾ÝÊ£ÓàµÄ×ÊÔ´ÊýÉèÖÃ½ø¶ÈÌõ½ø¶È
+		//æ ¹æ®å‰©ä½™çš„èµ„æºæ•°è®¾ç½®è¿›åº¦æ¡è¿›åº¦
 		progress->setPercentage(100.0f - (progress_Interval * sourceCount));
 	}
 	else {
-		//ÓÎÏ·×ÊÔ´¼ÓÔØÍê±Ï£¬ÇÐ»»³¡¾°
+		//æ¸¸æˆèµ„æºåŠ è½½å®Œæ¯•ï¼Œåˆ‡æ¢åœºæ™¯
 		auto pft = ProgressFromTo::create(0.5f, progress->getPercentage(), 100);
 
 		auto callFunc = CallFunc::create([=] {

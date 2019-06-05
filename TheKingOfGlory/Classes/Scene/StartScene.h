@@ -16,7 +16,6 @@ private:
 	void createSettingButton();
 	void createHelpButton();
 	void createExitButton();
-
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();

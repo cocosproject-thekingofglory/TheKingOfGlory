@@ -1,125 +1,169 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="win32">
-      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="resource">
-      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src">
-      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Scene">
-      <UniqueIdentifier>{397e3dcc-c710-469b-af9f-c2ded4f6a50e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Model">
-      <UniqueIdentifier>{322c114c-67e5-46e2-bcc1-e7b54a66ee94}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Manager">
-      <UniqueIdentifier>{c75aac22-87d7-4073-af6a-a1b11a7c022e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Controller">
-      <UniqueIdentifier>{8fba0334-12ec-491b-a112-27dfe87777c2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Network">
-      <UniqueIdentifier>{a8809144-f7af-46eb-a469-f457e2eb91ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Util">
-      <UniqueIdentifier>{84110667-fe1d-4551-897a-31c2f2ee4e35}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>win32</Filter>
+    <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="..\Classes\Util\GameAudio.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Scene\HelloWorldScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scene\LoadingScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scene\LoginScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scene\StartScene.cpp">
-      <Filter>src\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scene\GameScene.cpp">
-      <Filter>src\Scene</Filter>
+    <ClCompile Include="..\Classes\Model\BulletBase.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\GameMap.cpp">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\GameController.cpp">
-      <Filter>src\Controller</Filter>
+    <ClCompile Include="..\Classes\Model\Player.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\Soldier.cpp">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\SpriteBase.cpp">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Model\tower.cpp">
-      <Filter>src\Model</Filter>
+    <ClCompile Include="..\Classes\Model\Tower.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
-      <Filter>src\Util</Filter>
+    <ClCompile Include="..\Classes\Controller\GameController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\HelloWorldScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\LoadingScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\LoginScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\SettingsScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\StartScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\GameScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\Manager.cpp">
-      <Filter>src\Manager</Filter>
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Manager\PlayerManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\CountDown.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Home.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\UI\Tip.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Skill.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="main.h">
-      <Filter>win32</Filter>
+    <ClInclude Include="..\Classes\AppDelegate.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
+      <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>src</Filter>
+    <ClInclude Include="..\Classes\Util\GameAudio.h">
+      <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scene\HelloWorldScene.h">
-      <Filter>src\Scene</Filter>
+    <ClInclude Include="..\Classes\Model\User.h">
+      <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Scene\LoadingScene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scene\LoginScene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scene\StartScene.h">
-      <Filter>src\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Scene\GameScene.h">
-      <Filter>src\Scene</Filter>
+    <ClInclude Include="..\Classes\Model\BulletBase.h">
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\GameMap.h">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\GameController.h">
-      <Filter>src\Controller</Filter>
+    <ClInclude Include="..\Classes\Model\Player.h">
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\Soldier.h">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\SpriteBase.h">
-      <Filter>src\Model</Filter>
+      <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Model\tower.h">
-      <Filter>src\Model</Filter>
+    <ClInclude Include="..\Classes\Model\Tower.h">
+      <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
-      <Filter>src\Util</Filter>
+    <ClInclude Include="..\Classes\Controller\GameController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\HelloWorldScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\LoadingScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\LoginScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SettingsScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\StartScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Manager\Manager.h">
-      <Filter>src\Manager</Filter>
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Manager\PlayerManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\CountDown.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\PathArithmetic.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Home.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Tip.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Skill.h">
+      <Filter>Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="game.rc">
-      <Filter>resource</Filter>
-    </ResourceCompile>
+    <ResourceCompile Include="game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{2da16d91-3d7d-49e8-847d-4495994ccdfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{df02b2c1-ee08-49fb-bd08-78d554eaca5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{ab69d6f8-7fe4-4744-a005-3292f1824ff9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{fc4e1b99-8fac-4fe5-ae5a-23ab53bb529f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{88684ed0-94b9-47c2-9c6b-5932b8ec7e9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{c2ccd54b-eeea-497a-a73b-4e10d994a5b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

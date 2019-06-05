@@ -1,14 +1,14 @@
-#include "Soldier.h"
+ï»¿#include "Soldier.h"
 #include "Model/GameMap.h"
 #include <cmath>
 
-bool Soldier::init()
+bool Soldier::init(int color)
 {
 	/*if (!SpriteBase::init())
 	{
 		return false;
 	}*/
-	setType(SpriteBase::Type::Soldier);
+	setColor(color);
 	setStatus(Status::STANDING);
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
@@ -30,13 +30,13 @@ bool Soldier::init()
 void Soldier::initAnimation()
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	åŠ¨ç”»å‘½åwei"move_01.png"
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 3);
+	loadAnimation("soldierMove", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 3);
+	loadAnimation("soldierAttack", delay, 8);
 
 }
 
@@ -44,44 +44,75 @@ void Soldier::move()
 {
 	if (getStatus() == Status::MOVING)
 	{
+		//ç›´çº¿ç§»åŠ¨ï¼Œé‡åˆ°éšœç¢ç‰©åˆ™åœ¨å°èŒƒå›´å†…éšæœºç§»åŠ¨ï¼Œå†ç»§ç»­å‘ç›®çš„åœ°ç§»åŠ¨
+
 		auto position = this->getPosition();
-		if (position.equals(_destination))
-			randomDestination();
-		int flagX = (position.x < _destination.x) ? 1 : -1, flagY = (position.y < _destination.y) ? 1 : -1;
+
+		if (position.equals(getBigDestination()))
+		{
+			randomBigDestination();
+		}
+
+		if (position.equals(getSmallDestination()))
+		{
+			setSmallDestination(getBigDestination());
+		}
+
+		Vec2 smallDestination = getSmallDestination();
+
+		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
+
 		this->setFlippedX(!(position.x <= _destination.x));
-		float dx = flagX * MIN(getSpeed(), fabs(_destination.x - position.x));
-		float dy = flagY * MIN(getSpeed(), fabs(_destination.y - position.y));
-		
+
+		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
+		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
+
+
 		Vec2 target = Vec2(position.x + dx, position.y + dy);
+
 		auto map = GameMap::getCurrentMap();
 
 		if (map->isCanAssess(map->positionToTileCoord(target)))
+		{
 			this->setPosition(target);
+		}
 		else
-			randomDestination();
+		{
+			randomSmallDestination();
+		}
 	}
 
 }
 
-void Soldier::randomDestination()
+void Soldier::randomSmallDestination()
+{
+	float dx = rand() % 200 - 100;
+	float dy = rand() % 200 - 100;
+	setSmallDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+}
+
+void Soldier::randomBigDestination()
 {
 	float dx = rand() % 400 - 200;
 	float dy = rand() % 400 - 200;
-	setDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
+	setBigDestination(Vec2(getPositionX() + dx, getPositionY() + dy));
 }
 
 void Soldier::startMove()
 {
 	if (_isMove)
 	{
+		srand(time(NULL));
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		toPosition = Vec2(1280, 1280);
+		if (getColor() == BLUE)
+			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
+		else
+			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
 		runAnimation("soldierMove", this);
-		_destination = toPosition;
-		auto position = this->getPosition();
-		schedule(CC_CALLBACK_0(Soldier::move,this),"move");
+		this->setBigDestination(toPosition);
+		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
 }
@@ -94,21 +125,22 @@ void Soldier::stopMove()
 
 bool Soldier::attack()
 {
-	runAnimation("soldierAttack", this);
-	setStatus(Status::ATTACKING);
-	for (int i = _attackTargetList.size() - 1; i >= 0; i--)
+	if (_attackTargetList.size())
 	{
-		if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
+		runAnimation("soldierAttack", this);
+		setStatus(Status::ATTACKING);
+		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			if (_attackTargetList.at(i)->getType() == SpriteBase::Soldier)
+			if (_attackTargetList.at(i)->getNowHPValue() > 0.0)
 			{
-				auto target = dynamic_cast<Soldier *>(_attackTargetList.at(i));
+			
+				auto target = _attackTargetList.at(i);
 				target->beAttack(this->getDamage());
 				return true;
 			}
-			
 		}
 	}
+	
 	return false;
 }
 
@@ -123,7 +155,7 @@ float Soldier::beAttack(const float damage)
 	nowHP -= damage;
 	if (nowHP <= 0.0)
 	{
-		//Í£Ö¹¶¯»­£¬²¢ÔÚÄÜ¹¥»÷ËüµÄÐ¡±øµÄÁÐ±íÖÐÉ¾³ýËü
+		//åœæ­¢åŠ¨ç”»ï¼Œå¹¶åœ¨èƒ½æ”»å‡»å®ƒçš„å°å…µçš„åˆ—è¡¨ä¸­åˆ é™¤å®ƒ
 		stopMove();
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{
@@ -137,7 +169,10 @@ float Soldier::beAttack(const float damage)
 
 void Soldier::setHPBar()
 {
-	_HPBar = LoadingBar::create("Pictures/GameItem/planeHP.png");
+	if(getColor()==RED)
+		_HPBar = LoadingBar::create("Pictures/GameItem/redBar.png");
+	else if(getColor()==BLUE)
+		_HPBar = LoadingBar::create("Pictures/GameItem/greenBar.png");
 
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
@@ -160,10 +195,10 @@ void Soldier::updateHPBar()
 }
 
 
-Soldier* Soldier::createWithSpriteFrameName(const std::string& filename)
+Soldier* Soldier::createWithSpriteFrameName(const std::string& filename,int color)
 {
 	auto sprite = new Soldier();
-	if (sprite&&sprite->initWithSpriteFrameName(filename)&&sprite->init())
+	if(sprite&&sprite->initWithSpriteFrameName(filename)&&sprite->init(color))
 	{
 		sprite->autorelease();
 		return sprite;

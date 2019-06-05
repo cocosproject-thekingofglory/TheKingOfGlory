@@ -10,7 +10,7 @@ USING_NS_CC;
 const float SOLDIER_ATTACK_RADIUS = 3.0;
 const float SOLDIER_DAMAGE = 5.0;
 const float SOLDIER_HPVALUE = 50.0;
-const int SOLDIER_ATTACK_INTERVAL = 180;
+const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
 const float SOLDIER_EXPVALUE = 5.0;
 
@@ -19,8 +19,7 @@ const int SOLDIER_MOVE_ACTION = 1;
 class Soldier :public SpriteBase
 {
 public:
-	virtual bool init();
-	CREATE_FUNC(Soldier);
+	virtual bool init(int color);
 
 	bool _isMove = 1;
 	bool _isAttack = 0;
@@ -33,6 +32,7 @@ public:
 		DEAD,
 	};
 
+
 	void setStatus(Status status) { _status = status; }
 	Status getStatus() { return _status; }
 
@@ -44,25 +44,30 @@ public:
 
 	virtual float beAttack(const float damage);
 
-	static Soldier* createWithSpriteFrameName(const std::string& filename);
+	static Soldier* createWithSpriteFrameName(const std::string& filename,int color);
 
 	void setSpeed(float speed) { _speed = speed; }
 	float getSpeed() { return _speed; }
 
-	void setHPBar();
-	void updateHPBar();
+	virtual void setHPBar();
+	virtual void updateHPBar();
 
-	void setDestination(Vec2 destination) { _destination = destination; }
-	Vec2 getDestination() { return _destination; }
+	void setSmallDestination(Vec2 destination) { _destination = destination; }
+	Vec2 getSmallDestination() { return _destination; }
 
-	void initAnimation();
-	void move();
+	void setBigDestination(Vec2 destination) { _Destination = destination; }
+	Vec2 getBigDestination() { return _Destination; }
 
-	void randomDestination();
+	virtual void initAnimation();
+	virtual void move();
+
+	void randomSmallDestination();
+	void randomBigDestination();
 
 private:
 	float _speed;
 	Vec2 _destination;
+	Vec2 _Destination;
 	Status _status;
 	//Sprite* _bullet;
 	//Sprite* _soldier;
