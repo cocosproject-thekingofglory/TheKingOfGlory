@@ -17,7 +17,6 @@ bool SettingsScene::init()
     {
         return false;
     }
-	log("@@@@@@@@@@@@@@@");
     Size visibleSize = Director::getInstance()->getVisibleSize();
 
     Sprite * bg = Sprite::create("Pictures/Background/SettingBackground.png");

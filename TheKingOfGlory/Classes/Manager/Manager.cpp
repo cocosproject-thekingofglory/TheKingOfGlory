@@ -106,7 +106,7 @@ bool Manager::init()
 		{
 			static_cast<GameController*>(Director::getInstance()->getRunningScene()->
 				getChildByName("GameScene")->getChildByName("GameController"))->
-				gameClient->sendMessage("Init " + User::getInstance()->getName() + " 0");
+				gameClient->sendMessage("Init " + User::getInstance()->getName() + " "+std::to_string(User::getInstance()->getRole()));
 		}
 
 

@@ -187,7 +187,7 @@ void Server::button_start()
 	sprintf_s(total, "%4d", static_cast<int>(connections_.size()));
 
 	for (auto i = 0; i < connections_.size(); i++)
-		connections_[i]->write_data("GameStart");
+		connections_[i]->write_data("SelectHero");
 	connection_num_ = connections_.size();
 	this->button_thread_ = new boost::thread(std::bind(&Server::loop_process, this));
 	button_thread_->detach();
@@ -244,8 +244,13 @@ void Server::loop_process()
 				error_flag_ |= r->error();
 			ret.push_back(r->read_data());
 		}
-
-		if (ret.front().substr(0, 4) == "Init")
+		if (ret.front() == "SelectOK")
+		{
+			for (auto r : connections_)
+				r->write_data("StartGame");
+			ret.clear();
+		}
+		else if (ret.front().substr(0, 4) == "Init")
 		{
 			std::vector<std::pair<std::string,int>> players;
 			for (auto s : ret)
@@ -280,9 +285,13 @@ void Server::loop_process()
 		}
 		else
 		{
+			using namespace::GameMsg;
 			for (auto s : ret)
-				for (auto r : connections_)
-					r->write_data(s);
+			{
+				if(GetMsg(s.c_str())->msg()!=MsgType::MsgType_MsgType_None)
+					for (auto r : connections_)
+						r->write_data(s);
+			}
 			ret.clear();
 		}
 

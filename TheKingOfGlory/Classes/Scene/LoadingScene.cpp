@@ -24,13 +24,12 @@ bool LoadingScene::init()
 	
 	createBackground();
 	createProgressBar();
-
+	loadResources();
 	return true;
 }
 
-void LoadingScene::onEnterTransitionDidFinish()
+void LoadingScene::loadResources()
 {
-	Layer::onEnterTransitionDidFinish();
 	
 
 	//����Ϸ��Դ�ļ������ValueVector��
@@ -179,6 +178,11 @@ void LoadingScene::onEnterTransitionDidFinish()
 	spriteSheets.push_back(Value("Pictures/Skill/skillbone.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillstab.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillrecover.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillsword.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilllight.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangL.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangR.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
 

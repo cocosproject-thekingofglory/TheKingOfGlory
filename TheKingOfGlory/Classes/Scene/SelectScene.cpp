@@ -1,6 +1,7 @@
 #include "SelectScene.h"
 #include "GameScene.h"
 #include "StartScene.h"
+#include "SelectPlayerScene.h"
 USING_NS_CC;
 using namespace ui;
 
@@ -51,7 +52,7 @@ void SelectScene::createButton()
 	offline->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene(nullptr)));
+		Director::getInstance()->replaceScene(TransitionFade::create(1, SelectPlayerScene::createScene(nullptr)));
 
 	});
 	this->addChild(offline);
@@ -236,8 +237,8 @@ void ServerScene::createButton()
 		if (gameServer)
 		{
 			gameServer->button_start();
-			if(gameClient->getMessage()=="GameStart")
-				Director::getInstance()->replaceScene(TransitionSplitCols::create(1.0, GameScene::createScene(gameClient,gameServer)));
+			if(gameClient->getMessage()=="SelectHero")
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1.0, SelectPlayerScene::createScene(gameClient,gameServer)));
 			log("start game");
 		}
 	});
@@ -282,7 +283,8 @@ void ServerScene::createInput()
 	portInput->setMaxLength(5);
 	portInput->setMaxLengthEnabled(true);
 	portInput->setPosition(inputBG->getContentSize() / 2);
-	//usernameInput->addEventListener(CC_CALLBACK_2(LoginScene::textFieldEvent, this));
+	portInput->setTouchSize(inputBG->getContentSize());
+	portInput->setTouchAreaEnabled(true);
 
 	inputBG->addChild(portInput);
 	inputBG->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.85));
@@ -395,6 +397,8 @@ void ClientScene::createInput()
 		ipInput->setMaxLength(16);
 		ipInput->setMaxLengthEnabled(true);
 		ipInput->setPosition(inputBG->getContentSize() / 2);
+		ipInput->setTouchSize(inputBG->getContentSize());
+		ipInput->setTouchAreaEnabled(true);
 
 		inputBG->addChild(ipInput);
 		inputBG->setPosition(Vec2(visibleSize.width*0.4, visibleSize.height*0.85));
@@ -412,6 +416,8 @@ void ClientScene::createInput()
 		portInput->setMaxLength(5);
 		portInput->setMaxLengthEnabled(true);
 		portInput->setPosition(inputBG->getContentSize() / 2);
+		portInput->setTouchSize(inputBG->getContentSize());
+		portInput->setTouchAreaEnabled(true);
 
 		inputBG->addChild(portInput);
 		inputBG->setPosition(Vec2(visibleSize.width*0.65, visibleSize.height*0.85));
@@ -428,8 +434,8 @@ void ClientScene::waitStart()
 {
 	if (gameClient->remainMessage())
 	{
-		if (gameClient->getMessage() == "GameStart")
-			Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(gameClient)));
+		if (gameClient->getMessage() == "SelectHero")
+			Director::getInstance()->replaceScene(TransitionSplitCols::create(1, SelectPlayerScene::createScene(gameClient)));
 	}
 
 

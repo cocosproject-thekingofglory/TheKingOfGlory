@@ -5,6 +5,7 @@
 #include "UI/Skill.h"
 #include "Network/Server.h"
 #include "Network/Client.h"
+#include "Network/ChatBox.h"
 
 class GameController:public cocos2d::Layer
 {
@@ -26,14 +27,13 @@ private:
 	cocos2d::Vector<Skill*> _skillList;
 	cocos2d::EventListenerTouchOneByOne* touchListener;
 	cocos2d::EventListenerKeyboard* keyListener;
-
+	ChatBox* chatBox;
 
 	void createTouchListener();
 	void createKeyListener();
 	void addSkill();
+	void addChatBox();
 	void onEnter();
-	void update(float delta);
-	void isResult(float delta);
 	void toOver(cocos2d::EventCustom* event);
 
 	void sendEmptyMsg();
@@ -41,5 +41,7 @@ private:
 	void onGameInit(const void * msg);
 	void onPlayerMove(const void *msg);
 	void onPlayerAttack(const void* msg);
+	void onPlayerSkill(const void* msg);
+	void onChatMsg(const void* msg);
 
 };
