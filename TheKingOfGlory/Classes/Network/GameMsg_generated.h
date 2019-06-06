@@ -75,15 +75,17 @@ enum SkillType {
   SkillType_One = 0,
   SkillType_Two = 1,
   SkillType_Three = 2,
+  SkillType_Recover = 3,
   SkillType_MIN = SkillType_One,
-  SkillType_MAX = SkillType_Three
+  SkillType_MAX = SkillType_Recover
 };
 
-inline const SkillType (&EnumValuesSkillType())[3] {
+inline const SkillType (&EnumValuesSkillType())[4] {
   static const SkillType values[] = {
     SkillType_One,
     SkillType_Two,
-    SkillType_Three
+    SkillType_Three,
+    SkillType_Recover
   };
   return values;
 }
@@ -93,13 +95,14 @@ inline const char * const *EnumNamesSkillType() {
     "One",
     "Two",
     "Three",
+    "Recover",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameSkillType(SkillType e) {
-  if (e < SkillType_One || e > SkillType_Three) return "";
+  if (e < SkillType_One || e > SkillType_Recover) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesSkillType()[index];
 }

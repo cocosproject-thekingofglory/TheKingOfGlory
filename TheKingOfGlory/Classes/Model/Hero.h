@@ -9,9 +9,15 @@ class Warrior :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 50,
-		SKILL2=80,
-		SKILL3=100
+		SKILL1 = 10,
+		SKILL2=10,
+		SKILL3=20
+	};
+	enum Radius
+	{
+		One = 200,
+		Two = 150,
+		Three = 200
 	};
 public:
 	static Warrior* create(const std::string& id,  int color);
@@ -30,13 +36,13 @@ private:
 	{
 		SKILL1 = 10,
 		SKILL2 = 10,
-		SKILL3 = 10
+		SKILL3 = 15
 	};
 	enum Radius
 	{
-		One = 200,
+		One = 1000,
 		Two = 200,
-		Three = 1000
+		Three = 200
 	};
 public:
 	static Aviator* create(const std::string& id, int color);

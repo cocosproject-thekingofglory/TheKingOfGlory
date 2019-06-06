@@ -157,9 +157,6 @@
     <ClInclude Include="..\Classes\Network\socket_message.h">
       <Filter>Network</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Network\GameMsg_generated.h">
-      <Filter>Network</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Scene\GameScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
@@ -212,6 +209,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Network\ChatBox.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\GameMsg_generated.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>

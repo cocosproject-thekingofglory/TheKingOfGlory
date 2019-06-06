@@ -178,6 +178,11 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Skill/skillbone.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillstab.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillrecover.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillsword.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilllight.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangL.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangR.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
 

@@ -131,6 +131,11 @@ void GameController::createKeyListener()
 			if (getSkillList().size() >= 4)
 				getSkillList().at(3)->touch();
 		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_R)
+		{
+			if (getSkillList().size() >= 5)
+				getSkillList().at(4)->touch();
+		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
 		{
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
@@ -253,6 +258,33 @@ void GameController::addSkill()
 	_skillList.pushBack(skill4);
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);
 	skill4->setEnabled(false);
+
+	auto skillRecover = Skill::create("SkillRecover", "Pictures/GameItem/skillrecover.png", 50.0f);
+	skillRecover->setPosition(Vec2(visibleSize.width*0.67, visibleSize.height*0.05));
+	skillRecover->setScale(0.8);
+	skillRecover->onTouch = [=]()
+	{
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerSkill = CreatePlayerSkill(builder, name, SkillType::SkillType_Recover);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerSkill, Date::Date_playerSkill, playerSkill.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
+			manager->playerManager->getLocalPlayer()->skillRecover();
+	};
+	_skillList.pushBack(skillRecover);
+	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skillRecover);
+	skillRecover->setEnabled(false);
 
 }
 
@@ -377,6 +409,7 @@ void GameController::onPlayerSkill(const void * msg)
 		case GameMsg::SkillType::SkillType_One:{player->skill1();break;}
 		case GameMsg::SkillType::SkillType_Two:{player->skill2();break;}
 		case GameMsg::SkillType::SkillType_Three:{player->skill3();break;}
+		case GameMsg::SkillType::SkillType_Recover:{player->skillRecover();break;}
 		}
 	}
 }

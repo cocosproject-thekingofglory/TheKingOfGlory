@@ -56,15 +56,8 @@ void Warrior::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
-		{
-			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
-			{
-				auto target = _attackTargetList.at(i);
-				target->beAttack(Damage::SKILL1);
-
-			}
-		}
+		auto skill = SkillBase::create("skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
+		this->addChild(skill, -1);
 		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
 
@@ -79,16 +72,17 @@ void Warrior::skill2()
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
-		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
-		{
-			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
-			{
-				auto target = _attackTargetList.at(i);
-				target->beAttack(Damage::SKILL2);
+		auto skill = SkillBase::create("skillsword (1).png", "skillsword" ,21, 3.0f, getColor(), Damage::SKILL2);
+		GameMap::getCurrentMap()->addSprite(skill);
 
-			}
-		}
-		auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
+		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
+		auto pos = this->getPosition();
+		pos.x += ds[(int)getDirection()][0] * Radius::Two;
+		pos.y += ds[(int)getDirection()][1] * Radius::Two;
+		skill->setPosition(pos);
+
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL2))*0.1f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
 		}), NULL);
 		this->runAction(sequence);
@@ -101,14 +95,23 @@ void Warrior::skill3()
 	{
 		stopMove();
 		setStatus(Status::SKILL3);
-		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
-			if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
-			{
-				auto target = _attackTargetList.at(i);
-				target->beAttack(Damage::SKILL3);
+			auto skill = SkillBase::create("skillfenghuangL (1).png", "skillfenghuangL", 17, 3.0f, getColor(), Damage::SKILL3);
+			GameMap::getCurrentMap()->addSprite(skill);
 
-			}
+			auto pos = this->getPosition();
+			pos.x -= Radius::Three;
+			skill->setPosition(pos);
+			skill->setScale(1.5);
+		}
+		{
+			auto skill = SkillBase::create("skillfenghuangR (1).png", "skillfenghuangR", 17, 3.0f, getColor(), Damage::SKILL3);
+			GameMap::getCurrentMap()->addSprite(skill);
+
+			auto pos = this->getPosition();
+			pos.x += Radius::Three;
+			skill->setPosition(pos);
+			skill->setScale(1.5);
 		}
 		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
@@ -162,6 +165,27 @@ bool Aviator::init(int role, int color)
 	return true;
 }
 
+void Aviator::skill1()
+{
+	if (_isSkill&&getStatus() != Status::SKILL1)
+	{
+		stopMove();
+		setStatus(Status::SKILL1);
+		auto skill = SkillBase::create("skillring (1).png", "skillring", 5, 5.0f, getColor(), Damage::SKILL1);
+		GameMap::getCurrentMap()->addSprite(skill);
+		skill->setPosition(this->getPosition());
+		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
+		float dx = ds[(int)getDirection()][0] * Radius::One;
+		float dy = ds[(int)getDirection()][1] * Radius::One;
+		skill->runAction(MoveBy::create(5.0f, Vec2(dx, dy)));
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL1))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
 void Aviator::skill2()
 {
 	if (_isSkill&&getStatus() != Status::SKILL2)
@@ -173,8 +197,8 @@ void Aviator::skill2()
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
 		auto pos = this->getPosition();
-		pos.x += ds[(int)getDirection()][0] * Radius::One;
-		pos.y += ds[(int)getDirection()][1] * Radius::One;
+		pos.x += ds[(int)getDirection()][0] * Radius::Two;
+		pos.y += ds[(int)getDirection()][1] * Radius::Two;
 		skill->setPosition(pos);
 
 
@@ -194,12 +218,12 @@ void Aviator::skill3()
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
 		for (int i = 0; i < 8; i++)
 		{
-			auto skill = SkillBase::create("skillstab (1).png", "skillstab", 17, 3.0f, getColor(), Damage::SKILL2);
+			auto skill = SkillBase::create("skillstab (1).png", "skillstab", 17, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
-			pos.x += ds[i][0] * Radius::Two;
-			pos.y += ds[i][1] * Radius::Two;
+			pos.x += ds[i][0] * Radius::Three;
+			pos.y += ds[i][1] * Radius::Three;
 			skill->setPosition(pos);
 
 		}
@@ -211,26 +235,7 @@ void Aviator::skill3()
 	}
 }
 
-void Aviator::skill1()
-{
-	if (_isSkill&&getStatus() != Status::SKILL1)
-	{
-		stopMove();
-		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skillring (1).png", "skillring", 5, 5.0f, getColor(), Damage::SKILL1);
-		GameMap::getCurrentMap()->addSprite(skill);
-		skill->setPosition(this->getPosition());
-		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
-		float dx = ds[(int)getDirection()][0] * Radius::Three;
-		float dy = ds[(int)getDirection()][1] * Radius::Three;
-		skill->runAction(MoveBy::create(5.0f, Vec2(dx, dy)));
 
-		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL1))*0.1f), CallFunc::create([=]() {
-			this->setStatus(Status::STANDING);
-		}), NULL);
-		this->runAction(sequence);
-	}
-}
 
 
 Mage* Mage::create(const std::string& id, int color)
