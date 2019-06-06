@@ -99,6 +99,9 @@
     <ClCompile Include="..\Classes\Scene\SelectPlayerScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Network\ChatBox.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
@@ -207,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\SelectPlayerScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\ChatBox.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

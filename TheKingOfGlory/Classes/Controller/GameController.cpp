@@ -50,8 +50,9 @@ bool GameController::init(Client* client, Server*server)
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerMove, GameController::onPlayerMove, gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerAttack, GameController::onPlayerAttack, gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerSkill, GameController::onPlayerSkill, gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_ChatMsg, GameController::onChatMsg, gameClient);
 
-		schedule(CC_CALLBACK_0(GameController::processMsg,this),0.01f,"ProcessMsg");
+		schedule(CC_CALLBACK_0(GameController::processMsg,this),0.05f,"ProcessMsg");
 
 	}
 
@@ -255,6 +256,23 @@ void GameController::addSkill()
 
 }
 
+void GameController::addChatBox()
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	chatBox = ChatBox::create("Pictures/UI/chatbox.png",gameClient);
+	chatBox->setPosition(Vec2(visibleSize.width *0.82, visibleSize.height*0.6));
+	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(chatBox,5);
+
+	auto chatButton = ui::Button::create("Pictures/UI/chatbutton.png");
+	chatButton->setPosition(Vec2(visibleSize.width*0.97, visibleSize.height /2));
+	chatButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type == ui::Widget::TouchEventType::ENDED)
+			chatBox->update();
+	});
+	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(chatButton,4);
+}
+
 void GameController::onEnter()
 {
 	Layer::onEnter();
@@ -324,7 +342,7 @@ void GameController::onGameInit(const void * msg)
 		}
 	}
 	hasSend = true;
-	schedule(CC_CALLBACK_0(GameController::sendEmptyMsg, this), 0.02f,"SendEmpty");
+	schedule(CC_CALLBACK_0(GameController::sendEmptyMsg, this), 0.01f,"SendEmpty");
 
 }
 
@@ -363,11 +381,27 @@ void GameController::onPlayerSkill(const void * msg)
 	}
 }
 
+void GameController::onChatMsg(const void * msg)
+{
+	auto data = GameMsg::GetMsg(msg)->data_as_chatMsg();
+	auto name = std::string(data->name()->c_str());
+	auto chatmsg = std::string(data->msg()->c_str());
+	ChatText *text;
+	if (name == User::getInstance()->getName())
+		text = ChatText::create("Pictures/UI/chatText_green.png", chatmsg, true);
+	else
+		text = ChatText::create("Pictures/UI/chatText_white.png", chatmsg, false);
+	chatBox->addChatText(text);
+	chatBox->setIndex(0);
+	chatBox->updateLayout();
+}
+
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
 	this->addChild(manager, -1,"Manager");
 	addSkill();
-	
+	if(isOnline)
+		addChatBox();
 	
 }

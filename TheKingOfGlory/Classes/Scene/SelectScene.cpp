@@ -283,6 +283,8 @@ void ServerScene::createInput()
 	portInput->setMaxLength(5);
 	portInput->setMaxLengthEnabled(true);
 	portInput->setPosition(inputBG->getContentSize() / 2);
+	portInput->setTouchSize(inputBG->getContentSize());
+	portInput->setTouchAreaEnabled(true);
 
 	inputBG->addChild(portInput);
 	inputBG->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.85));
@@ -395,6 +397,8 @@ void ClientScene::createInput()
 		ipInput->setMaxLength(16);
 		ipInput->setMaxLengthEnabled(true);
 		ipInput->setPosition(inputBG->getContentSize() / 2);
+		ipInput->setTouchSize(inputBG->getContentSize());
+		ipInput->setTouchAreaEnabled(true);
 
 		inputBG->addChild(ipInput);
 		inputBG->setPosition(Vec2(visibleSize.width*0.4, visibleSize.height*0.85));
@@ -412,6 +416,8 @@ void ClientScene::createInput()
 		portInput->setMaxLength(5);
 		portInput->setMaxLengthEnabled(true);
 		portInput->setPosition(inputBG->getContentSize() / 2);
+		portInput->setTouchSize(inputBG->getContentSize());
+		portInput->setTouchAreaEnabled(true);
 
 		inputBG->addChild(portInput);
 		inputBG->setPosition(Vec2(visibleSize.width*0.65, visibleSize.height*0.85));

@@ -285,9 +285,13 @@ void Server::loop_process()
 		}
 		else
 		{
+			using namespace::GameMsg;
 			for (auto s : ret)
-				for (auto r : connections_)
-					r->write_data(s);
+			{
+				if(GetMsg(s.c_str())->msg()!=MsgType::MsgType_MsgType_None)
+					for (auto r : connections_)
+						r->write_data(s);
+			}
 			ret.clear();
 		}
 

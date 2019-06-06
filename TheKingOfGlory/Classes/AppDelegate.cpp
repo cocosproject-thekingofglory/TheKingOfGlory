@@ -4,6 +4,7 @@
 #include "Scene/GameScene.h"
 #include "Scene/SelectScene.h"
 #include "Scene/SelectPlayerScene.h"
+#include "Scene/LoginScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -101,6 +102,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto scene = LoadingScene::createScene();
 //	auto scene = GameScene::createScene();
 //	auto scene = SelectScene::createScene();
+//	auto scene = LoginScene::createScene();
     // run
     director->runWithScene(scene);
 

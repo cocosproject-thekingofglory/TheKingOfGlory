@@ -22,7 +22,7 @@ struct PlayerSkill;
 
 struct PlayerExit;
 
-struct GameOver;
+struct ChatMsg;
 
 struct Msg;
 
@@ -32,7 +32,7 @@ enum MsgType {
   MsgType_MsgType_PlayerMove = 2,
   MsgType_MsgType_PlayerAttack = 3,
   MsgType_MsgType_PlayerSkill = 4,
-  MsgType_MsgType_GameOver = 5,
+  MsgType_MsgType_ChatMsg = 5,
   MsgType_MsgType_PlayerExit = 6,
   MsgType_MIN = MsgType_MsgType_None,
   MsgType_MAX = MsgType_MsgType_PlayerExit
@@ -45,7 +45,7 @@ inline const MsgType (&EnumValuesMsgType())[7] {
     MsgType_MsgType_PlayerMove,
     MsgType_MsgType_PlayerAttack,
     MsgType_MsgType_PlayerSkill,
-    MsgType_MsgType_GameOver,
+    MsgType_MsgType_ChatMsg,
     MsgType_MsgType_PlayerExit
   };
   return values;
@@ -58,7 +58,7 @@ inline const char * const *EnumNamesMsgType() {
     "MsgType_PlayerMove",
     "MsgType_PlayerAttack",
     "MsgType_PlayerSkill",
-    "MsgType_GameOver",
+    "MsgType_ChatMsg",
     "MsgType_PlayerExit",
     nullptr
   };
@@ -173,7 +173,7 @@ enum Date {
   Date_playerMove = 2,
   Date_playerAttack = 3,
   Date_playerSkill = 4,
-  Date_gameOver = 5,
+  Date_chatMsg = 5,
   Date_playerExit = 6,
   Date_MIN = Date_NONE,
   Date_MAX = Date_playerExit
@@ -186,7 +186,7 @@ inline const Date (&EnumValuesDate())[7] {
     Date_playerMove,
     Date_playerAttack,
     Date_playerSkill,
-    Date_gameOver,
+    Date_chatMsg,
     Date_playerExit
   };
   return values;
@@ -199,7 +199,7 @@ inline const char * const *EnumNamesDate() {
     "playerMove",
     "playerAttack",
     "playerSkill",
-    "gameOver",
+    "chatMsg",
     "playerExit",
     nullptr
   };
@@ -232,8 +232,8 @@ template<> struct DateTraits<PlayerSkill> {
   static const Date enum_value = Date_playerSkill;
 };
 
-template<> struct DateTraits<GameOver> {
-  static const Date enum_value = Date_gameOver;
+template<> struct DateTraits<ChatMsg> {
+  static const Date enum_value = Date_chatMsg;
 };
 
 template<> struct DateTraits<PlayerExit> {
@@ -626,44 +626,68 @@ inline flatbuffers::Offset<PlayerExit> CreatePlayerExitDirect(
       name__);
 }
 
-struct GameOver FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+struct ChatMsg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_WINCOLOR = 4
+    VT_NAME = 4,
+    VT_MSG = 6
   };
-  Color winColor() const {
-    return static_cast<Color>(GetField<int8_t>(VT_WINCOLOR, 0));
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  const flatbuffers::String *msg() const {
+    return GetPointer<const flatbuffers::String *>(VT_MSG);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<int8_t>(verifier, VT_WINCOLOR) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyOffset(verifier, VT_MSG) &&
+           verifier.VerifyString(msg()) &&
            verifier.EndTable();
   }
 };
 
-struct GameOverBuilder {
+struct ChatMsgBuilder {
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_winColor(Color winColor) {
-    fbb_.AddElement<int8_t>(GameOver::VT_WINCOLOR, static_cast<int8_t>(winColor), 0);
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(ChatMsg::VT_NAME, name);
   }
-  explicit GameOverBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  void add_msg(flatbuffers::Offset<flatbuffers::String> msg) {
+    fbb_.AddOffset(ChatMsg::VT_MSG, msg);
+  }
+  explicit ChatMsgBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  GameOverBuilder &operator=(const GameOverBuilder &);
-  flatbuffers::Offset<GameOver> Finish() {
+  ChatMsgBuilder &operator=(const ChatMsgBuilder &);
+  flatbuffers::Offset<ChatMsg> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<GameOver>(end);
+    auto o = flatbuffers::Offset<ChatMsg>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<GameOver> CreateGameOver(
+inline flatbuffers::Offset<ChatMsg> CreateChatMsg(
     flatbuffers::FlatBufferBuilder &_fbb,
-    Color winColor = Color_Red) {
-  GameOverBuilder builder_(_fbb);
-  builder_.add_winColor(winColor);
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    flatbuffers::Offset<flatbuffers::String> msg = 0) {
+  ChatMsgBuilder builder_(_fbb);
+  builder_.add_msg(msg);
+  builder_.add_name(name);
   return builder_.Finish();
+}
+
+inline flatbuffers::Offset<ChatMsg> CreateChatMsgDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    const char *msg = nullptr) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  auto msg__ = msg ? _fbb.CreateString(msg) : 0;
+  return GameMsg::CreateChatMsg(
+      _fbb,
+      name__,
+      msg__);
 }
 
 struct Msg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
@@ -694,8 +718,8 @@ struct Msg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const PlayerSkill *data_as_playerSkill() const {
     return data_type() == Date_playerSkill ? static_cast<const PlayerSkill *>(data()) : nullptr;
   }
-  const GameOver *data_as_gameOver() const {
-    return data_type() == Date_gameOver ? static_cast<const GameOver *>(data()) : nullptr;
+  const ChatMsg *data_as_chatMsg() const {
+    return data_type() == Date_chatMsg ? static_cast<const ChatMsg *>(data()) : nullptr;
   }
   const PlayerExit *data_as_playerExit() const {
     return data_type() == Date_playerExit ? static_cast<const PlayerExit *>(data()) : nullptr;
@@ -726,8 +750,8 @@ template<> inline const PlayerSkill *Msg::data_as<PlayerSkill>() const {
   return data_as_playerSkill();
 }
 
-template<> inline const GameOver *Msg::data_as<GameOver>() const {
-  return data_as_gameOver();
+template<> inline const ChatMsg *Msg::data_as<ChatMsg>() const {
+  return data_as_chatMsg();
 }
 
 template<> inline const PlayerExit *Msg::data_as<PlayerExit>() const {
@@ -791,8 +815,8 @@ inline bool VerifyDate(flatbuffers::Verifier &verifier, const void *obj, Date ty
       auto ptr = reinterpret_cast<const PlayerSkill *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Date_gameOver: {
-      auto ptr = reinterpret_cast<const GameOver *>(obj);
+    case Date_chatMsg: {
+      auto ptr = reinterpret_cast<const ChatMsg *>(obj);
       return verifier.VerifyTable(ptr);
     }
     case Date_playerExit: {
