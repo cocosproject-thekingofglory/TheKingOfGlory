@@ -24,7 +24,7 @@ bool LoadingScene::init()
 	
 	createBackground();
 	createProgressBar();
-	loadResources();
+	scheduleOnce(CC_CALLBACK_0(LoadingScene::loadResources, this), 0.1f,"Load");
 	return true;
 }
 
@@ -180,7 +180,19 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillrecover.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillsword.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillknife.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillstrike.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skilllight.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillball.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwater.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfog.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfire.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragonL.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragonR.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragon1.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillblackdragon.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilldragonsun.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilldragonflower.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangL.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangR.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
@@ -364,6 +376,11 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill2_leftup.plist"));
 	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill2_rightdown.plist"));
 
+	spriteSheets.push_back(Value("Pictures/Soldier/soldier_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/soldier_move_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_move_rightdown.plist"));
+
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));
 	musics.push_back(Value("Sounds/LoginBgm.mp3"));
@@ -390,6 +407,10 @@ void LoadingScene::createBackground()
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
+
+	auto text = ui::Text::create("Loading,Please wait...", "fonts/Quicksand-Bold.ttf", 32);
+	text->setPosition(Vec2(visible_Size.width / 2, visible_Size.height*0.6));
+	this->addChild(text);
 }
 
 void LoadingScene::createProgressBar()

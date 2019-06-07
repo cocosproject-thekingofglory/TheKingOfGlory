@@ -59,9 +59,16 @@ class Mage :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 50,
-		SKILL2 = 80,
-		SKILL3 = 100
+		SKILL1 = 10,
+		SKILL2 = 10,
+		SKILL3 = 10
+	};
+	enum Radius
+	{
+		One = 1000,
+		Two = 200,
+		Three = 1000,
+		Attack=600
 	};
 
 public:
@@ -80,9 +87,15 @@ class Paladin :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 50,
-		SKILL2 = 80,
-		SKILL3 = 100
+		SKILL1 = 10,
+		SKILL2 = 10,
+		SKILL3 = 20
+	};
+	enum Radius
+	{
+		One = 200,
+		Two = 300,
+		Three = 300,
 	};
 
 public:
@@ -109,8 +122,8 @@ private:
 	enum Radius
 	{
 		One = 200,
-		Two = 150,
-		Three = 200
+		Two = 200,
+		Three = 300,
 	};
 public:
 	static Ranger* create(const std::string& id, int color);
@@ -128,9 +141,15 @@ class Cavalier :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 50,
-		SKILL2 = 80,
-		SKILL3 = 100
+		SKILL1 = 10,
+		SKILL2 = 10,
+		SKILL3 = 20
+	};
+	enum Radius
+	{
+		One = 300,
+		Two = 300,
+		Three = 300,
 	};
 
 public:

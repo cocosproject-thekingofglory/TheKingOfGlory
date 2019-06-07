@@ -120,6 +120,7 @@ bool Manager::init()
 				player->setSkill(true);
 			}
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("CreateLocalPlayer");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
@@ -231,7 +232,7 @@ void Manager::scheduleSoldierAttack()
 			{
 				player1->addAttackTarget(player2);
 				player2->addBeAttackTarget(player1);
-				break;
+				//break;
 			}
 		}
 		for (auto tower : _towerList[player1->getColor() ^ 1])
@@ -240,7 +241,7 @@ void Manager::scheduleSoldierAttack()
 			{
 				player1->addAttackTarget(tower);
 				tower->addBeAttackTarget(player1);
-				break;
+				//break;
 			}
 		}
 
@@ -368,7 +369,14 @@ void Manager::scheduleCreateSoldier()
 
 void Manager::scheduleCreateGunCar()
 {
-	if (_guncarList[RED].size() < 10)
+	if (_guncarList[BLUE].size() < 5)
+	{
+		auto guncar_blue = createGunCar(BLUE_GUNCAR_FILENAME, BLUE);
+		guncar_blue->startMove();
+		GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
+
+	}
+	if (_guncarList[RED].size() < 5)
 	{
 		auto guncar_red = createGunCar(RED_GUNCAR_FILENAME, RED);
 		guncar_red->startMove();
@@ -376,13 +384,7 @@ void Manager::scheduleCreateGunCar()
 
 	}
 
-	if (_guncarList[BLUE].size() < 10)
-	{
-		auto guncar_blue = createSoldier(BLUE_GUNCAR_FILENAME, BLUE);
-		guncar_blue->startMove();
-		GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
 
-	}
 }
 
 void Manager::scheduleDeadDetect()
@@ -406,6 +408,23 @@ void Manager::scheduleDeadDetect()
 
 				soldier->removeFromParentAndCleanup(true);
 				_soldierList[i].eraseObject(soldier);
+			}
+		}
+		for (int j = 0; j < _guncarList[i].size(); j++)
+		{
+			if (_guncarList[i].at(j)->getNowHPValue() <= 0.0)
+			{
+				auto guncar = _guncarList[i].at(j);
+
+				Vector<BulletBase*> bulletList = guncar->getBeAttackBullet();
+
+				for (auto bullet : bulletList)
+				{
+					bullet->removeFromMap(bullet);
+				}
+
+				guncar->removeFromParentAndCleanup(true);
+				_guncarList[i].eraseObject(guncar);
 			}
 		}
 

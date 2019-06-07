@@ -17,11 +17,11 @@ const Vec2 BLUE_BIRTH_POINT = Vec2(150.0, 150.0);
 
 //const std::string RED_SOLDIER_FILENAME = "red_soldier.png";
 //const std::string BLUE_SOLDIER_FILENAME = "blue_soldier.png";
-const std::string RED_SOLDIER_FILENAME = "soldierMove (1).png";
-const std::string BLUE_SOLDIER_FILENAME = "soldierMove (1).png";
+const std::string RED_SOLDIER_FILENAME = "soldier_move_right (1).png";
+const std::string BLUE_SOLDIER_FILENAME = "soldier_move_right (1).png";
 
-const std::string RED_GUNCAR_FILENAME = "soldierMove (1).png";
-const std::string BLUE_GUNCAR_FILENAME = "soldierMove (1).png";
+const std::string RED_GUNCAR_FILENAME = "guntruck_move_rightdown (1).png";
+const std::string BLUE_GUNCAR_FILENAME = "guntruck_move_rightdown (1).png";
 
 const std::string RED_TOWER_FILENAME = "tower.png";
 const std::string BLUE_TOWER_FILENAME = "tower.png";

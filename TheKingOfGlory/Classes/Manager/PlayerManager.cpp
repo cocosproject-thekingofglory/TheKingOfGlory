@@ -64,6 +64,7 @@ Player* PlayerManager::createLocalPlayer(const std::string& id, int role,int col
 		localPlayer->isLocal(true);
 		this->_playerList.insert(id, localPlayer);
 	}
+
 	return localPlayer;
 }
 

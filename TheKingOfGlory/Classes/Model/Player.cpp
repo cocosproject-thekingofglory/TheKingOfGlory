@@ -36,7 +36,6 @@ bool Player::init(int role, int color)
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
-	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 	setDefend(PLAYER_DEFEND);
@@ -141,6 +140,7 @@ bool Player::attack()
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
 				}
+				break;
 			}
 		}
 		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {

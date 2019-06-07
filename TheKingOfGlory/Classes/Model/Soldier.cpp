@@ -38,9 +38,9 @@ void Soldier::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 8);
+	loadAnimation("soldier_move_right", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 8);
+	loadAnimation("soldier_attack_right", delay, 8);
 
 }
 
@@ -114,7 +114,7 @@ void Soldier::startMove()
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
 		else
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
-		runAnimation("soldierMove", this);
+		runAnimation("soldier_move_right", this);
 		this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
@@ -131,7 +131,7 @@ bool Soldier::attack()
 {
 	if (_attackTargetList.size())
 	{
-		runAnimation("soldierAttack", this);
+		runAnimation("soldier_attack_right", this);
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
@@ -150,7 +150,7 @@ bool Soldier::attack()
 
 void Soldier::stopAttack()
 {
-	stopAnimation("soldierAttack",this);
+	stopAnimation("soldier_attack_right",this);
 }
 
 float Soldier::beAttack(const float damage)
@@ -181,7 +181,7 @@ void Soldier::setHPBar()
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 	
-	_HPBar->setPercent(0);
+	_HPBar->setPercent(100);
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
 		this->getPositionY() + this->getContentSize().height*1.1);
 	_HPBar->setPosition(HPpos);

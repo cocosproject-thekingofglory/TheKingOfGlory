@@ -40,9 +40,9 @@ void GunCar::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 8);
+	loadAnimation("guntruck_move_rightdown", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 8);
+	loadAnimation("guntruck_attack_rightdown", delay, 11);
 
 }
 
@@ -102,7 +102,7 @@ void GunCar::startMove()
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
 		else
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
-		runAnimation("soldierMove", this);
+		runAnimation("guntruck_move_rightdown", this);
 		this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move, this), 0.05f, "move");
 		setStatus(Status::MOVING);
@@ -119,7 +119,7 @@ bool GunCar::attack()
 {
 	if (_attackTargetList.size())
 	{
-		runAnimation("soldierAttack", this);
+		runAnimation("guntruck_attack_rightdown", this);
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
@@ -139,7 +139,7 @@ bool GunCar::attack()
 
 void GunCar::stopAttack()
 {
-	stopAnimation("soldierAttack", this);
+	stopAnimation("guntruck_attack_rightdown", this);
 }
 
 float GunCar::beAttack(const float damage)
@@ -170,7 +170,7 @@ void GunCar::setHPBar()
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 
-	_HPBar->setPercent(0);
+	_HPBar->setPercent(100);
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
 		this->getPositionY() + this->getContentSize().height*1.1);
 	_HPBar->setPosition(HPpos);

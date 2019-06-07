@@ -21,16 +21,11 @@ private:
 
 	Text* createText(std::string context);
 	void remove();
-	void createListener();
-	bool onTouchBegin(Touch*touch, Event*event);
-	bool onTouchEnded(Touch*touch, Event*event);
+	//bool onTouchEnded(Touch*touch, Event*event);
 
 	int _choseEquipmentID;
 	void sell(EquipmentBase*equip);
 	EventListenerTouchOneByOne*_sellListener;
 
-	Text*_sellText;
-	void updateSellText();
 
-	void setEquipmentPos();
 };

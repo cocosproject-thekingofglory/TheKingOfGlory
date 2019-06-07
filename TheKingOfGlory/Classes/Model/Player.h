@@ -10,7 +10,7 @@ USING_NS_CC;
 using namespace ui;
 
 //基础属性
-const float PLAYER_ATTACK_RADIUS = 10;
+const float PLAYER_ATTACK_RADIUS = 20;
 const float PLAYER_DAMAGE = 20.0;
 const float PLAYER_SKILLRECOVER_VALUE = -10.0;
 const float PLAYER_HPVALUE = 200;
@@ -24,9 +24,9 @@ const int PLAYER_MAX_LEVEL = 15;
 const int PLAYER_INITIAL_LEVEL = 1;
 const int PLAYER_INITIAL_MONEY = 100;
 //升级加属性
-const float PLAYER_LEVEL_UP_DAMAGE = 5.0;
+const float PLAYER_LEVEL_UP_DAMAGE = 10.0;
 const float PLAYER_LEVEL_UP_DEFEND = 0.01;
-const float PLAYER_LEVEL_UP_HPVALUE = 20;
+const float PLAYER_LEVEL_UP_HPVALUE = 50;
 
 class Player :public SpriteBase
 {
