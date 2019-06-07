@@ -71,5 +71,75 @@ public:
 	void skill1();
 	void skill2();
 	void skill3();
+	void setStatus(Status status);
+
+};
+
+class Paladin :public Player
+{
+private:
+	enum Damage
+	{
+		SKILL1 = 50,
+		SKILL2 = 80,
+		SKILL3 = 100
+	};
+
+public:
+	static Paladin* create(const std::string& id, int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+	void setStatus(Status status);
+
+};
+
+
+class Ranger :public Player
+{
+private:
+	enum Damage
+	{
+		SKILL1 = 10,
+		SKILL2 = 10,
+		SKILL3 = 20
+	};
+	enum Radius
+	{
+		One = 200,
+		Two = 150,
+		Three = 200
+	};
+public:
+	static Ranger* create(const std::string& id, int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+
+};
+
+
+class Cavalier :public Player
+{
+private:
+	enum Damage
+	{
+		SKILL1 = 50,
+		SKILL2 = 80,
+		SKILL3 = 100
+	};
+
+public:
+	static Cavalier* create(const std::string& id, int color);
+
+	virtual bool init(int role, int color);
+	void skill1();
+	void skill2();
+	void skill3();
+	void setStatus(Status status);
 
 };

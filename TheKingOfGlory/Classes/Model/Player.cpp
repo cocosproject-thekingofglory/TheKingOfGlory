@@ -50,6 +50,8 @@ bool Player::init(int role, int color)
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
+	_direction = Direction::DOWN;
+	_status = Status::STANDING;
 	
 	this->setScale(2);
 
@@ -62,6 +64,7 @@ bool Player::init(int role, int color)
 //只是获得名字
 bool Player::initWithRole(int role, int color)
 {
+	_role = role;
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
@@ -70,7 +73,10 @@ bool Player::initWithRole(int role, int color)
 	{
 	case 0: {file += "_stand_down (1).png"; break; }
 	case 1: {file += "_move_down (1).png"; break; }
-	case 2: {file += "_stand_down (1).png"; break; }
+	case 2: {file += "_stand_rightup (1).png"; break; }
+	case 3: {file += "_stand_rightup (1).png"; break; }
+	case 4: {file += "_stand_rightup (1).png"; break; }
+	case 5: {file += "_move_rightup (1).png"; break; }
 	}
 
 	if (this->initWithSpriteFrameName(file) && this->init(role, color))
@@ -171,10 +177,13 @@ float Player::beAttack(const float damage)
 			setStatus(Status::DEAD);
 			auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
 				this->stopAnimation(this);
-				std::string frameName = _roleName + "_dead_";
+				std::string frameName = _roleName +"_"+ _animationNames[(int)Status::DEAD]+"_";
 
 				std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
-				frameName += directionName[int(_direction)];
+				if (_role == 2 || _role == 3||_role==5)
+					frameName += directionName[int(Direction::RIGHTDOWN)];
+				else
+					frameName += directionName[int(_direction)];
 
 				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
@@ -323,7 +332,7 @@ void Player::revival()
 
 	_isMove = true;
 	_isAttack = true;
-	_isSkill = false;
+	_isSkill = true;
 
 
 	setDirection(Direction::RIGHTUP);

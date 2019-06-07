@@ -254,17 +254,639 @@ Mage* Mage::create(const std::string& id, int color)
 
 bool Mage::init(int role, int color)
 {
-	return false;
+	if (!Player::init(role, color))
+		return false;
+
+
+	std::string animationNames[] = { "stand","move","attack","dead","behit","skill","skill1","skill2" };
+	_animationNames.assign(animationNames, animationNames + 8);
+
+	std::string directions[] = { "up","down","left","right","leftdown","leftup","rightdown","rightup" };
+
+	int animationNum[] = { 11,8,8,10,7,16,17,16 };
+	_animationFrameNum.assign(animationNum, animationNum + 8);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 4; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	{
+		int i = 5;
+		for (int j = 4; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+		i = 7;
+		for (int j = 5; j < 7; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+	}
+	{
+		int i = 4;
+		for (int j = 1; j < 4; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+		i = 6;
+		for (int j = 0; j < 4; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+	}
+	if (getColor() == RED)
+		setDirection(Direction::RIGHTUP);
+	else
+		setDirection(Direction::LEFTDOWN);
+	setStatus(Player::Status::STANDING);
+
+	return true;
 }
 
 void Mage::skill1()
 {
+	if (_isSkill&&getStatus() != Status::SKILL1)
+	{
+		stopMove();
+		setStatus(Status::SKILL1);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL1))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
 }
 
 void Mage::skill2()
 {
+	if (_isSkill&&getStatus() != Status::SKILL2)
+	{
+		stopMove();
+		setStatus(Status::SKILL2);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL2))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
 }
 
 void Mage::skill3()
 {
+	if (_isSkill&&getStatus() != Status::SKILL3)
+	{
+		stopMove();
+		setStatus(Status::SKILL3);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL3))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Mage::setStatus(Status status)
+{
+
+	this->_status = status;
+	if ((int)status > 7)
+		return;
+	std::string animation = _roleName + "_";
+	animation += _animationNames.at(int(status)) + "_";
+
+	Direction direction=Direction::RIGHTDOWN;
+	switch (status)
+	{
+	case Status::STANDING:
+	case Status::ATTACKING:
+	case Status::MOVING:
+	case Status::DEAD:
+	case Status::SKILL1:
+	{
+		if (int(_direction) >= 4)
+		{
+			direction = _direction;
+		}
+		else
+		{
+			int dd[] = { 4,6,3,3 };
+			direction = Player::Direction((int)_direction + dd[(int)_direction]);
+		}
+		break;
+	}
+	case Status::SKILL2:
+	case Status::BEINGHIT:
+	{
+		if (int(_direction) < 4)
+		{
+			direction = _direction;
+			if (int(_direction) == 2)
+				direction = Player::Direction((int)_direction - 1);
+		}
+		else
+		{
+			int dd[] = { 4,4,3,6 };
+			direction = Player::Direction((int)_direction - dd[(int)_direction]);
+		}
+		break;
+	}
+	case Status::SKILL3:
+	{
+		switch (_direction)
+		{
+		case Direction::LEFT:
+		case Direction::UP:
+		case Direction::LEFTUP:
+		case Direction::LEFTDOWN:
+		{
+			direction = Direction::LEFTUP;
+			break;
+		}
+		case Direction::RIGHT:
+		case Direction::DOWN:
+		case Direction::RIGHTDOWN:
+		case Direction::RIGHTUP:
+		{
+			direction = Direction::RIGHTDOWN;
+			break;
+		}
+		}
+		break;
+	}
+
+	}
+	if ((int)direction < 0 || (int)direction>7)
+		direction = Direction::RIGHTDOWN;
+
+	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
+	animation += directionName[int(direction)];
+
+	AnimationLoader::runAnimation(animation, this);
+}
+
+
+Paladin* Paladin::create(const std::string& id, int color)
+{
+	auto paladin = new(std::nothrow) Paladin();
+	if (paladin&&paladin->initWithRole(3, color))
+	{
+		paladin->_id = id;
+		paladin->autorelease();
+		return paladin;
+	}
+	CC_SAFE_DELETE(paladin);
+	return nullptr;
+
+}
+
+bool Paladin::init(int role, int color)
+{
+	if (!Player::init(role, color))
+		return false;
+
+
+	std::string animationNames[] = { "stand","move","attack","dead","behit","skill","skill1","skill2" };
+	_animationNames.assign(animationNames, animationNames + 8);
+
+	std::string directions[] = { "up","down","left","right","leftdown","leftup","rightdown","rightup" };
+
+	int animationNum[] = { 9,12,13,11,6,4,8,18 };
+	_animationFrameNum.assign(animationNum, animationNum + 8);
+	for (int i = 0; i < 2; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	for (int i = 2; i < 7; i++)
+	{
+		for (int j = 4; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	{
+		int i = 7;
+		for (int j = 5; j < 7; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+	}
+	if (getColor() == RED)
+		setDirection(Direction::RIGHTUP);
+	else
+		setDirection(Direction::LEFTDOWN);
+	setStatus(Player::Status::STANDING);
+
+	return true;
+}
+
+void Paladin::skill1()
+{
+	if (_isSkill&&getStatus() != Status::SKILL1)
+	{
+		stopMove();
+		setStatus(Status::SKILL1);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL1))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Paladin::skill2()
+{
+	if (_isSkill&&getStatus() != Status::SKILL2)
+	{
+		stopMove();
+		setStatus(Status::SKILL2);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL2))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Paladin::skill3()
+{
+	if (_isSkill&&getStatus() != Status::SKILL3)
+	{
+		stopMove();
+		setStatus(Status::SKILL3);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL3))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Paladin::setStatus(Status status)
+{
+
+	this->_status = status;
+	if ((int)status > 7)
+		return;
+	std::string animation = _roleName + "_";
+	animation += _animationNames.at(int(status)) + "_";
+	Direction direction = Direction::RIGHTDOWN;
+	switch (status)
+	{
+
+	case Status::ATTACKING:
+	case Status::DEAD:
+	case Status::BEINGHIT:
+	case Status::SKILL1:
+	case Status::SKILL2:
+	{
+		if (int(_direction) >= 4)
+		{
+			direction = _direction;
+		}
+		else
+		{
+			int dd[] = { 4,6,3,3 };
+			direction = Player::Direction((int)_direction + dd[(int)_direction]);
+		}
+		break;
+	}
+	case Status::STANDING:
+	case Status::MOVING:
+	{
+		direction = _direction;
+		break;
+	}
+	case Status::SKILL3:
+	{
+		switch (_direction)
+		{
+		case Direction::LEFT:
+		case Direction::UP:
+		case Direction::LEFTUP:
+		case Direction::LEFTDOWN:
+		{
+			direction = Direction::LEFTUP;
+			break;
+		}
+		case Direction::RIGHT:
+		case Direction::DOWN:
+		case Direction::RIGHTDOWN:
+		case Direction::RIGHTUP:
+		{
+			direction = Direction::RIGHTDOWN;
+			break;
+		}
+		}
+		break;
+	}
+
+	}
+	if ((int)direction < 0 || (int)direction>7)
+		direction = Direction::RIGHTDOWN;
+
+	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
+	animation += directionName[int(direction)];
+
+	AnimationLoader::runAnimation(animation, this);
+}
+
+Ranger* Ranger::create(const std::string& id, int color)
+{
+	auto ranger = new(std::nothrow) Ranger();
+	if (ranger&&ranger->initWithRole(4, color))
+	{
+		ranger->_id = id;
+		ranger->autorelease();
+		return ranger;
+	}
+	CC_SAFE_DELETE(ranger);
+	return nullptr;
+}
+
+bool Ranger::init(int role, int color)
+{
+	if (!Player::init(role, color))
+		return false;
+
+
+	std::string animationNames[] = { "stand","move","attack","dead","behit","skill","skill1","skill2" };
+	_animationNames.assign(animationNames, animationNames + 8);
+
+	std::string directions[] = { "up","down","left","right","leftdown","leftup","rightdown","rightup" };
+
+	int animationNum[] = { 8,8,4,7,4,16,13,5 };
+	_animationFrameNum.assign(animationNum, animationNum + 8);
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	if (getColor() == RED)
+		setDirection(Direction::RIGHTUP);
+	else
+		setDirection(Direction::LEFTDOWN);
+	setStatus(Player::Status::STANDING);
+
+	return true;
+}
+
+void Ranger::skill1()
+{
+	if (_isSkill&&getStatus() != Status::SKILL1)
+	{
+		stopMove();
+		setStatus(Status::SKILL1);
+		auto skill = SkillBase::create("skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
+		this->addChild(skill, -1);
+		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Ranger::skill2()
+{
+	if (_isSkill&&getStatus() != Status::SKILL2)
+	{
+		stopMove();
+		setStatus(Status::SKILL2);
+		auto skill = SkillBase::create("skillsword (1).png", "skillsword", 21, 3.0f, getColor(), Damage::SKILL2);
+		GameMap::getCurrentMap()->addSprite(skill);
+
+		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
+		auto pos = this->getPosition();
+		pos.x += ds[(int)getDirection()][0] * Radius::Two;
+		pos.y += ds[(int)getDirection()][1] * Radius::Two;
+		skill->setPosition(pos);
+
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL2))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Ranger::skill3()
+{
+	if (_isSkill&&getStatus() != Status::SKILL3)
+	{
+		stopMove();
+		setStatus(Status::SKILL3);
+		{
+			auto skill = SkillBase::create("skillfenghuangL (1).png", "skillfenghuangL", 17, 3.0f, getColor(), Damage::SKILL3);
+			GameMap::getCurrentMap()->addSprite(skill);
+
+			auto pos = this->getPosition();
+			pos.x -= Radius::Three;
+			skill->setPosition(pos);
+			skill->setScale(1.5);
+		}
+		{
+			auto skill = SkillBase::create("skillfenghuangR (1).png", "skillfenghuangR", 17, 3.0f, getColor(), Damage::SKILL3);
+			GameMap::getCurrentMap()->addSprite(skill);
+
+			auto pos = this->getPosition();
+			pos.x += Radius::Three;
+			skill->setPosition(pos);
+			skill->setScale(1.5);
+		}
+		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+
+
+Cavalier* Cavalier::create(const std::string& id, int color)
+{
+	auto cavalier = new(std::nothrow) Cavalier();
+	if (cavalier&&cavalier->initWithRole(5, color))
+	{
+		cavalier->_id = id;
+		cavalier->autorelease();
+		return cavalier;
+	}
+	CC_SAFE_DELETE(cavalier);
+	return nullptr;
+
+}
+
+bool Cavalier::init(int role, int color)
+{
+	if (!Player::init(role, color))
+		return false;
+
+
+	std::string animationNames[] = { "move","move","attack","move","move","skill","skill1","skill2" };
+	_animationNames.assign(animationNames, animationNames + 8);
+
+	std::string directions[] = { "up","down","left","right","leftdown","leftup","rightdown","rightup" };
+
+	int animationNum[] = { 16,16,16,16,16,15,16,26 };
+	_animationFrameNum.assign(animationNum, animationNum + 8);
+	for (int i = 1; i < 3; i++)
+	{
+		for (int j = 4; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	for (int i = 5; i < 7; i++)
+	{
+		for (int j = 4; j < 8; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+
+	}
+	{
+		int i = 7;
+		for (int j = 5; j < 7; j++)
+		{
+			std::string animationName = _roleName + "_" + animationNames[i] + "_" + directions[j];
+			AnimationLoader::loadAnimation(animationName, 0.1f, _animationFrameNum.at(i));
+		}
+	}
+	if (getColor() == RED)
+		setDirection(Direction::RIGHTUP);
+	else
+		setDirection(Direction::LEFTDOWN);
+	setStatus(Player::Status::STANDING);
+
+	return true;
+}
+
+void Cavalier::skill1()
+{
+	if (_isSkill&&getStatus() != Status::SKILL1)
+	{
+		stopMove();
+		setStatus(Status::SKILL1);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL1))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Cavalier::skill2()
+{
+	if (_isSkill&&getStatus() != Status::SKILL2)
+	{
+		stopMove();
+		setStatus(Status::SKILL2);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL2))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Cavalier::skill3()
+{
+	if (_isSkill&&getStatus() != Status::SKILL3)
+	{
+		stopMove();
+		setStatus(Status::SKILL3);
+
+		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL3))*0.1f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
+}
+
+void Cavalier::setStatus(Status status)
+{
+
+	this->_status = status;
+	if ((int)status > 7)
+		return;
+	std::string animation = _roleName + "_";
+	animation += _animationNames.at(int(status)) + "_";
+	Direction direction = Direction::RIGHTDOWN;
+	switch (status)
+	{
+
+	case Status::ATTACKING:
+	case Status::DEAD:
+	case Status::BEINGHIT:
+	case Status::SKILL1:
+	case Status::SKILL2:
+	case Status::STANDING:
+	case Status::MOVING:
+	{
+		if (int(_direction) >= 4)
+		{
+			direction = _direction;
+		}
+		else
+		{
+			int dd[] = { 4,6,3,3 };
+			direction = Player::Direction((int)_direction + dd[(int)_direction]);
+		}
+		break;
+	}
+	case Status::SKILL3:
+	{
+		switch (_direction)
+		{
+		case Direction::LEFT:
+		case Direction::UP:
+		case Direction::LEFTUP:
+		case Direction::LEFTDOWN:
+		{
+			direction = Direction::LEFTUP;
+			break;
+		}
+		case Direction::RIGHT:
+		case Direction::DOWN:
+		case Direction::RIGHTDOWN:
+		case Direction::RIGHTUP:
+		{
+			direction = Direction::RIGHTDOWN;
+			break;
+		}
+		}
+		break;
+	}
+
+	}
+	if ((int)direction < 0 || (int)direction>7)
+		direction = Direction::RIGHTDOWN;
+
+	std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
+	animation += directionName[int(direction)];
+
+	AnimationLoader::runAnimation(animation, this);
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>ranger_behit_down (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{121,109}</string>
+                <key>spriteSourceSize</key>
+                <string>{121,109}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{121,109}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_down (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{101,115}</string>
+                <key>spriteSourceSize</key>
+                <string>{101,115}</string>
+                <key>textureRect</key>
+                <string>{{0,109},{101,115}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_down (3).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{70,128}</string>
+                <key>spriteSourceSize</key>
+                <string>{70,128}</string>
+                <key>textureRect</key>
+                <string>{{0,224},{70,128}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_down (4).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{56,125}</string>
+                <key>spriteSourceSize</key>
+                <string>{56,125}</string>
+                <key>textureRect</key>
+                <string>{{70,224},{56,125}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>ranger_behit_down.png</string>
+            <key>size</key>
+            <string>{126,352}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:a9faceb74292873d203c483daa4eec91:5c1a1b2555dbc552bbfd9f839be6a620:e43f30d41944b5e54fdde612aabd1020$</string>
+            <key>textureFileName</key>
+            <string>ranger_behit_down.png</string>
+        </dict>
+    </dict>
+</plist>

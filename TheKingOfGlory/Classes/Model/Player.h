@@ -51,8 +51,8 @@ public:
 		RIGHT,
 		UP,
 		DOWN,
-		LEFTDOWN,
-		LEFTUP,
+		LEFTDOWN,  
+		LEFTUP,  
 		RIGHTDOWN,
 		RIGHTUP,
 		NONE
@@ -67,16 +67,14 @@ public:
 		SKILL
 	};
 
-	enum PlayerType {
-		WARRIOR,
-		MAGE,
-		ARCHER
-	};
 
-	char* roleName[3] = {
+	char* roleName[6] = {
 		"warrior",
 		"aviator",
-		"Archer"
+		"mage",
+		"paladin",
+		"ranger",
+		"cavalier"
 	};
 
 	static Player* createPlayer(const std::string& id, int role,int color);
@@ -85,7 +83,7 @@ public:
 	virtual bool init(int role,int color);//初始化一些条件
 	bool initWithRole(int role,int color);//只是初始化名字
 
-	void setStatus(Status);//设置状态
+	virtual void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
 
 	void isLocal(bool a);//？
@@ -171,6 +169,8 @@ protected:
 	bool _isAttack;
 	bool _isSkill;
 	bool _isRecover;
+	Status _status;
+	Direction _direction;
 
 	std::string _id;
 	std::string _roleName;
@@ -180,10 +180,8 @@ protected:
 private:
 	bool isOnline;
 
-	PlayerType _type;
+	int _role;
 
-	Status _status;
-	Direction _direction;
 
 	float _speed;
 

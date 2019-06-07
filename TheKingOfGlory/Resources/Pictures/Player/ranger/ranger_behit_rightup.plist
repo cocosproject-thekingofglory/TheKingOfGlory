@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>ranger_behit_rightup (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{159,108}</string>
+                <key>spriteSourceSize</key>
+                <string>{159,108}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{159,108}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_rightup (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{156,94}</string>
+                <key>spriteSourceSize</key>
+                <string>{156,94}</string>
+                <key>textureRect</key>
+                <string>{{159,0},{156,94}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_rightup (3).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{130,88}</string>
+                <key>spriteSourceSize</key>
+                <string>{130,88}</string>
+                <key>textureRect</key>
+                <string>{{315,0},{130,88}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_behit_rightup (4).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{108,92}</string>
+                <key>spriteSourceSize</key>
+                <string>{108,92}</string>
+                <key>textureRect</key>
+                <string>{{445,0},{108,92}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>ranger_behit_rightup.png</string>
+            <key>size</key>
+            <string>{553,108}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:b003080fac89a3bd0d518577e30d8806:ef925110a7f6e0a3728f3d9a910a7f07:c6bba59c14fa789c1da2321f0f6e7c24$</string>
+            <key>textureFileName</key>
+            <string>ranger_behit_rightup.png</string>
+        </dict>
+    </dict>
+</plist>
