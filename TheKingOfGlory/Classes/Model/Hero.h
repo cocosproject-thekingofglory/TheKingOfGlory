@@ -15,9 +15,9 @@ private:
 	};
 	enum Radius
 	{
-		One = 200,
-		Two = 150,
-		Three = 200
+		One = 100,
+		Two = 80,
+		Three = 100
 	};
 public:
 	static Warrior* create(const std::string& id,  int color);
@@ -41,8 +41,8 @@ private:
 	enum Radius
 	{
 		One = 1000,
-		Two = 200,
-		Three = 200
+		Two = 120,
+		Three = 150
 	};
 public:
 	static Aviator* create(const std::string& id, int color);
@@ -66,8 +66,8 @@ private:
 	enum Radius
 	{
 		One = 1000,
-		Two = 200,
-		Three = 1000,
+		Two = 100,
+		Three = 500,
 		Attack=600
 	};
 
@@ -93,9 +93,9 @@ private:
 	};
 	enum Radius
 	{
-		One = 200,
-		Two = 300,
-		Three = 300,
+		One = 100,
+		Two = 150,
+		Three = 150,
 	};
 
 public:
@@ -121,9 +121,9 @@ private:
 	};
 	enum Radius
 	{
-		One = 200,
-		Two = 200,
-		Three = 300,
+		One = 100,
+		Two = 100,
+		Three = 150,
 	};
 public:
 	static Ranger* create(const std::string& id, int color);
@@ -147,9 +147,9 @@ private:
 	};
 	enum Radius
 	{
-		One = 300,
-		Two = 300,
-		Three = 300,
+		One = 150,
+		Two = 150,
+		Three = 150,
 	};
 
 public:

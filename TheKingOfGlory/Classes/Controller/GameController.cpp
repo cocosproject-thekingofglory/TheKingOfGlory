@@ -432,7 +432,7 @@ void GameController::onChatMsg(const void * msg)
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
-	this->addChild(manager, -1,"Manager");
+	this->addChild(manager, -1);
 	addSkill();
 	if(isOnline)
 		addChatBox();

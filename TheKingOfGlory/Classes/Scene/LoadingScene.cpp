@@ -110,6 +110,7 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
+	spriteSheets.push_back(Value("Pictures/Tower/tower.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/blast.plist"));
 
 	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_down.plist"));

@@ -38,7 +38,7 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
-
+	collidable->setVisible(false);
 
 	objectLayer = tileMap->getObjectGroup("objects");
 
@@ -48,6 +48,18 @@ void GameMap::setMap(const std::string& mapName)
 	tower_blue = objectLayer->getObject("tower_blue");
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
+	buff_red = objectLayer->getObject("buff_red");
+	buff_blue = objectLayer->getObject("buff_blue");
+	monster_red = objectLayer->getObject("monster_red");
+	monster_blue = objectLayer->getObject("monster_blue");
+
+	towers_red.push_back(tower_red);
+	towers_blue.push_back(tower_blue);
+	for (int i = 1; i < 6; i++)
+	{
+		towers_red.push_back(objectLayer->getObject("tower_red"+std::to_string(i)));
+		towers_blue.push_back(objectLayer->getObject("tower_blue"+std::to_string(i)));
+	}
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -166,9 +178,34 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 		sprite->setLocalZOrder(1);
 	}
 	break;
+	case Type::Buff_Red:
+	{
+		sprite->setPosition(Vec2(buff_red.at("x").asFloat(), buff_red.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Buff_Blue:
+	{
+		sprite->setPosition(Vec2(buff_blue.at("x").asFloat(), buff_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Monster_Red:
+	{
+		sprite->setPosition(Vec2(monster_red.at("x").asFloat(), monster_red.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Monster_Blue:
+	{
+		sprite->setPosition(Vec2(monster_blue.at("x").asFloat(), monster_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
 	}
 
 }
+
 
 void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
 {
@@ -283,4 +320,17 @@ GameMap * GameMap::getCurrentMap()
 void GameMap::addSprite(cocos2d::Sprite * sprite, int zOrder)
 {
 	tileMap->addChild(sprite, zOrder);
+}
+
+void GameMap::addTower(cocos2d::Sprite * tower,int color, int tag)
+{
+	if (tileMap)
+		tileMap->addChild(tower);
+	ValueMap towerValue;
+	if (color == 0)
+		towerValue = towers_red.at(tag);
+	else
+		towerValue = towers_blue.at(tag);
+	tower->setPosition(Vec2(towerValue.at("x").asFloat(), towerValue.at("y").asFloat()));
+	tower->setLocalZOrder(1);
 }

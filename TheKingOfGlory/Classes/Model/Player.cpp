@@ -52,7 +52,7 @@ bool Player::init(int role, int color)
 	_direction = Direction::DOWN;
 	_status = Status::STANDING;
 	
-	this->setScale(2);
+	//this->setScale(2);
 
 
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
@@ -199,9 +199,9 @@ float Player::beAttack(const float damage)
 				}
 				else
 				{
-					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
+					auto sequence = Sequence::create(DelayTime::create(15),CallFunc::create( [=]() {
 						revival();
-					}, NULL);
+					}), NULL);
 					this->runAction(sequence);
 				}
 

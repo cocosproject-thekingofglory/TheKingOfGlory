@@ -234,7 +234,7 @@ void ServerScene::createButton()
 	start->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
-		if (gameServer)
+		if (gameServer&&gameServer->connection_num()>=2)
 		{
 			gameServer->button_start();
 			if(gameClient->getMessage()=="SelectHero")

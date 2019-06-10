@@ -12,7 +12,7 @@ const float GUNCAR_ATTACK_RADIUS = 800;
 const float GUNCAR_DAMAGE = 10;
 const float GUNCAR_HPVALUE = 100.0;
 const int GUNCAR_ATTACK_INTERVAL = 100;
-const float GUNCAR_MOVE_SPEED = 20;
+const float GUNCAR_MOVE_SPEED = 10;
 const float GUNCAR_DEFEND = 0.15;
 //»÷É±¾­Ñé¡¢½ðÇ®
 const int GUNCAR_KILL_EXPRIENCE = 20;

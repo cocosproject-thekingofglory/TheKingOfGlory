@@ -35,7 +35,7 @@ void Store::createListener()
 	listener->setSwallowTouches(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 9);
 
-	auto customListener = EventListenerCustom::create("CreateLocalPlayer", [=](cocos2d::EventCustom*) {
+	auto customListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom*) {
 		listener->setEnabled(true);
 	});
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(customListener, 1);
@@ -122,7 +122,7 @@ void Store::createBg()
 	if (!VIP)
 	{
 
-		VIP = true;
+
 		_vipButton = Button::create("Pictures/Store/text_be_vip.png");
 		_vipButton->setScale(2);
 		_vipButton->setPosition(Vec2(_bg->getContentSize().width / 2, _vipButton->getContentSize().height));
@@ -133,6 +133,7 @@ void Store::createBg()
 		{
 			if (type == Widget::TouchEventType::ENDED)
 			{
+				VIP = true;
 				auto vipSprite = Sprite::createWithSpriteFrameName("vip.png");
 				vipSprite->setPosition(Vec2(_bg->getContentSize().width / 2, _bg->getContentSize().height / 2));
 				vipSprite->setScale(0.8);

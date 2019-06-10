@@ -14,7 +14,7 @@ const float PLAYER_ATTACK_RADIUS = 20;
 const float PLAYER_DAMAGE = 20.0;
 const float PLAYER_SKILLRECOVER_VALUE = -10.0;
 const float PLAYER_HPVALUE = 200;
-const float PLAYER_MOVE_SPEED = 10.0;
+const float PLAYER_MOVE_SPEED =6.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 const float PLAYER_DEFEND = 0.2;
 //经验、金钱

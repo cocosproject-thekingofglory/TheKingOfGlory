@@ -14,10 +14,16 @@ private:
 	cocos2d::TMXObjectGroup* objectLayer;
 	cocos2d::ValueMap player_red;
 	cocos2d::ValueMap player_blue;
+	std::vector<cocos2d::ValueMap> towers_red;
+	std::vector<cocos2d::ValueMap> towers_blue;
 	cocos2d::ValueMap tower_red;
 	cocos2d::ValueMap tower_blue;
 	cocos2d::ValueMap store_red;
 	cocos2d::ValueMap store_blue;
+	cocos2d::ValueMap buff_red;
+	cocos2d::ValueMap buff_blue;
+	cocos2d::ValueMap monster_red;
+	cocos2d::ValueMap monster_blue;
 	cocos2d::Sprite* _centerSprite;
 
 	bool initGrid();
@@ -27,7 +33,7 @@ public:
 	enum Type
 	{
 		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue,
-		Monster_Red,Monster_Blue
+		Monster_Red,Monster_Blue,Buff_Red,Buff_Blue
 	};
 
 
@@ -45,6 +51,7 @@ public:
 	bool isCanAssess(const cocos2d::Vec2 & coord);
 	void addSprite(cocos2d::Sprite* sprite,Type type=Type::NONE);
 	void addSprite(cocos2d::Sprite * sprite, int zOrder);
+	void addTower(cocos2d::Sprite * tower, int color,int tag);
 	void setSpritePosition(cocos2d::Sprite* sprite, Type type);
 	void addCenterSprite(cocos2d::Sprite* sprite) { _centerSprite = sprite; setViewPointCenter(); }
 	cocos2d::Vec2 getObjectPosition(Type type);

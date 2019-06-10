@@ -21,7 +21,7 @@ bool GunCar::init(int color)
 	setKillExperience(GUNCAR_KILL_EXPRIENCE);
 	setKillMoney(GUNCAR_KILL_MONEY);
 
-	setScale(2);
+	setScale(0.2);
 
 	initAnimation();
 	setHPBar();
@@ -69,6 +69,7 @@ void GunCar::move()
 		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
 
 		this->setFlippedX(!(position.x <= _destination.x));
+		this->setRotation((position.x <= _destination.x) ? (-45.0) : (0));
 
 		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
 		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
@@ -128,8 +129,8 @@ bool GunCar::attack()
 				auto target = _attackTargetList.at(i);
 				auto bullet = BulletBase::create(this, target, "bullet", "bullet (1).png");
 				GameMap::getCurrentMap()->addChild(bullet);
-				Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
-				bullet->setPosition(pos);
+				Vec2 pos = Vec2(getPosition().x + getContentSize().width*getScale() / 2, getPosition().y + getContentSize().height*getScale() / 2);
+				bullet->setPosition(getPosition());
 				return true;
 			}
 		}

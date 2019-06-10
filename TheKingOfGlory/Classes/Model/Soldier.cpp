@@ -23,6 +23,7 @@ bool Soldier::init(int color)
 
 	initAnimation();
 	setHPBar();
+	this->setScale(0.6f);
 	//_soldier = Sprite::createWithSpriteFrameName("soldierMove_01.png");
 
 	//_bullet = Sprite::createWithSpriteFrameName("soldierBullet.png");

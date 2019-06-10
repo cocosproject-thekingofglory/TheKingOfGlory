@@ -6,7 +6,7 @@
 
 USING_NS_CC;
 
-Manager* Manager::_instance;
+//Manager* Manager::_instance;
 
 
 Soldier* Manager::createSoldier(const std::string &filename, const int color)
@@ -63,41 +63,41 @@ Store* Manager::createStore(const std::string &filename, const int color)
 bool Manager::init()
 {
 	if (!Layer::init())
-	{
 		return false;
-	}
+	this->setName("Manager");
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
-
+	
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
+
 		//血泉
 		auto redhome = Home::create("Pictures/GameItem/redhome.png", RED);
-		redhome->setScale(1.5);
+		//redhome->setScale(0.5);
 		GameMap::getCurrentMap()->addSprite(redhome, GameMap::Type::Player_Red);
 		redhome->setZOrder(0);
 		_homeList.pushBack(redhome);
 
-		auto bluehome = Home::create("Pictures/GameItem/redhome.png", BLUE);
-		bluehome->setScale(1.5);
+		auto bluehome = Home::create("Pictures/GameItem/bluehome.png", BLUE);
+		//bluehome->setScale(0.5);
 		GameMap::getCurrentMap()->addSprite(bluehome, GameMap::Type::Player_Blue);
 		bluehome->setZOrder(0);
 		_homeList.pushBack(bluehome);
 		//防御塔
 		auto tower_blue_1 = createTower(BLUE_TOWER_FILENAME, BLUE);
-		tower_blue_1->setScale(1.5);
+		tower_blue_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Tower_Blue);
 
 		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
-		tower_red_1->setScale(1.5);
+		tower_red_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
 		//商店
 		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
-		store_blue->setScale(1.8);
-		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Player_Blue);
+		store_blue->setScale(1);
+		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Solider_Blue);
 
 		auto store_red = createStore(RED_STORE_FILENAME, RED);
-		store_red->setScale(1.8);
-		GameMap::getCurrentMap()->addSprite(store_red, GameMap::Type::Player_Red);
+		store_red->setScale(1);
+		GameMap::getCurrentMap()->addSprite(store_red, GameMap::Type::Soldier_Red);
 
 		playerManager = PlayerManager::create();
 		this->addChild(playerManager, -1);
@@ -119,8 +119,8 @@ bool Manager::init()
 				player->setAttack(true);
 				player->setSkill(true);
 			}
+			time_AI = 0;
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
-			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("CreateLocalPlayer");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
@@ -434,32 +434,40 @@ void Manager::scheduleDeadDetect()
 			if (tower->getNowHPValue() <= 0.0)
 			{
 				tower->destroy();
-				unschedule( "CreateSoldier");
-				unschedule("CreateGunCar");
-				unschedule( "TowertAttack");
-				unschedule( "UpdateSoldierAttack");
-				unschedule("UpdateGunCarAttack");
-				unschedule( "PlayerAttack");
-				unschedule("Home");
-				unschedule( "DeadDetect");
-				playerManager->getLocalPlayer()->setMove(false);
-				playerManager->getLocalPlayer()->setAttack(false);
-				playerManager->getLocalPlayer()->setStatus(Player::Status::STANDING);
-
 				auto sequence = Sequence::create(DelayTime::create(6.0f), CallFunc::create([=]() {
-					bool isWin;
-					if (tower->getColor() == playerManager->getLocalPlayer()->getColor())
-						isWin = false;
-					else
-						isWin = true;
 					_towerList[i].eraseObject(tower);
-					tower->removeFromParentAndCleanup(true);
-					Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
+					//tower->removeFromParentAndCleanup(true);
 				}),NULL);
 				this->runAction(sequence);
 			}
 		}
 	}
+	for (int i = 0; i < 2; i++)
+	{
+		if (_towerList[i].empty())
+		{
+			unschedule("CreateSoldier");
+			unschedule("CreateGunCar");
+			unschedule("TowertAttack");
+			unschedule("UpdateSoldierAttack");
+			unschedule("UpdateGunCarAttack");
+			unschedule("PlayerAttack");
+			unschedule("Home");
+			unschedule("DeadDetect");
+			playerManager->getLocalPlayer()->setMove(false);
+			playerManager->getLocalPlayer()->setAttack(false);
+			playerManager->getLocalPlayer()->setSkill(false);
+			playerManager->getLocalPlayer()->setStatus(Player::Status::STANDING);
+			bool isWin;
+			if (i == playerManager->getLocalPlayer()->getColor())
+				isWin = false;
+			else
+				isWin = true;
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
+			break;
+		}
+	}
+
 }
 
 void Manager::scheduleTowerAttack()
@@ -518,6 +526,7 @@ void Manager::scheduleTowerAttack()
 		//塔攻击
 		for (int j = 0; j < _towerList[i].size(); j++)
 		{
+			if(_towerList[i].at(j)->getNowHPValue())
 			_towerList[i].at(j)->attack();
 		}
 	}
@@ -546,7 +555,7 @@ void Manager::scheduleHomeRecover()
 
 void Manager::AIHero()
 {
-	
+	time_AI++;
 	for (auto pair : playerManager->getPlayerList())
 	{
 		auto player = pair.second;
@@ -565,6 +574,17 @@ void Manager::AIHero()
 				if (player->getAttackTarget().size())
 				{
 					player->attack();
+					if (time_AI >= 80)
+					{
+						time_AI = 50;
+						int n = rand() % 3;
+						switch (n)
+						{
+						case 0:player->skill1(); break;
+						case 1:player->skill2(); break;
+						case 3:player->skill3(); break;
+						}
+					}
 				}
 				else
 				{
@@ -587,9 +607,7 @@ bool Manager::insideAttack(SpriteBase* beAttack, SpriteBase* attack)
 
 Manager* Manager::getInstance()
 {
-	if (_instance == nullptr)
-	{
-		_instance = create();
-	}
-	return _instance;
+	auto manager=dynamic_cast<Manager*>(cocos2d::Director::getInstance()->getRunningScene()->
+		getChildByName("GameScene")->getChildByName("GameController")->getChildByName("Manager"));
+	return manager;
 }

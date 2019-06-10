@@ -23,8 +23,8 @@ const std::string BLUE_SOLDIER_FILENAME = "soldier_move_right (1).png";
 const std::string RED_GUNCAR_FILENAME = "guntruck_move_rightdown (1).png";
 const std::string BLUE_GUNCAR_FILENAME = "guntruck_move_rightdown (1).png";
 
-const std::string RED_TOWER_FILENAME = "tower.png";
-const std::string BLUE_TOWER_FILENAME = "tower.png";
+const std::string RED_TOWER_FILENAME = "redtower.png";
+const std::string BLUE_TOWER_FILENAME = "bluetower.png";
 
 const std::string RED_STORE_FILENAME = "store.png";
 const std::string BLUE_STORE_FILENAME = "store.png";
@@ -79,7 +79,6 @@ public:
 private:
 	bool isOnline;
 	bool insideAttack(SpriteBase* beAttack, SpriteBase* attack);
-
-	static Manager* _instance;
+	int time_AI;
 
 };

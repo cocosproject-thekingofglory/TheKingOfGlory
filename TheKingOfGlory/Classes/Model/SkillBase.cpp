@@ -72,7 +72,8 @@ void SkillBase::collisionDetection()
 		for (auto pair : players)
 		{
 			auto player = pair.second;
-			if (player->getColor() != _color &&player->getStatus()!=Player::Status::DEAD&& box.intersectsRect(player->getBoundingBox()))
+			if (player->getColor() != _color &&player->getStatus()!=Player::Status::DEAD
+				&&player->getNowHPValue()>0.0&& box.intersectsRect(player->getBoundingBox()))
 				player->addNowHPValue(-_damage);
 		}
 	}
