@@ -9,7 +9,7 @@ private:
 	cocos2d::ProgressTimer* progress;
 	float progress_Interval;
 
-	virtual void onEnterTransitionDidFinish();
+	void loadResources();
 	void createBackground();
 	void createProgressBar();
 	void loadMusic(cocos2d::ValueVector musicFiles);

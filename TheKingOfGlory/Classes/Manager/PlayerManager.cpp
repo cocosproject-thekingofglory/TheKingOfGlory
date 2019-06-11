@@ -1,6 +1,7 @@
 #include"PlayerManager.h"
 #include "Model/GameMap.h"
 #include "Model/Hero.h"
+#include "Model/User.h"
 
 USING_NS_CC;
 
@@ -95,10 +96,12 @@ void PlayerManager::initPlayer(float delta)
 	}
 	else
 	{
-		auto player = this->createPlayer("Enemy", 0, BLUE);
+		srand(time(NULL));
+		auto player = this->createPlayer("Enemy", rand()%2, BLUE);
 		GameMap::getCurrentMap()->addSprite(player, GameMap::Type::Player_Blue);
 
-		this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), 0, RED);
+		auto role = User::getInstance()->getRole();
+		this->createLocalPlayer(UserDefault::getInstance()->getStringForKey("username"), role, RED);
 		GameMap::getCurrentMap()->addSprite(this->getLocalPlayer(), GameMap::Type::Player_Red);
 		GameMap::getCurrentMap()->addCenterSprite(this->getLocalPlayer());
 	}

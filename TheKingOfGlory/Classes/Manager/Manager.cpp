@@ -4,7 +4,6 @@
 #include "Model/User.h"
 #include "../Model/store/EquipmentBase.h"
 
-
 USING_NS_CC;
 
 Manager* Manager::_instance;
@@ -37,7 +36,7 @@ GunCar* Manager::createGunCar(const std::string &filename, const int color)
 
 Tower* Manager::createTower(const std::string &filename, const int color, Tower::TYPE type)
 {
-	auto tower = Tower::createWithSpriteFrameName(filename, color, type);
+	auto tower = Tower::createWithSpriteFrameName(filename, color);
 	if (tower)
 	{
 		_towerList[color].pushBack(tower);
@@ -71,8 +70,6 @@ bool Manager::init()
 
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
-		playerManager = PlayerManager::create();
-		this->addChild(playerManager, -1);
 		//血泉
 		auto redhome = Home::create("Pictures/GameItem/redhome.png", RED);
 		redhome->setScale(1.5);
@@ -94,14 +91,14 @@ bool Manager::init()
 		tower_red_1->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
 		//商店
-		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
+		/*auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
 		store_blue->setScale(1.8);
-		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Solider_Blue);
+		GameMap::getCurrentMap()->addSprite(store_blue, GameMap::Type::Player_Blue);*/
 
 		auto store_red = createStore(RED_STORE_FILENAME, RED);
 		store_red->setScale(1.8);
-		GameMap::getCurrentMap()->addSprite(store_red, GameMap::Type::Soldier_Red);
-		//野怪
+		GameMap::getCurrentMap()->addSprite(store_red, GameMap::Type::Player_Red);
+		//
 		auto buff_blue = Tower::createWithSpriteFrameName(BLUE_BUFF_FILENAME, YELLOW, SpriteBase::BLUEBUFF);
 		buff_blue->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(buff_blue, GameMap::Type::Buff_Blue);
@@ -111,12 +108,15 @@ bool Manager::init()
 		buff_red->setScale(1.5);
 		GameMap::getCurrentMap()->addSprite(buff_red, GameMap::Type::Buff_Red);
 		_wildMonsterList.pushBack(buff_red);
+
+		playerManager = PlayerManager::create();
+		this->addChild(playerManager, -1);
 	
 		if (isOnline)
 		{
 			static_cast<GameController*>(Director::getInstance()->getRunningScene()->
 				getChildByName("GameScene")->getChildByName("GameController"))->
-				gameClient->sendMessage("Init " + User::getInstance()->getName() + " 0");
+				gameClient->sendMessage("Init " + User::getInstance()->getName() + " "+std::to_string(User::getInstance()->getRole()));
 		}
 
 
@@ -254,6 +254,7 @@ void Manager::scheduleSoldierAttack()
 				break;
 			}
 		}
+
 	}
 
 
@@ -303,8 +304,7 @@ void Manager::scheduleGunCarAttack()
 			{
 				auto player = pair.second;
 				if (player->getColor() != _guncarList[i].at(j)->getColor() &&
-					_guncarList[i].at(j)->insideAttack(player) && 
-					player->getNowHPValue() > 0)
+					_guncarList[i].at(j)->insideAttack(player) && player->getNowHPValue() > 0)
 				{
 					_guncarList[i].at(j)->addAttackTarget(player);
 					player->addBeAttackTarget(_guncarList[i].at(j));
@@ -357,6 +357,7 @@ void Manager::scheduleGunCarAttack()
 
 
 }
+
 
 void Manager::scheduleWildMonsterAttack()
 {
@@ -422,7 +423,6 @@ void Manager::scheduleCreateGunCar()
 
 	}
 }
-
 
 void Manager::scheduleDeadDetect()
 {
@@ -545,6 +545,7 @@ void Manager::scheduleTowerAttack()
 
 }
 
+
 void Manager::scheduleHomeRecover()
 {
 	for (auto& home : _homeList)
@@ -608,5 +609,9 @@ bool Manager::insideAttack(SpriteBase* beAttack, SpriteBase* attack)
 
 Manager* Manager::getInstance()
 {
+	if (_instance == nullptr)
+	{
+		_instance = create();
+	}
 	return _instance;
 }

@@ -3,7 +3,7 @@
 #include<cmath>
 #include "GameMap.h"
 #include "UI/CountDown.h"
-#include "../Manager/Manager.h"
+#include "SkillBase.h"
 
 
 USING_NS_CC;
@@ -50,7 +50,6 @@ bool Player::init(int role, int color)
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
-
 	
 	this->setScale(2);
 
@@ -88,6 +87,8 @@ void Player::setStatus(Player::Status status)
 {
 
 	this->_status = status;
+	if ((int)status > 7)
+		return;
 	std::string animation = _roleName + "_";
 	//Or do animation here:
 	animation += _animationNames.at(int(status))+"_";
@@ -133,7 +134,7 @@ bool Player::attack()
 				{
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
-
+					
 					std::string stip;
 					stip.append(StringUtils::format("+ %d", target->getKillMoney()));
 					auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
@@ -224,16 +225,6 @@ float Player::beAttack(const float damage)
 		nowHP -= damage * (1 - getDefend());
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
-
-		std::string stip;
-		stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
-		auto tip = Tip::create(stip, 1.0, Color4B::RED);
-		tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-		Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
-		auto moveup = MoveTo::create(1.0, to);
-		tip->runAction(moveup);
-		this->addChild(tip);
-
 		if (nowHP <= 0.0)
 		{
 			for (int i = 0; i < _beAttackTargetList.size(); i++)
@@ -250,6 +241,8 @@ float Player::beAttack(const float damage)
 
 				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
+				bool isRed=!(getColor()==RED);
+				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateRank", (void*)isRed);
 				if (isLocal())
 				{
 					auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Rvival after ", "fonts/arial.ttf", 32, 15, true,
@@ -280,6 +273,25 @@ float Player::beAttack(const float damage)
 		return nowHP;
 	}
 	return getNowHPValue();
+}
+
+void Player::skillRecover()
+{
+	if (_isSkill&&getStatus() != Status::SKILLRECOVER)
+	{
+		stopMove();
+		setStatus(Status::SKILLRECOVER);
+		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor()^1, PLAYER_SKILLRECOVER_VALUE);
+		GameMap::getCurrentMap()->addSprite(skill);
+		skill->setPosition(this->getPosition());
+
+
+
+		auto sequence = Sequence::create(DelayTime::create(1.8f), CallFunc::create([=]() {
+			this->setStatus(Status::STANDING);
+		}), NULL);
+		this->runAction(sequence);
+	}
 }
 
 void Player::startMove(Vec2 destination)

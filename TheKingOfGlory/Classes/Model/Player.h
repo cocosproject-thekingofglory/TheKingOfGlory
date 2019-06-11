@@ -11,7 +11,8 @@ using namespace ui;
 
 //基础属性
 const float PLAYER_ATTACK_RADIUS = 10;
-const float PLAYER_DAMAGE = 200.0;
+const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_SKILLRECOVER_VALUE = -10.0;
 const float PLAYER_HPVALUE = 200;
 const float PLAYER_MOVE_SPEED = 10.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
@@ -40,8 +41,8 @@ public:
 		BEINGHIT,
 		SKILL1,
 		SKILL2,
-		SKILL3
-
+		SKILL3,
+		SKILLRECOVER
 	};
 
 	enum class Direction : std::int8_t
@@ -129,6 +130,7 @@ public:
 	void setRecover(bool recover) { _isRecover = recover; }
 	bool getRecover() { return _isRecover; }
 
+	void skillRecover();
 	void startMove(Vec2 destination);
 
 	void judgeDirection(float dx, float dy);
