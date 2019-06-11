@@ -16,6 +16,18 @@ private:
 	void createButton();
 
 };
+class SelectModeScene :public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	CREATE_FUNC(SelectModeScene);
+
+private:
+	void createBackground();
+	void createButton();
+
+};
 
 class OnlineScene:public cocos2d::Layer
 {

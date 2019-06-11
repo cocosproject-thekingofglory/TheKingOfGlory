@@ -1,5 +1,6 @@
 #include "Soldier.h"
 #include "Model/GameMap.h"
+#include "UI/Tip.h"
 #include <cmath>
 
 bool Soldier::init(int color)
@@ -30,6 +31,18 @@ bool Soldier::init(int color)
 	//_bullet->setVisible(false);
 	
 	return true;
+}
+
+void Soldier::addPath(std::vector<ValueMap> valueMap)
+{
+	for (auto& value : valueMap)
+	{
+		path.push_back(Vec2(value.at("x").asFloat(), value.at("y").asFloat()));
+	}
+	moveStep = 0;
+	setBigDestination(path.front());
+	setSmallDestination(getPosition());
+
 }
 
 void Soldier::initAnimation()
@@ -158,6 +171,14 @@ float Soldier::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
 	nowHP -= damage;
+	std::stringstream str;
+	str << damage ;
+	std::string s = "-" + str.str();
+	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
+	text->setPosition(Vec2(this->getContentSize().width*0.8,
+		this->getContentSize().height*1.2));
+	text->setScale(1.0/this->getScale());
+	addChild(text);
 	if (nowHP <= 0.0)
 	{
 		//停止动画，并在能攻击它的小兵的列表中删除它

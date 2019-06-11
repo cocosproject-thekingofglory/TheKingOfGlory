@@ -11,7 +11,7 @@ USING_NS_CC;
 using namespace ui;
 
 //³õÊ¼ÊôÐÔÖµ
-const float TOWER_ATTACK_RADIUS =1500;
+const float TOWER_ATTACK_RADIUS =800;
 const float TOWER_DAMAGE = 50;
 const float TOWER_HPVALUE = 5000;
 const int TOWER_ATTACK_INTERVAL = 180;

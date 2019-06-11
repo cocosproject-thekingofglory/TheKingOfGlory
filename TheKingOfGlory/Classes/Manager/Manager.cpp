@@ -66,6 +66,8 @@ bool Manager::init()
 		return false;
 	this->setName("Manager");
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
+	if(isOnline)
+		mode = static_cast<Mode>(UserDefault::getInstance()->getIntegerForKey("Mode"));
 	
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
@@ -90,6 +92,19 @@ bool Manager::init()
 		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
 		tower_red_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
+		if (isOnline)
+			if (mode == Mode::Five)
+			{
+				for (int i = 1; i < 6; i++)
+				{
+					auto tower_blue = createTower(BLUE_TOWER_FILENAME, BLUE);
+					tower_blue->setScale(0.3);
+					GameMap::getCurrentMap()->addTower(tower_blue, BLUE, i);
+					auto tower_red = createTower(RED_TOWER_FILENAME, RED);
+					tower_red->setScale(0.3);
+					GameMap::getCurrentMap()->addTower(tower_red, RED, i);
+				}
+			}
 		//商店
 		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
 		store_blue->setScale(1);

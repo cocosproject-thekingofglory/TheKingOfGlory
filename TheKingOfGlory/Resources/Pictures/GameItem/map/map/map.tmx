@@ -34,12 +34,12 @@
   <object id="4" name="player_blue" x="5408.88" y="749.818"/>
   <object id="5" name="store_blue" x="4729.73" y="1214.12"/>
   <object id="6" name="tower_blue" x="3993.94" y="1751.52"/>
-  <object id="7" name="tower_red1" x="3102" y="3728"/>
-  <object id="8" name="tower_red2" x="4346" y="3724"/>
-  <object id="9" name="tower_blue2" x="5278" y="3364"/>
-  <object id="10" name="tower_blue1" x="5346" y="2718"/>
-  <object id="11" name="tower_blue3" x="3410" y="750"/>
-  <object id="12" name="tower_blue4" x="2190" y="732"/>
+  <object id="7" name="tower_red1" x="3086" y="3780"/>
+  <object id="8" name="tower_red2" x="4146" y="3776"/>
+  <object id="9" name="tower_blue2" x="5170" y="3172"/>
+  <object id="10" name="tower_blue1" x="5210" y="2558"/>
+  <object id="11" name="tower_blue3" x="3322" y="802"/>
+  <object id="12" name="tower_blue4" x="2142" y="820"/>
   <object id="13" name="tower_red3" x="1112" y="2514"/>
   <object id="14" name="tower_red4" x="1182" y="1354"/>
   <object id="15" name="tower_blue5" x="3444" y="2152"/>

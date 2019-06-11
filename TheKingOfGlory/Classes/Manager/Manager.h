@@ -77,6 +77,10 @@ public:
 
 	static Manager* getInstance();
 private:
+	enum Mode
+	{
+		One=1,Five=5
+	}mode;
 	bool isOnline;
 	bool insideAttack(SpriteBase* beAttack, SpriteBase* attack);
 	int time_AI;

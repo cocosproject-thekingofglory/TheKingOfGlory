@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "UI/CountDown.h"
 #include "SkillBase.h"
+#include "UI/Tip.h"
 
 
 USING_NS_CC;
@@ -166,6 +167,14 @@ float Player::beAttack(const float damage)
 	{
 		float nowHP = getNowHPValue();
 		nowHP -= damage * (1 - getDefend());
+		std::stringstream str;
+		str << damage * (1 - getDefend());
+		std::string s = "-" + str.str();
+		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
+		text->setPosition(Vec2(this->getContentSize().width *0.8,
+			this->getContentSize().height*1.2));
+		text->setScale(1.0/this->getScale());
+		addChild(text);
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
 		if (nowHP <= 0.0)
