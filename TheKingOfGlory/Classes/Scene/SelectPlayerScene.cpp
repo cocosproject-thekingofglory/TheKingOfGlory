@@ -66,8 +66,8 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 	auto text_Size = 32;
 
 	{
-		auto warriorButton = Button::create("Pictures/UI/brownButton.png");
-		warriorButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.6));
+		auto warriorButton = Button::create("Pictures/UI/shortbrownButton.png");
+		warriorButton->setPosition(Vec2(visibleSize.width*0.4, visibleSize.height*0.6));
 		warriorButton->setTitleText("Warrior");
 		warriorButton->setTitleFontName(text_Font);
 		warriorButton->setTitleFontSize(text_Size);
@@ -90,8 +90,8 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 	}
 
 	{
-		auto aviatorButton = Button::create("Pictures/UI/brownButton.png");
-		aviatorButton->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.4));
+		auto aviatorButton = Button::create("Pictures/UI/shortbrownButton.png");
+		aviatorButton->setPosition(Vec2(visibleSize.width*0.4, visibleSize.height*0.5));
 		aviatorButton->setTitleText("Aviator");
 		aviatorButton->setTitleFontName(text_Font);
 		aviatorButton->setTitleFontSize(text_Size);
@@ -111,6 +111,102 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 
 		});
 		this->addChild(aviatorButton);
+	}
+
+	{
+		auto mageButton = Button::create("Pictures/UI/shortbrownButton.png");
+		mageButton->setPosition(Vec2(visibleSize.width*0.4, visibleSize.height*0.4));
+		mageButton->setTitleText("Mage");
+		mageButton->setTitleFontName(text_Font);
+		mageButton->setTitleFontSize(text_Size);
+		mageButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+		{
+			if (type != ui::Widget::TouchEventType::ENDED) return;
+			User::getInstance()->setRole(2);
+			if (isOnline)
+			{
+				client->sendMessage("SelectOK");
+				schedule(CC_CALLBACK_0(SelectPlayerScene::startSchedule, this), 0.2f, "Start");
+			}
+			else
+			{
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
+			}
+
+		});
+		this->addChild(mageButton);
+	}
+
+	{
+		auto paladinButton = Button::create("Pictures/UI/shortbrownButton.png");
+		paladinButton->setPosition(Vec2(visibleSize.width *0.6, visibleSize.height*0.6));
+		paladinButton->setTitleText("Paladin");
+		paladinButton->setTitleFontName(text_Font);
+		paladinButton->setTitleFontSize(text_Size);
+		paladinButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+		{
+			if (type != ui::Widget::TouchEventType::ENDED) return;
+			User::getInstance()->setRole(3);
+			if (isOnline)
+			{
+				client->sendMessage("SelectOK");
+				schedule(CC_CALLBACK_0(SelectPlayerScene::startSchedule, this), 0.2f, "Start");
+			}
+			else
+			{
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
+			}
+
+		});
+		this->addChild(paladinButton);
+	}
+
+	{
+		auto rangerButton = Button::create("Pictures/UI/shortbrownButton.png");
+		rangerButton->setPosition(Vec2(visibleSize.width*0.6, visibleSize.height*0.5));
+		rangerButton->setTitleText("Ranger");
+		rangerButton->setTitleFontName(text_Font);
+		rangerButton->setTitleFontSize(text_Size);
+		rangerButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+		{
+			if (type != ui::Widget::TouchEventType::ENDED) return;
+			User::getInstance()->setRole(4);
+			if (isOnline)
+			{
+				client->sendMessage("SelectOK");
+				schedule(CC_CALLBACK_0(SelectPlayerScene::startSchedule, this), 0.2f, "Start");
+			}
+			else
+			{
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
+			}
+
+		});
+		this->addChild(rangerButton);
+	}
+
+	{
+		auto cavalierButton = Button::create("Pictures/UI/shortbrownButton.png");
+		cavalierButton->setPosition(Vec2(visibleSize.width*0.6, visibleSize.height*0.4));
+		cavalierButton->setTitleText("Cavalier");
+		cavalierButton->setTitleFontName(text_Font);
+		cavalierButton->setTitleFontSize(text_Size);
+		cavalierButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+		{
+			if (type != ui::Widget::TouchEventType::ENDED) return;
+			User::getInstance()->setRole(5);
+			if (isOnline)
+			{
+				client->sendMessage("SelectOK");
+				schedule(CC_CALLBACK_0(SelectPlayerScene::startSchedule, this), 0.2f, "Start");
+			}
+			else
+			{
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
+			}
+
+		});
+		this->addChild(cavalierButton);
 	}
 
 

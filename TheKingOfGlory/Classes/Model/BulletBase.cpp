@@ -70,7 +70,7 @@ void BulletBase::move()
 		removeFromMap(this);
 		return ;
 	}
-	if (_times > 100)
+	if (_times > 150)
 	{
 		removeFromMap(this);
 		return;

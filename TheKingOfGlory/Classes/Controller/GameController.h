@@ -14,7 +14,7 @@ public:
 	bool hasSend;
 	Server* gameServer;
 	Client* gameClient;
-	Manager* manager = Manager::getInstance();
+	Manager* manager;
 	static GameController* create(Client* client, Server*server );
 	virtual bool init(Client* client, Server*server);
 

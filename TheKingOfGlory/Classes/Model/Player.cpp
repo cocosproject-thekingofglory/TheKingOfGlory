@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "UI/CountDown.h"
 #include "SkillBase.h"
+#include "UI/Tip.h"
 
 
 USING_NS_CC;
@@ -36,7 +37,6 @@ bool Player::init(int role, int color)
 	setSpeed(PLAYER_MOVE_SPEED);
 	setHPValue(PLAYER_HPVALUE);
 	setNowHPValue(PLAYER_HPVALUE);
-	setAttackRadius(PLAYER_ATTACK_RADIUS);
 	setDamage(PLAYER_DAMAGE);
 	setAttackInterval(PLAYER_ATTACK_INTERVAL);
 	setDefend(PLAYER_DEFEND);
@@ -50,8 +50,10 @@ bool Player::init(int role, int color)
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
+	_direction = Direction::DOWN;
+	_status = Status::STANDING;
 	
-	this->setScale(2);
+	//this->setScale(2);
 
 
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
@@ -62,6 +64,7 @@ bool Player::init(int role, int color)
 //只是获得名字
 bool Player::initWithRole(int role, int color)
 {
+	_role = role;
 	//设置路径
 	_roleName = std::string(roleName[role]);
 
@@ -70,7 +73,10 @@ bool Player::initWithRole(int role, int color)
 	{
 	case 0: {file += "_stand_down (1).png"; break; }
 	case 1: {file += "_move_down (1).png"; break; }
-	case 2: {file += "_stand_down (1).png"; break; }
+	case 2: {file += "_stand_rightup (1).png"; break; }
+	case 3: {file += "_stand_rightup (1).png"; break; }
+	case 4: {file += "_stand_rightup (1).png"; break; }
+	case 5: {file += "_move_rightup (1).png"; break; }
 	}
 
 	if (this->initWithSpriteFrameName(file) && this->init(role, color))
@@ -135,6 +141,7 @@ bool Player::attack()
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
 				}
+				break;
 			}
 		}
 		auto sequence = Sequence::create(DelayTime::create(0.8f), CallFunc::create([=]() {
@@ -160,6 +167,14 @@ float Player::beAttack(const float damage)
 	{
 		float nowHP = getNowHPValue();
 		nowHP -= damage * (1 - getDefend());
+		std::stringstream str;
+		str << damage * (1 - getDefend());
+		std::string s = "-" + str.str();
+		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
+		text->setPosition(Vec2(this->getContentSize().width *0.8,
+			this->getContentSize().height*1.2));
+		text->setScale(1.0/this->getScale());
+		addChild(text);
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
 		if (nowHP <= 0.0)
@@ -171,10 +186,13 @@ float Player::beAttack(const float damage)
 			setStatus(Status::DEAD);
 			auto sequence = Sequence::create(DelayTime::create(0.7f), CallFunc::create([=]() {
 				this->stopAnimation(this);
-				std::string frameName = _roleName + "_dead_";
+				std::string frameName = _roleName +"_"+ _animationNames[(int)Status::DEAD]+"_";
 
 				std::string directionName[]{ "left","right","up","down","leftdown","leftup","rightdown","rightup" };
-				frameName += directionName[int(_direction)];
+				if (_role == 2 || _role == 3||_role==5)
+					frameName += directionName[int(Direction::RIGHTDOWN)];
+				else
+					frameName += directionName[int(_direction)];
 
 				frameName += " ("+std::to_string(_animationFrameNum[(int)Status::DEAD]) +").png";
 				this->setSpriteFrame(frameName);
@@ -190,9 +208,9 @@ float Player::beAttack(const float damage)
 				}
 				else
 				{
-					auto sequence = Sequence::create(DelayTime::create(15), [=]() {
+					auto sequence = Sequence::create(DelayTime::create(15),CallFunc::create( [=]() {
 						revival();
-					}, NULL);
+					}), NULL);
 					this->runAction(sequence);
 				}
 
@@ -323,7 +341,7 @@ void Player::revival()
 
 	_isMove = true;
 	_isAttack = true;
-	_isSkill = false;
+	_isSkill = true;
 
 
 	setDirection(Direction::RIGHTUP);

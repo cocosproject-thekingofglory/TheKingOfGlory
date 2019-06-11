@@ -24,7 +24,7 @@ bool LoadingScene::init()
 	
 	createBackground();
 	createProgressBar();
-	loadResources();
+	scheduleOnce(CC_CALLBACK_0(LoadingScene::loadResources, this), 0.1f,"Load");
 	return true;
 }
 
@@ -110,6 +110,7 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierAttack.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/soldierMove.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/towerItem.plist"));
+	spriteSheets.push_back(Value("Pictures/Tower/tower.plist"));
 	spriteSheets.push_back(Value("Pictures/Tower/blast.plist"));
 
 	spriteSheets.push_back(Value("Pictures/Player/aviator/aviator_move_down.plist"));
@@ -180,11 +181,206 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Skill/skillring.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillrecover.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillsword.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillknife.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillstrike.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skilllight.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillball.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwater.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfog.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillfire.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragonL.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragonR.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillwaterdragon1.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skillblackdragon.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilldragonsun.plist"));
+	spriteSheets.push_back(Value("Pictures/Skill/skilldragonflower.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangL.plist"));
 	spriteSheets.push_back(Value("Pictures/Skill/skillfenghuangR.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/equipment.plist"));
 	spriteSheets.push_back(Value("Pictures/Store/store.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_move_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_move_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_move_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_move_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_attack_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_attack_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_dead_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_dead_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_dead_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_dead_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_behit_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_behit_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_behit_right.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_stand_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_stand_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_stand_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_stand_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill1_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill1_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill1_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill1_up.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/mage/mage_skill2_rightdown.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_move_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_attack_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_attack_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_dead_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_dead_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_dead_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_dead_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_behit_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_behit_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_behit_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_behit_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_stand_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill1_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill1_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill1_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill1_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/paladin/paladin_skill2_rightdown.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_move_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_attack_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_dead_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_behit_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_stand_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill1_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_down.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_left.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_up.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/ranger/ranger_skill2_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_move_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_move_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_move_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_move_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_attack_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_attack_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill1_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill1_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill1_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill1_rightup.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill2_leftup.plist"));
+	spriteSheets.push_back(Value("Pictures/Player/cavalier/cavalier_skill2_rightdown.plist"));
+
+	spriteSheets.push_back(Value("Pictures/Soldier/soldier_attack_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/soldier_move_right.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_attack_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_move_rightdown.plist"));
 
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));
@@ -212,6 +408,10 @@ void LoadingScene::createBackground()
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
+
+	auto text = ui::Text::create("Loading,Please wait...", "fonts/Quicksand-Bold.ttf", 32);
+	text->setPosition(Vec2(visible_Size.width / 2, visible_Size.height*0.6));
+	this->addChild(text);
 }
 
 void LoadingScene::createProgressBar()

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>ranger_attack_up (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{156,93}</string>
+                <key>spriteSourceSize</key>
+                <string>{156,93}</string>
+                <key>textureRect</key>
+                <string>{{65,0},{156,93}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_up (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{134,112}</string>
+                <key>spriteSourceSize</key>
+                <string>{134,112}</string>
+                <key>textureRect</key>
+                <string>{{0,93},{134,112}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_up (3).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{68,132}</string>
+                <key>spriteSourceSize</key>
+                <string>{68,132}</string>
+                <key>textureRect</key>
+                <string>{{134,93},{68,132}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_up (4).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{65,93}</string>
+                <key>spriteSourceSize</key>
+                <string>{65,93}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{65,93}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>ranger_attack_up.png</string>
+            <key>size</key>
+            <string>{221,225}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:2adf447a04238b892e1ea62053192dd2:302a7a951bb5640ff52f7733a4c98bb8:6221e5ef19cf2a5dbadd208f76c96991$</string>
+            <key>textureFileName</key>
+            <string>ranger_attack_up.png</string>
+        </dict>
+    </dict>
+</plist>

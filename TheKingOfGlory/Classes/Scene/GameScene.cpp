@@ -333,9 +333,9 @@ bool GameScene::init(Client* client, Server*server)
 
 	//添加地图
 	auto map = GameMap::create();
-	map->setMap("1v1");
+	map->setMap("map/map");
 	map->setPosition(Vec2::ZERO);
-	map->setScale(0.5f);
+	//map->setScale(0.5f);
 	this->addChild(map, -1);
 
 	auto gameController = GameController::create(client,server);

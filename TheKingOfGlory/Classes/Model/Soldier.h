@@ -61,6 +61,8 @@ public:
 	void setBigDestination(Vec2 destination) { _Destination = destination; }
 	Vec2 getBigDestination() { return _Destination; }
 
+	void addPath(std::vector<ValueMap> valueMap);
+
 	virtual void initAnimation();
 	virtual void move();
 
@@ -72,6 +74,8 @@ protected:
 	Vec2 _destination;
 	Vec2 _Destination;
 	Status _status;
+	std::vector<Vec2> path;
+	int moveStep;
 	//Sprite* _bullet;
 	//Sprite* _soldier;
 
