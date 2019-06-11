@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="14">
+<map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="16">
  <tileset firstgid="1" source="map.tsx"/>
  <tileset firstgid="521" source="collidablesTileSet.tsx"/>
  <tileset firstgid="524" source="grass.tsx"/>
@@ -35,5 +35,7 @@
   <object id="11" name="store_blue" x="4848" y="640" width="784" height="728"/>
   <object id="12" name="tower_red" x="2032" y="3592" width="592" height="616"/>
   <object id="13" name="tower_blue" x="3800" y="1768" width="632" height="632"/>
+  <object id="14" name="buff_red" x="4406.06" y="3766.67" width="542.424" height="503.03"/>
+  <object id="15" name="buff_blue" x="1781.82" y="1860.61" width="384.848" height="375.758"/>
  </objectgroup>
 </map>

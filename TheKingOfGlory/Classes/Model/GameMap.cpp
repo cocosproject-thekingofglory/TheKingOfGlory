@@ -48,6 +48,8 @@ void GameMap::setMap(const std::string& mapName)
 	tower_blue = objectLayer->getObject("tower_blue");
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
+	buff_red = objectLayer->getObject("buff_red");
+	buff_blue = objectLayer->getObject("buff_blue");
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -163,6 +165,18 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 	case Type::Tower_Red:
 	{
 		sprite->setPosition(Vec2(tower_red.at("x").asFloat(), tower_red.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Buff_Blue:
+	{
+		sprite->setPosition(Vec2(buff_blue.at("x").asFloat(), buff_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(1);
+	}
+	break;
+	case Type::Buff_Red:
+	{
+		sprite->setPosition(Vec2(buff_red.at("x").asFloat(), buff_red.at("y").asFloat()));
 		sprite->setLocalZOrder(1);
 	}
 	break;

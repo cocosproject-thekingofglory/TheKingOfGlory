@@ -3,6 +3,7 @@
 #include<cmath>
 #include "GameMap.h"
 #include "UI/CountDown.h"
+#include "../Manager/Manager.h"
 
 
 USING_NS_CC;
@@ -132,6 +133,69 @@ bool Player::attack()
 				{
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
+
+					std::string stip;
+					stip.append(StringUtils::format("+ %d", target->getKillMoney()));
+					auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+					tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+					Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+					auto moveup = MoveTo::create(1.0, to);
+					tip->runAction(moveup);
+					this->addChild(tip);
+
+					if (target->getType() == SpriteBase::REDBUFF)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Red Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDamage(10.0);
+						Manager::getInstance()->_wildMonsterList.eraseObject(static_cast<Tower*>(target));
+
+						auto sequence=Sequence::create(DelayTime::create(10.0),CallFunc::create([=]()
+						{
+							this->addDamage(-10.0);
+							std::string stip;
+							stip.append(StringUtils::format("Lose Red Buff!!!"));
+							auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+							tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+							Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+							auto moveup = MoveTo::create(1.0, to);
+							tip->runAction(moveup);
+							this->addChild(tip);
+							Manager::getInstance()->_wildMonsterList.pushBack(static_cast<Tower*>(target));
+						}), NULL);
+					}
+					else if (target->getType() == SpriteBase::BLUEBUFF)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Blue Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDefend(0.2);
+						Manager::getInstance()->_wildMonsterList.eraseObject(static_cast<Tower*>(target));
+						auto sequence = Sequence::create(DelayTime::create(10.0), CallFunc::create([=]()
+						{
+							this->addDamage(-10.0);
+							std::string stip;
+							stip.append(StringUtils::format("Lose Blue Buff!!!"));
+							auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+							tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+							Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+							auto moveup = MoveTo::create(1.0, to);
+							tip->runAction(moveup);
+							this->addChild(tip);
+							Manager::getInstance()->_wildMonsterList.pushBack(static_cast<Tower*>(target));
+						}), NULL);
+					}
 				}
 			}
 		}
@@ -160,6 +224,16 @@ float Player::beAttack(const float damage)
 		nowHP -= damage * (1 - getDefend());
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
+
+		std::string stip;
+		stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
+		auto tip = Tip::create(stip, 1.0, Color4B::RED);
+		tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+		Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+		auto moveup = MoveTo::create(1.0, to);
+		tip->runAction(moveup);
+		this->addChild(tip);
+
 		if (nowHP <= 0.0)
 		{
 			for (int i = 0; i < _beAttackTargetList.size(); i++)
@@ -504,6 +578,16 @@ void Player::updateLevel()
 		addDamage(PLAYER_LEVEL_UP_DAMAGE);
 		addDefend(PLAYER_LEVEL_UP_DEFEND);
 		addHPValue(PLAYER_LEVEL_UP_HPVALUE);
+
+		std::string stip;
+		stip.append(StringUtils::format("Level up!!!"));
+		auto tip = Tip::create(stip, 1.0, Color4B::RED);
+		tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+		Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height*1.5);
+		auto moveup = MoveTo::create(1.0, to);
+		tip->runAction(moveup);
+		this->addChild(tip);
+
 	}
 }
 

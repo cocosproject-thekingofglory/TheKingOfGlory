@@ -63,6 +63,16 @@ void SkillBase::collisionDetection()
 		if (box.intersectsRect(tower->getBoundingBox()))
 			tower->beAttack(_damage);
 	}
+	auto wildMonster = manager->_wildMonsterList;
+	for (auto wild : wildMonster)
+	{
+		if (box.intersectsRect(wild->getBoundingBox()))
+		{
+			wild->beAttack(_damage);
+			
+		}
+
+	}
 }
 
 void SkillBase::remove()

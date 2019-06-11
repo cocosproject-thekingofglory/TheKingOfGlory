@@ -18,6 +18,8 @@ private:
 	cocos2d::ValueMap tower_blue;
 	cocos2d::ValueMap store_red;
 	cocos2d::ValueMap store_blue;
+	cocos2d::ValueMap buff_red;
+	cocos2d::ValueMap buff_blue;
 	cocos2d::Sprite* _centerSprite;
 
 	bool initGrid();
@@ -27,7 +29,7 @@ public:
 	enum Type
 	{
 		NONE, Player_Red, Player_Blue, Tower_Red, Tower_Blue, Soldier_Red, Solider_Blue,
-		Monster_Red,Monster_Blue
+		Buff_Red,Buff_Blue
 	};
 
 

@@ -1,10 +1,10 @@
 #include "Tower.h"
 #include "GameMap.h"
 
-Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
+Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color, TYPE type)
 {
 	auto tower = new Tower();
-	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color))
+	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color,type))
 	{
 		tower->autorelease();
 		return tower;
@@ -13,18 +13,39 @@ Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 	return nullptr;
 }
 
-bool Tower::init(int color)
+bool Tower::init(int color, TYPE type)
 {
+	/*if (!SpriteBase::init())
+	{
+		return false;
+	}*/
+	setType(type);
+
 	setAnchorPoint(Vec2::ZERO);
 	setColor(color);
-	setAttackRadius(TOWER_ATTACK_RADIUS);
-	setHPValue(TOWER_HPVALUE);
-	setNowHPValue(TOWER_HPVALUE);
-	setDamage(TOWER_DAMAGE);
-	setAttackInterval(TOWER_ATTACK_INTERVAL);
-	setDefend(TOWER_DEFEND);
-	setKillExperience(TOWER_KILL_EXPRIENCE);
-	setKillMoney(TOWER_KILL_MONEY);
+	if (_type == TOWER)
+	{
+		setAttackRadius(TOWER_ATTACK_RADIUS);
+		setHPValue(TOWER_HPVALUE);
+		setNowHPValue(TOWER_HPVALUE);
+		setDamage(TOWER_DAMAGE);
+		setAttackInterval(TOWER_ATTACK_INTERVAL);
+		setDefend(TOWER_DEFEND);
+		setKillExperience(TOWER_KILL_EXPRIENCE);
+		setKillMoney(TOWER_KILL_MONEY);
+	}
+	else
+	{
+		setAttackRadius(BUFF_ATTACK_RADIUS);
+		setHPValue(BUFF_HPVALUE);
+		setNowHPValue(BUFF_HPVALUE);
+		setDamage(BUFF_DAMAGE);
+		setAttackInterval(BUFF_ATTACK_INTERVAL);
+		setDefend(BUFF_DEFEND);
+		setKillExperience(BUFF_KILL_EXPRIENCE);
+		setKillMoney(BUFF_KILL_MONEY);
+	}
+
 
 	initAnimation();
 	setHPBar();
@@ -56,7 +77,17 @@ bool Tower::attack()
 float Tower::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
-	nowHP -= damage;
+	nowHP -= damage * (1 - this->getDefend());
+
+	std::string stip;
+	stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
+	auto tip = Tip::create(stip, 1.0, Color4B::RED);
+	tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+	Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+	auto moveup = MoveTo::create(1.0, to);
+	tip->runAction(moveup);
+	this->addChild(tip);
+
 	if (nowHP <= 0.0)
 	{
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
@@ -64,6 +95,16 @@ float Tower::beAttack(const float damage)
 			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
 		}
 		//playDestoryAnimation();
+		if (_type == REDBUFF||_type==BLUEBUFF)
+		{
+			auto parent = this->getParent();
+			this->removeFromParent();
+			auto sequence = Sequence::create(DelayTime::create(10.0f), CallFunc::create([=]()
+			{
+				this->addNowHPValue(getNowHPValue() - nowHP);
+				parent->addChild(this);
+			}), NULL);
+		}
 	}
 	setNowHPValue(MAX(nowHP, 0));
 	updateHPBar();

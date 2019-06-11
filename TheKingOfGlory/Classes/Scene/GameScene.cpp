@@ -249,6 +249,7 @@ bool GameScene::init(Client* client, Server*server)
 	menuListener->setEnabled(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(menuListener, -1);
 
+	createStatusButton();
 	auto gameStartListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom* event) {
 		statusButton->setEnabled(true);
 	});
@@ -283,7 +284,6 @@ bool GameScene::init(Client* client, Server*server)
 	this->addChild(gameController, -1);
 
 	createMenuButton();
-	createStatusButton();
 
 	return true;
 }
