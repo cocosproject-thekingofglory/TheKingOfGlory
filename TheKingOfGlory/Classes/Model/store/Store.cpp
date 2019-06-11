@@ -122,7 +122,6 @@ void Store::createBg()
 	if (!VIP)
 	{
 
-
 		_vipButton = Button::create("Pictures/Store/text_be_vip.png");
 		_vipButton->setScale(2);
 		_vipButton->setPosition(Vec2(_bg->getContentSize().width / 2, _vipButton->getContentSize().height));
@@ -138,7 +137,7 @@ void Store::createBg()
 				vipSprite->setPosition(Vec2(_bg->getContentSize().width / 2, _bg->getContentSize().height / 2));
 				vipSprite->setScale(0.8);
 				_bg->addChild(vipSprite, 400);
-				EQUIPMENT_CNT = 15;//µã³äÖµ¶à5¼þ×°±¸
+				EQUIPMENT_CNT = 15;//ÂµÃ£Â³Ã¤Ã–ÂµÂ¶Ã 5Â¼Ã¾Ã—Â°Â±Â¸
 				auto sequence = Sequence::create(DelayTime::create(3.0f), CallFunc::create([=]()
 				{
 					_bg->removeChild(vipSprite, true);
