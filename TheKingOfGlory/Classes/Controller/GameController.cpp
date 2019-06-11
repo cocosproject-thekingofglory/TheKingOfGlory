@@ -149,7 +149,7 @@ void GameController::addSkill()
 {
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	auto role = User::getInstance()->getRole();
-	std::string roleNames[] = { "warrior","aviator" };
+	std::string roleNames[] = { "warrior","aviator","aviator","aviator","aviator","aviator" };
 	auto roleName = roleNames[role];
 	auto skill1 = Skill::create("Skill1", "Pictures/GameItem/"+roleName+"_skill1.png", 0.1f);
 	skill1->setPosition(Vec2(visibleSize.width*0.9,visibleSize.height*0.1));
@@ -432,7 +432,7 @@ void GameController::onChatMsg(const void * msg)
 void GameController::initGame(float delta)
 {
 	manager = Manager::create();
-	this->addChild(manager, -1,"Manager");
+	this->addChild(manager, -1);
 	addSkill();
 	if(isOnline)
 		addChatBox();

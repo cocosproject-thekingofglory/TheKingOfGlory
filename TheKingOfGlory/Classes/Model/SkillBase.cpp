@@ -1,5 +1,6 @@
 #include "SkillBase.h"
 #include "Manager/Manager.h"
+#include "UI/Tip.h"
 USING_NS_CC;
 
 
@@ -65,6 +66,16 @@ void SkillBase::collisionDetection()
 			if (box.intersectsRect(tower->getBoundingBox()))
 				tower->beAttack(_damage);
 		}
+		auto wildMonster = manager->_wildMonsterList;
+		for (auto wild : wildMonster)
+		{
+			if (box.intersectsRect(wild->getBoundingBox()))
+			{
+			wild->beAttack(_damage);
+			
+			}
+
+		}
 	}
 	else
 	{
@@ -72,20 +83,23 @@ void SkillBase::collisionDetection()
 		for (auto pair : players)
 		{
 			auto player = pair.second;
-			if (player->getColor() != _color &&player->getStatus()!=Player::Status::DEAD&& box.intersectsRect(player->getBoundingBox()))
+			if (player->getColor() != _color && player->getStatus() != Player::Status::DEAD
+				&&player->getNowHPValue() > 0.0&& box.intersectsRect(player->getBoundingBox()))
+			{
+				std::stringstream str;
+				str << _damage;
+				std::string s = "+" + str.str();
+				auto text = Tip::create(s, 0.1f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
+				text->setPosition(Vec2(this->getContentSize().width *0.8,
+					this->getContentSize().height*1.2));
+				text->setScale(1.0/player->getScale());
+				player->addChild(text);
 				player->addNowHPValue(-_damage);
-		}
-	}
-	auto wildMonster = manager->_wildMonsterList;
-	for (auto wild : wildMonster)
-	{
-		if (box.intersectsRect(wild->getBoundingBox()))
-		{
-			wild->beAttack(_damage);
-			
-		}
+			}
 
+		}
 	}
+
 }
 
 void SkillBase::remove()

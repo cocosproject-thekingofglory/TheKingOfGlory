@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>ranger_attack_leftdown (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{94,98}</string>
+                <key>spriteSourceSize</key>
+                <string>{94,98}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{94,98}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_leftdown (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{69,99}</string>
+                <key>spriteSourceSize</key>
+                <string>{69,99}</string>
+                <key>textureRect</key>
+                <string>{{94,0},{69,99}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_leftdown (3).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{73,98}</string>
+                <key>spriteSourceSize</key>
+                <string>{73,98}</string>
+                <key>textureRect</key>
+                <string>{{163,0},{73,98}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>ranger_attack_leftdown (4).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{90,105}</string>
+                <key>spriteSourceSize</key>
+                <string>{90,105}</string>
+                <key>textureRect</key>
+                <string>{{236,0},{90,105}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>ranger_attack_leftdown.png</string>
+            <key>size</key>
+            <string>{326,105}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:938adf73dd799a6afc76fe4dcb609620:1dff63f5b28294e1b58e113047faf699:3b140471a7d8f8a49c82123fdfe67f1b$</string>
+            <key>textureFileName</key>
+            <string>ranger_attack_leftdown.png</string>
+        </dict>
+    </dict>
+</plist>

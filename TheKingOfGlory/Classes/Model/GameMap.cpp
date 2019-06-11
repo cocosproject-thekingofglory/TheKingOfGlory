@@ -38,7 +38,7 @@ void GameMap::setMap(const std::string& mapName)
 	this->addChild(tileMap, -1);
 
 	collidable = tileMap->getLayer("collidable");
-
+	collidable->setVisible(false);
 
 	objectLayer = tileMap->getObjectGroup("objects");
 
@@ -50,6 +50,59 @@ void GameMap::setMap(const std::string& mapName)
 	store_blue = objectLayer->getObject("store_blue");
 	buff_red = objectLayer->getObject("buff_red");
 	buff_blue = objectLayer->getObject("buff_blue");
+	monster_red = objectLayer->getObject("monster_red");
+	monster_blue = objectLayer->getObject("monster_blue");
+
+	towers_red.push_back(tower_red);
+	towers_blue.push_back(tower_blue);
+	for (int i = 1; i < 6; i++)
+	{
+		towers_red.push_back(objectLayer->getObject("tower_red"+std::to_string(i)));
+		towers_blue.push_back(objectLayer->getObject("tower_blue"+std::to_string(i)));
+	}
+
+	pathLayer= tileMap->getObjectGroup("soldierPath");
+	{
+		auto pathM1 = pathLayer->getObject("pathM1");
+		{
+			std::vector<ValueMap> pathM;
+			pathM.push_back(pathM1);
+			for (int i = 2; i <= 6; ++i)
+			{
+				pathM.push_back(pathLayer->getObject("pathM" + std::to_string(i)));
+			}
+			soldier_red_path.push_back(pathM);
+		}
+		{
+			std::vector<ValueMap> pathL;
+			pathL.push_back(pathM1);
+			for (int i = 1; i <= 4; ++i)
+			{
+				pathL.push_back(pathLayer->getObject("pathL" + std::to_string(i)));
+			}
+			pathL.push_back(pathLayer->getObject("pathM6"));
+			soldier_red_path.push_back(pathL);
+		}
+		{
+			std::vector<ValueMap> pathR;
+			pathR.push_back(pathM1);
+			for (int i = 1; i <= 4; ++i)
+			{
+				pathR.push_back(pathLayer->getObject("pathL" + std::to_string(i)));
+			}
+			pathR.push_back(pathLayer->getObject("pathM6"));
+			soldier_red_path.push_back(pathR);
+		}
+	}
+	for (auto& path : soldier_red_path)
+	{
+		std::vector<ValueMap> pathblue;
+		for (int i = path.size() - 1; i >= 0; --i)
+		{
+			pathblue.push_back(ValueMap(path.at(i)));
+		}
+		soldier_blue_path.push_back(pathblue);
+	}
 
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
@@ -168,21 +221,34 @@ void GameMap::addSprite(cocos2d::Sprite * sprite, Type type)
 		sprite->setLocalZOrder(1);
 	}
 	break;
-	case Type::Buff_Blue:
-	{
-		sprite->setPosition(Vec2(buff_blue.at("x").asFloat(), buff_blue.at("y").asFloat()));
-		sprite->setLocalZOrder(1);
-	}
-	break;
 	case Type::Buff_Red:
 	{
 		sprite->setPosition(Vec2(buff_red.at("x").asFloat(), buff_red.at("y").asFloat()));
-		sprite->setLocalZOrder(1);
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Buff_Blue:
+	{
+		sprite->setPosition(Vec2(buff_blue.at("x").asFloat(), buff_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Monster_Red:
+	{
+		sprite->setPosition(Vec2(monster_red.at("x").asFloat(), monster_red.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
+	}
+	break;
+	case Type::Monster_Blue:
+	{
+		sprite->setPosition(Vec2(monster_blue.at("x").asFloat(), monster_blue.at("y").asFloat()));
+		sprite->setLocalZOrder(2);
 	}
 	break;
 	}
 
 }
+
 
 void GameMap::setSpritePosition(cocos2d::Sprite * sprite, Type type)
 {
@@ -263,6 +329,14 @@ cocos2d::Vec2 GameMap::getObjectPosition(Type type)
 	return position;
 }
 
+std::vector<std::vector<ValueMap>>& GameMap::getSoldierPath(int color)
+{
+	if (color == 0)
+		return soldier_red_path;
+	else
+		return soldier_blue_path;
+}
+
 void GameMap::setViewPointCenter()
 {
 	if (_centerSprite)
@@ -297,4 +371,17 @@ GameMap * GameMap::getCurrentMap()
 void GameMap::addSprite(cocos2d::Sprite * sprite, int zOrder)
 {
 	tileMap->addChild(sprite, zOrder);
+}
+
+void GameMap::addTower(cocos2d::Sprite * tower,int color, int tag)
+{
+	if (tileMap)
+		tileMap->addChild(tower);
+	ValueMap towerValue;
+	if (color == 0)
+		towerValue = towers_red.at(tag);
+	else
+		towerValue = towers_blue.at(tag);
+	tower->setPosition(Vec2(towerValue.at("x").asFloat(), towerValue.at("y").asFloat()));
+	tower->setLocalZOrder(1);
 }

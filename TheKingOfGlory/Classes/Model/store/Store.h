@@ -5,7 +5,6 @@
 #include "../GameMap.h"
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
-#include "StoreScene.h"
 #include "../StatusList.h"
 
 USING_NS_CC;
@@ -42,3 +41,4 @@ private:
 	Button* _vipButton;
 
 };
+

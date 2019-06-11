@@ -1,4 +1,5 @@
 #include "Home.h"
+#include "UI/Tip.h"
 
 Home * Home::create(const std::string& fileName, int color)
 {

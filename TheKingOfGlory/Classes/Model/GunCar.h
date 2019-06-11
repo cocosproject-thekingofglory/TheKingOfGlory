@@ -9,10 +9,10 @@ USING_NS_CC;
 
 //炮车的初始属性值
 const float GUNCAR_ATTACK_RADIUS = 800;
-const float GUNCAR_DAMAGE = 20;
-const float GUNCAR_HPVALUE = 200.0;
+const float GUNCAR_DAMAGE = 10;
+const float GUNCAR_HPVALUE = 100.0;
 const int GUNCAR_ATTACK_INTERVAL = 100;
-const float GUNCAR_MOVE_SPEED = 20;
+const float GUNCAR_MOVE_SPEED = 10;
 const float GUNCAR_DEFEND = 0.15;
 //击杀经验、金钱
 const int GUNCAR_KILL_EXPRIENCE = 20;

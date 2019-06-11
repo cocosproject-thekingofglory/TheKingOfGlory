@@ -25,9 +25,8 @@ bool StatusList::init()
 	});
 	_closeButton->setPosition(Vec2(160, 200));
 
-	this->addChild(_closeButton, 40);
-
-	auto localPlayer = Manager::getInstance()->playerManager->getLocalPlayer();
+	this->addChild(_closeButton,40);
+	auto localPlayer= Manager::getInstance()->playerManager->getLocalPlayer();
 
 	float mid = 90;
 	std::string context = "Level : ";
@@ -35,7 +34,7 @@ bool StatusList::init()
 	auto text1 = createText(context);
 	text1->setPosition(Vec2(mid, text1->getContentSize().height * 15));
 	this->addChild(text1, 40);
-
+	
 	context = "HP : ";
 	context.append(StringUtils::format("%.2f / %.2f", localPlayer->getNowHPValue(), localPlayer->getHPValue()));
 	auto text2 = createText(context);
@@ -137,3 +136,4 @@ void StatusList::sell(EquipmentBase*equip)
 	_localplayer->addHPValue(-equip->getHP());
 	equip->removeFromParent();
 }
+

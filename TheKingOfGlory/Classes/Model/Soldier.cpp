@@ -1,13 +1,14 @@
 #include "Soldier.h"
 #include "Model/GameMap.h"
+#include "UI/Tip.h"
 #include <cmath>
 
 bool Soldier::init(int color)
 {
-	if (!SpriteBase::init())
+	/*if (!SpriteBase::init())
 	{
 		return false;
-	}
+	}*/
 	setColor(color);
 	setStatus(Status::STANDING);
 	setAttackRadius(SOLDIER_ATTACK_RADIUS);
@@ -23,12 +24,25 @@ bool Soldier::init(int color)
 
 	initAnimation();
 	setHPBar();
+	this->setScale(0.6f);
 	//_soldier = Sprite::createWithSpriteFrameName("soldierMove_01.png");
 
 	//_bullet = Sprite::createWithSpriteFrameName("soldierBullet.png");
 	//_bullet->setVisible(false);
 	
 	return true;
+}
+
+void Soldier::addPath(std::vector<ValueMap> valueMap)
+{
+	for (auto& value : valueMap)
+	{
+		path.push_back(Vec2(value.at("x").asFloat(), value.at("y").asFloat()));
+	}
+	moveStep = 0;
+	setBigDestination(path.front());
+	setSmallDestination(getPosition());
+
 }
 
 void Soldier::initAnimation()
@@ -38,9 +52,9 @@ void Soldier::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 8);
+	loadAnimation("soldier_move_right", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 8);
+	loadAnimation("soldier_attack_right", delay, 8);
 
 }
 
@@ -48,13 +62,20 @@ void Soldier::move()
 {
 	if (getStatus() == Status::MOVING)
 	{
-		//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
-
 		auto position = this->getPosition();
+		//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
 
 		if (position.equals(getBigDestination()))
 		{
-			randomBigDestination();
+			if (moveStep >= path.size())
+			{
+				randomBigDestination();
+			}
+			else
+			{
+				setBigDestination(path.at(moveStep++));
+			}
+
 		}
 
 		if (position.equals(getSmallDestination()))
@@ -110,12 +131,12 @@ void Soldier::startMove()
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		if (getColor() == BLUE)
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
-		else
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
-		runAnimation("soldierMove", this);
-		this->setBigDestination(toPosition);
+		//if (getColor() == BLUE)
+			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
+		//else
+			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
+		runAnimation("soldier_move_right", this);
+		//this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
@@ -123,7 +144,6 @@ void Soldier::startMove()
 
 void Soldier::stopMove()
 {
-	stopAnimation("soldierMove",this);
 	unschedule("move");
 }
 
@@ -131,7 +151,7 @@ bool Soldier::attack()
 {
 	if (_attackTargetList.size())
 	{
-		runAnimation("soldierAttack", this);
+		runAnimation("soldier_attack_right", this);
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
@@ -150,7 +170,7 @@ bool Soldier::attack()
 
 void Soldier::stopAttack()
 {
-	stopAnimation("soldierAttack",this);
+	stopAnimation("soldier_attack_right",this);
 }
 
 float Soldier::beAttack(const float damage)
@@ -160,7 +180,7 @@ float Soldier::beAttack(const float damage)
 
 	/*std::string stip;
 	stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
-	auto tip = Tip::create(stip, 1.0, Color4B::RED);
+	auto tip = Tip::create(stip, 1.0, Color4B::RED,24, "fonts/arial.ttf");
 	tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
 	this->addChild(tip);*/
 
@@ -188,7 +208,7 @@ void Soldier::setHPBar()
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 	
-	_HPBar->setPercent(0);
+	_HPBar->setPercent(100);
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
 		this->getPositionY() + this->getContentSize().height*1.1);
 	_HPBar->setPosition(HPpos);

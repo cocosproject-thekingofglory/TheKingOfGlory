@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "StartScene.h"
 #include "SelectPlayerScene.h"
+#include "UI/Tip.h"
 USING_NS_CC;
 using namespace ui;
 
@@ -65,7 +66,7 @@ void SelectScene::createButton()
 	online->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, OnlineScene::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(1, SelectModeScene::createScene()));
 
 	});
 	this->addChild(online);
@@ -79,6 +80,85 @@ void SelectScene::createButton()
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
 		Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
+
+	});
+	this->addChild(back);
+}
+cocos2d::Scene * SelectModeScene::createScene()
+{
+	auto scene = Scene::create();
+	auto layer = SelectModeScene::create();
+	scene->addChild(layer);
+	return scene;
+}
+
+bool SelectModeScene::init()
+{
+	if (!Layer::init())
+		return false;
+
+	createBackground();
+	createButton();
+
+	return true;
+}
+
+void SelectModeScene::createBackground()
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+
+
+	auto background = Sprite::create("Pictures/Background/SelectBackground.png");
+	background->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	this->addChild(background);
+
+}
+
+void SelectModeScene::createButton()
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+
+	auto box = Sprite::create("Pictures/UI/buttonBox.png");
+	box->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	this->addChild(box);
+
+	auto One = Button::create("Pictures/UI/brownButton.png");
+	One->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.63));
+	One->setTitleText("1v1 Mode");
+	One->setTitleFontName("Fonts/Quicksand-Bold.ttf");
+	One->setTitleFontSize(32);
+	One->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type != ui::Widget::TouchEventType::ENDED) return;
+		UserDefault::getInstance()->setIntegerForKey("Mode", 1);
+		Director::getInstance()->replaceScene(TransitionFade::create(1, OnlineScene::createScene()));
+
+	});
+	this->addChild(One);
+
+	auto Five = Button::create("Pictures/UI/brownButton.png");
+	Five->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+	Five->setTitleText("5v5 Mode");
+	Five->setTitleFontName("Fonts/Quicksand-Bold.ttf");
+	Five->setTitleFontSize(32);
+	Five->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type != ui::Widget::TouchEventType::ENDED) return;
+		UserDefault::getInstance()->setIntegerForKey("Mode", 5);
+		Director::getInstance()->replaceScene(TransitionFade::create(1, OnlineScene::createScene()));
+
+	});
+	this->addChild(Five);
+
+	auto back = Button::create("Pictures/UI/brownButton.png");
+	back->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.37));
+	back->setTitleText("Back");
+	back->setTitleFontName("Fonts/Quicksand-Bold.ttf");
+	back->setTitleFontSize(32);
+	back->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
+	{
+		if (type != ui::Widget::TouchEventType::ENDED) return;
+		Director::getInstance()->replaceScene(TransitionFade::create(1, SelectScene::createScene()));
 
 	});
 	this->addChild(back);
@@ -157,7 +237,7 @@ void OnlineScene::createButton()
 	back->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, SelectScene::createScene()));
+		Director::getInstance()->replaceScene(TransitionFade::create(1, SelectModeScene::createScene()));
 
 	});
 	this->addChild(back);
@@ -181,7 +261,7 @@ bool ServerScene::init()
 	createInput();
 	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
-	connectionMsg = Label::createWithTTF("","fonts/arial.ttf", 24);
+	connectionMsg = Label::createWithTTF(" ","fonts/arial.ttf", 24);
 	connectionMsg->setPosition(Vec2( visibleSize.width / 2,visibleSize.height*0.1));
 	this->addChild(connectionMsg);
 
@@ -234,12 +314,19 @@ void ServerScene::createButton()
 	start->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
-		if (gameServer)
+		if (gameServer&&gameServer->connection_num() >= 2 * UserDefault::getInstance()->getIntegerForKey("Mode"))
 		{
 			gameServer->button_start();
-			if(gameClient->getMessage()=="SelectHero")
-				Director::getInstance()->replaceScene(TransitionSplitCols::create(1.0, SelectPlayerScene::createScene(gameClient,gameServer)));
+			if (gameClient->getMessage() == "SelectHero")
+				Director::getInstance()->replaceScene(TransitionSplitCols::create(1.0, SelectPlayerScene::createScene(gameClient, gameServer)));
 			log("start game");
+
+		}
+		else
+		{
+			auto tip = Tip::create("Unable to start game,wait for more players", 2.0f, Color4B::WHITE);
+			tip->setPosition(Vec2(visibleSize.width / 2, visibleSize.height*0.15));
+			this->addChild(tip);
 		}
 	});
 	this->addChild(start);

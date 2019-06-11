@@ -1,5 +1,6 @@
 #include "Model/GameMap.h"
 #include "GUnCar.h"
+#include "UI/Tip.h"
 #include <cmath>
 
 bool GunCar::init(int color)
@@ -21,7 +22,7 @@ bool GunCar::init(int color)
 	setKillExperience(GUNCAR_KILL_EXPRIENCE);
 	setKillMoney(GUNCAR_KILL_MONEY);
 
-	setScale(2);
+	setScale(0.2);
 
 	initAnimation();
 	setHPBar();
@@ -40,9 +41,9 @@ void GunCar::initAnimation()
 	*/
 
 	const float delay = 0.1;
-	loadAnimation("soldierMove", delay, 8);
+	loadAnimation("guntruck_move_rightdown", delay, 8);
 
-	loadAnimation("soldierAttack", delay, 8);
+	loadAnimation("guntruck_attack_rightdown", delay, 11);
 
 }
 
@@ -69,6 +70,7 @@ void GunCar::move()
 		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
 
 		this->setFlippedX(!(position.x <= _destination.x));
+		this->setRotation((position.x <= _destination.x) ? (-45.0) : (0));
 
 		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
 		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
@@ -102,7 +104,7 @@ void GunCar::startMove()
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
 		else
 			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
-		runAnimation("soldierMove", this);
+		runAnimation("guntruck_move_rightdown", this);
 		this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move, this), 0.05f, "move");
 		setStatus(Status::MOVING);
@@ -119,7 +121,7 @@ bool GunCar::attack()
 {
 	if (_attackTargetList.size())
 	{
-		runAnimation("soldierAttack", this);
+		runAnimation("guntruck_attack_rightdown", this);
 		setStatus(Status::ATTACKING);
 		for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 		{
@@ -128,8 +130,8 @@ bool GunCar::attack()
 				auto target = _attackTargetList.at(i);
 				auto bullet = BulletBase::create(this, target, "bullet", "bullet (1).png");
 				GameMap::getCurrentMap()->addChild(bullet);
-				Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
-				bullet->setPosition(pos);
+				Vec2 pos = Vec2(getPosition().x + getContentSize().width*getScale() / 2, getPosition().y + getContentSize().height*getScale() / 2);
+				bullet->setPosition(getPosition());
 				return true;
 			}
 		}
@@ -139,12 +141,13 @@ bool GunCar::attack()
 
 void GunCar::stopAttack()
 {
-	stopAnimation("soldierAttack", this);
+	stopAnimation("guntruck_attack_rightdown", this);
 }
 
 float GunCar::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
+
 	nowHP -= damage * (1 - this->getDefend());
 
 	/*std::string stip;
@@ -177,7 +180,7 @@ void GunCar::setHPBar()
 	_HPBar->setScale(0.1);
 	_HPBar->setDirection(LoadingBar::Direction::LEFT);
 
-	_HPBar->setPercent(0);
+	_HPBar->setPercent(100);
 	Vec2 HPpos = Vec2(this->getPositionX() + this->getContentSize().width / 2,
 		this->getPositionY() + this->getContentSize().height*1.1);
 	_HPBar->setPosition(HPpos);

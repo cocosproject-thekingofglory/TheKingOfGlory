@@ -51,7 +51,7 @@ void AnimationLoader::loadAnimation(const std::string & animationName, float del
         animation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(name));
     }
     animation->setDelayPerUnit(delay);
-    animation->setRestoreOriginalFrame(true);
+  //  animation->setRestoreOriginalFrame(true);
 
     animationCache->addAnimation(animation, animationName);
 }

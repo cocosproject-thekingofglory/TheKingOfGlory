@@ -1,10 +1,11 @@
 #include "Tower.h"
 #include "GameMap.h"
+#include "UI/Tip.h"
 
-Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color, TYPE type)
+Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 {
 	auto tower = new Tower();
-	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color,type))
+	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color))
 	{
 		tower->autorelease();
 		return tower;
@@ -13,14 +14,8 @@ Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color, T
 	return nullptr;
 }
 
-bool Tower::init(int color, TYPE type)
+bool Tower::init(int color)
 {
-	/*if (!SpriteBase::init())
-	{
-		return false;
-	}*/
-	setType(type);
-
 	setAnchorPoint(Vec2::ZERO);
 	setColor(color);
 	if (_type == TOWER)
@@ -46,7 +41,6 @@ bool Tower::init(int color, TYPE type)
 		setKillMoney(BUFF_KILL_MONEY);
 	}
 
-
 	initAnimation();
 	setHPBar();
 	return true;
@@ -66,7 +60,9 @@ bool Tower::attack()
 			auto target = _attackTargetList.at(i);
 			auto bullet=BulletBase::create(this, target, "bullet", "bullet (1).png");
 			GameMap::getCurrentMap()->addChild(bullet);
-			Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
+			bullet->setPosition(getPosition());
+			Vec2 pos = Vec2(getPosition().x + getContentSize().width*getScale() / 2,
+				getPosition().y + getContentSize().height*getScale() / 2);
 			bullet->setPosition(pos);
 			return true;
 		}
@@ -77,34 +73,27 @@ bool Tower::attack()
 float Tower::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
+	
 	nowHP -= damage * (1 - this->getDefend());
 
 	std::string stip;
 	stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
-	auto tip = Tip::create(stip, 1.0, Color4B::RED);
+	auto tip = Tip::create(stip, 1.0, Color4B::RED, 24, "fonts/arial.ttf");
 	tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
 	Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
 	auto moveup = MoveTo::create(1.0, to);
 	tip->runAction(moveup);
+	tip->setScale(1.0/this->getScale());
 	this->addChild(tip);
 
 	if (nowHP <= 0.0)
+	
 	{
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{
 			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
 		}
 		//playDestoryAnimation();
-		if (_type == REDBUFF||_type==BLUEBUFF)
-		{
-			auto parent = this->getParent();
-			this->removeFromParent();
-			auto sequence = Sequence::create(DelayTime::create(10.0f), CallFunc::create([=]()
-			{
-				this->addNowHPValue(getNowHPValue() - nowHP);
-				parent->addChild(this);
-			}), NULL);
-		}
 	}
 	setNowHPValue(MAX(nowHP, 0));
 	updateHPBar();
