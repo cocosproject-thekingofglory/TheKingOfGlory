@@ -47,7 +47,8 @@ bool Tower::attack()
 			auto bullet=BulletBase::create(this, target, "bullet", "bullet (1).png");
 			GameMap::getCurrentMap()->addChild(bullet);
 			bullet->setPosition(getPosition());
-			Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
+			Vec2 pos = Vec2(getPosition().x + getContentSize().width*getScale() / 2,
+				getPosition().y + getContentSize().height*getScale() / 2);
 			bullet->setPosition(pos);
 			return true;
 		}
