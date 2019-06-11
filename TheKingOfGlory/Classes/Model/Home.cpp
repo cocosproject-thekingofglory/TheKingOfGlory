@@ -38,8 +38,8 @@ void Home::recoverPlayer()
 			str << MIN(player->getNowHPValue() + 20.0, player->getHPValue());
 			std::string s = "+" + str.str();
 			auto text = Tip::create(s, 0.3f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
-			text->setPosition(Vec2(this->getContentSize().width *0.8,
-				this->getContentSize().height*1.2));
+			text->setPosition(Vec2(player->getContentSize().width *player->getScale()*0.8,
+				player->getContentSize().height*player->getScale()*1.2));
 			text->setScale(1.0/player->getScale());
 			player->addChild(text);
 

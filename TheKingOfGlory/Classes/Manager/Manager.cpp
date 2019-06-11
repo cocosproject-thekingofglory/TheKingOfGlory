@@ -9,7 +9,7 @@ USING_NS_CC;
 //Manager* Manager::_instance;
 
 
-Soldier* Manager::createSoldier(const std::string &filename, const int color,int path)
+Soldier* Manager::createSoldier(const std::string &filename, const int color, int path)
 {
 	auto soldier = Soldier::createWithSpriteFrameName(filename, color);
 	if (soldier)
@@ -22,11 +22,12 @@ Soldier* Manager::createSoldier(const std::string &filename, const int color,int
 	return nullptr;
 }
 
-GunCar* Manager::createGunCar(const std::string &filename, const int color)
+GunCar* Manager::createGunCar(const std::string &filename, const int color,int path)
 {
 	auto guncar = GunCar::createWithSpriteFrameName(filename, color);
 	if (guncar)
 	{
+		guncar->addPath(GameMap::getCurrentMap()->getSoldierPath(color).at(path));
 		_guncarList[color].pushBack(guncar);
 		return guncar;
 	}
@@ -67,9 +68,9 @@ bool Manager::init()
 		return false;
 	this->setName("Manager");
 	isOnline = UserDefault::getInstance()->getBoolForKey("Network");
-	if(isOnline)
+	if (isOnline)
 		mode = static_cast<Mode>(UserDefault::getInstance()->getIntegerForKey("Mode"));
-	
+
 	auto sequence = Sequence::create(DelayTime::create(2.0f), CallFunc::create([=]()
 	{
 
@@ -90,7 +91,7 @@ bool Manager::init()
 		tower_blue_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_blue_1, GameMap::Type::Tower_Blue);
 
-		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
+		auto tower_red_1 = createTower(RED_TOWER_FILENAME, RED);
 		tower_red_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
 		if (isOnline&&mode == Mode::Five)
@@ -117,17 +118,17 @@ bool Manager::init()
 
 		playerManager = PlayerManager::create();
 		this->addChild(playerManager, -1);
-	
+
 		if (isOnline)
 		{
 			static_cast<GameController*>(Director::getInstance()->getRunningScene()->
 				getChildByName("GameScene")->getChildByName("GameController"))->
-				gameClient->sendMessage("Init " + User::getInstance()->getName() + " "+std::to_string(User::getInstance()->getRole()));
+				gameClient->sendMessage("Init " + User::getInstance()->getName() + " " + std::to_string(User::getInstance()->getRole()));
 		}
 
 
 		auto countDown = CountDown::create("Pictures/UI/TopBar.png", "Game start after ", "fonts/arial.ttf", 32, 5, false,
-			[=]() {		
+			[=]() {
 			for (auto pair : playerManager->getPlayerList())
 			{
 				auto player = pair.second;
@@ -147,7 +148,7 @@ bool Manager::init()
 			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
 		});
-		cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown,2);
+		cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
 
 	}), NULL);
 	this->runAction(sequence);
@@ -167,7 +168,7 @@ void Manager::scheduleSoldierAttack()
 			_soldierList[i].at(j)->getAttackTarget().clear();
 			_soldierList[i].at(j)->getBeAttackTarget().clear();
 
-		
+
 		}
 	}
 	for (auto pair : playerManager->getPlayerList())
@@ -410,20 +411,47 @@ void Manager::scheduleCreateSoldier()
 
 void Manager::scheduleCreateGunCar()
 {
-	if (_guncarList[BLUE].size() < 5)
+	if (isOnline&&mode == Mode::Five)
 	{
-		auto guncar_blue = createGunCar(BLUE_GUNCAR_FILENAME, BLUE);
-		guncar_blue->startMove();
-		GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
+		if (_soldierList[RED].size() < 15)
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				auto guncar_blue = createGunCar(BLUE_GUNCAR_FILENAME, BLUE, i);
+				guncar_blue->startMove();
+				GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
+			}
 
+
+		}
+		if (_soldierList[BLUE].size() < 15)
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				auto guncar_red = createGunCar(RED_GUNCAR_FILENAME, RED, 0);
+				guncar_red->startMove();
+				GameMap::getCurrentMap()->addSprite(guncar_red, GameMap::Type::Soldier_Red);
+			}
+		}
 	}
-	if (_guncarList[RED].size() < 5)
+	else
 	{
-		auto guncar_red = createGunCar(RED_GUNCAR_FILENAME, RED);
-		guncar_red->startMove();
-		GameMap::getCurrentMap()->addSprite(guncar_red, GameMap::Type::Soldier_Red);
+		if (_guncarList[BLUE].size() < 5)
+		{
+			auto guncar_blue = createGunCar(BLUE_GUNCAR_FILENAME, BLUE, 0);
+			guncar_blue->startMove();
+			GameMap::getCurrentMap()->addSprite(guncar_blue, GameMap::Type::Solider_Blue);
 
+		}
+		if (_guncarList[RED].size() < 5)
+		{
+			auto guncar_red = createGunCar(RED_GUNCAR_FILENAME, RED, 0);
+			guncar_red->startMove();
+			GameMap::getCurrentMap()->addSprite(guncar_red, GameMap::Type::Soldier_Red);
+
+		}
 	}
+
 
 
 }
@@ -478,7 +506,7 @@ void Manager::scheduleDeadDetect()
 				auto sequence = Sequence::create(DelayTime::create(6.0f), CallFunc::create([=]() {
 					_towerList[i].eraseObject(tower);
 					//tower->removeFromParentAndCleanup(true);
-				}),NULL);
+				}), NULL);
 				this->runAction(sequence);
 			}
 		}
@@ -532,19 +560,19 @@ void Manager::scheduleTowerAttack()
 			{
 				auto player = pair.second;
 				if (player->getColor() != _towerList[i].at(j)->getColor() &&
-					insideAttack(player, _towerList[i].at(j)) && player->getNowHPValue() > 0)
+					_towerList[i].at(j)->insideAttack(player) && player->getNowHPValue() > 0)
 				{
 					_towerList[i].at(j)->addAttackTarget(player);
 					player->addBeAttackTarget(_towerList[i].at(j));
 				}
 
 			}
-			for (int k = 0; k < _soldierList[i^1].size(); k++)
+			for (int k = 0; k < _soldierList[i ^ 1].size(); k++)
 			{
-				if (_towerList[i].at(j)->insideAttack(_soldierList[i^1].at(k)))
+				if (_towerList[i].at(j)->insideAttack(_soldierList[i ^ 1].at(k)))
 				{
-					_towerList[i].at(j)->addAttackTarget(_soldierList[i^1].at(k));
-					_soldierList[i^1].at(k)->addBeAttackTarget(_towerList[i].at(j));
+					_towerList[i].at(j)->addAttackTarget(_soldierList[i ^ 1].at(k));
+					_soldierList[i ^ 1].at(k)->addBeAttackTarget(_towerList[i].at(j));
 					break;
 				}
 			}
@@ -567,8 +595,8 @@ void Manager::scheduleTowerAttack()
 		//塔攻击
 		for (int j = 0; j < _towerList[i].size(); j++)
 		{
-			if(_towerList[i].at(j)->getNowHPValue())
-			_towerList[i].at(j)->attack();
+			if (_towerList[i].at(j)->getNowHPValue())
+				_towerList[i].at(j)->attack();
 		}
 	}
 
@@ -602,9 +630,9 @@ void Manager::AIHero()
 		auto player = pair.second;
 		if (!player->isLocal() && player->getStatus() != Player::Status::DEAD)
 		{
-			if ((player->getNowHPValue()/player->getHPValue()) <0.5 )
+			if ((player->getNowHPValue() / player->getHPValue()) < 0.5)
 			{
-				if(player->getColor()==BLUE)
+				if (player->getColor() == BLUE)
 					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Blue));
 				else
 					player->startMove(GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Player_Red));
@@ -620,7 +648,7 @@ void Manager::AIHero()
 						if ((player->getNowHPValue() / player->getHPValue()) < 0.5)
 							player->skillRecover();
 					}
-					if (time_AI%30==0)
+					if (time_AI % 30 == 0)
 					{
 						time_AI = 50;
 						int n = rand() % 3;
@@ -655,7 +683,7 @@ bool Manager::insideAttack(SpriteBase* beAttack, SpriteBase* attack)
 
 Manager* Manager::getInstance()
 {
-	auto manager=dynamic_cast<Manager*>(cocos2d::Director::getInstance()->getRunningScene()->
+	auto manager = dynamic_cast<Manager*>(cocos2d::Director::getInstance()->getRunningScene()->
 		getChildByName("GameScene")->getChildByName("GameController")->getChildByName("Manager"));
 	return manager;
 }

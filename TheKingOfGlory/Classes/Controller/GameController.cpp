@@ -136,6 +136,11 @@ void GameController::createKeyListener()
 			if (getSkillList().size() >= 5)
 				getSkillList().at(4)->touch();
 		}
+		else if (keyCode == EventKeyboard::KeyCode::KEY_S)
+		{
+			if (getSkillList().size() >= 6)
+				getSkillList().at(5)->touch();
+		}
 		else if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
 		{
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("UpdateMenu");
@@ -286,6 +291,33 @@ void GameController::addSkill()
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skillRecover);
 	skillRecover->setEnabled(false);
 
+	auto skillSpeed = Skill::create("SkillSpeed", "Pictures/GameItem/skillspeed.png", 30.0f);
+	skillSpeed->setPosition(Vec2(visibleSize.width*0.56, visibleSize.height*0.05));
+	skillSpeed->setScale(0.8);
+	skillSpeed->onTouch = [=]()
+	{
+		if (isOnline)
+		{
+			flatbuffers::FlatBufferBuilder builder(1024);
+			using namespace GameMsg;
+			auto name = builder.CreateString(User::getInstance()->getName());
+			auto playerSkill = CreatePlayerSkill(builder, name, SkillType::SkillType_SpeedUp);
+
+			auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_PlayerSkill, Date::Date_playerSkill, playerSkill.Union());
+			builder.Finish(msg);
+			uint8_t* buff = builder.GetBufferPointer();
+			size_t size = builder.GetSize();
+			socket_message message((const char*)buff, size);
+			gameClient->sendMessage(message);
+			hasSend = true;
+		}
+		else
+			manager->playerManager->getLocalPlayer()->skillSpeedUp();
+	};
+	_skillList.pushBack(skillSpeed);
+	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skillSpeed);
+	skillSpeed->setEnabled(false);
+
 }
 
 void GameController::addChatBox()
@@ -410,6 +442,8 @@ void GameController::onPlayerSkill(const void * msg)
 		case GameMsg::SkillType::SkillType_Two:{player->skill2();break;}
 		case GameMsg::SkillType::SkillType_Three:{player->skill3();break;}
 		case GameMsg::SkillType::SkillType_Recover:{player->skillRecover();break;}
+		case GameMsg::SkillType::SkillType_SpeedUp:{player->skillSpeedUp();break;}
+											
 		}
 	}
 }

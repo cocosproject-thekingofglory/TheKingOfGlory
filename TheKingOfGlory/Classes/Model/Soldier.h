@@ -76,6 +76,7 @@ protected:
 	Status _status;
 	std::vector<Vec2> path;
 	int moveStep;
+	bool isFlipped;
 	//Sprite* _bullet;
 	//Sprite* _soldier;
 

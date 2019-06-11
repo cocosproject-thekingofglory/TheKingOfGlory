@@ -87,7 +87,8 @@ void Soldier::move()
 
 		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
 
-		this->setFlippedX(!(position.x <= _destination.x));
+		isFlipped = !(position.x <= _destination.x);
+		this->setFlippedX(isFlipped);
 
 		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
 		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
@@ -127,16 +128,7 @@ void Soldier::startMove()
 {
 	if (_isMove)
 	{
-		srand(time(NULL));
-		Vec2 toPosition;
-		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
-		else toPosition = RED_STORE;*/
-		//if (getColor() == BLUE)
-			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
-		//else
-			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
 		runAnimation("soldier_move_right", this);
-		//this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
@@ -180,9 +172,9 @@ float Soldier::beAttack(const float damage)
 	std::stringstream str;
 	str << damage ;
 	std::string s = "-" + str.str();
-	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
-	text->setPosition(Vec2(this->getContentSize().width*0.8,
-		this->getContentSize().height*1.2));
+	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED);
+	text->setPosition(Vec2(this->getContentSize().width*getScale()*0.8,
+		this->getContentSize().height*getScale()*1.2));
 	text->setScale(1.0/this->getScale());
 	addChild(text);
 	if (nowHP <= 0.0)

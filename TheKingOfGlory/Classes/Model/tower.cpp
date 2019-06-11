@@ -63,8 +63,8 @@ float Tower::beAttack(const float damage)
 	std::stringstream str;
 	str << damage;
 	std::string s = "-" + str.str();
-	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
-	text->setPosition(Vec2(this->getContentSize().width *0.8,
+	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED);
+	text->setPosition(Vec2(this->getContentSize().width*0.8,
 		this->getContentSize().height*1.2));
 	text->setScale(1.0/this->getScale());
 	addChild(text);

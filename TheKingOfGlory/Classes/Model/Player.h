@@ -129,6 +129,7 @@ public:
 	bool getRecover() { return _isRecover; }
 
 	void skillRecover();
+	void skillSpeedUp();
 	void startMove(Vec2 destination);
 
 	void judgeDirection(float dx, float dy);

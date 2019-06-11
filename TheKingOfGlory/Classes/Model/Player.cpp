@@ -170,9 +170,9 @@ float Player::beAttack(const float damage)
 		std::stringstream str;
 		str << damage * (1 - getDefend());
 		std::string s = "-" + str.str();
-		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
-		text->setPosition(Vec2(this->getContentSize().width *0.8,
-			this->getContentSize().height*1.2));
+		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED);
+		text->setPosition(Vec2(this->getContentSize().width *getScale()*0.8,
+			this->getContentSize().height*getScale()*1.2));
 		text->setScale(1.0/this->getScale());
 		addChild(text);
 		setNowHPValue(MAX(nowHP, 0));
@@ -236,16 +236,33 @@ void Player::skillRecover()
 	{
 		stopMove();
 		setStatus(Status::SKILLRECOVER);
-		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor()^1, PLAYER_SKILLRECOVER_VALUE);
+		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor() ^ 1, PLAYER_SKILLRECOVER_VALUE);
 		GameMap::getCurrentMap()->addSprite(skill);
 		skill->setPosition(this->getPosition());
-
 
 
 		auto sequence = Sequence::create(DelayTime::create(1.8f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
 		}), NULL);
 		this->runAction(sequence);
+	}
+}
+
+void Player::skillSpeedUp()
+{
+	if (_isSkill)
+	{
+
+		setSpeed(getSpeed()*3.0f);
+		auto text = Tip::create("Speed Up", 5.0f, cocos2d::Color4B::BLUE, 24, "fonts/arial.ttf");
+		text->setPosition(Vec2(getContentSize().width *getScale()*0.8,
+			getContentSize().height*getScale()*1.2));
+		text->setScale(1.0 /getScale());
+		addChild(text);
+		scheduleOnce([=](float) 
+		{
+			this->setSpeed(PLAYER_MOVE_SPEED);
+		}, 5.0f, "ResetSpeed");
 	}
 }
 

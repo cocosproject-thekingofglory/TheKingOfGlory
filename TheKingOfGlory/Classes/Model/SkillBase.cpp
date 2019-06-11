@@ -60,6 +60,12 @@ void SkillBase::collisionDetection()
 			if (box.intersectsRect(soldier->getBoundingBox()))
 				soldier->beAttack(_damage);
 		}
+		auto gunCars= manager->_guncarList[_color ^ 1];
+		for (auto gunCar:gunCars)
+		{
+			if (box.intersectsRect(gunCar->getBoundingBox()))
+				gunCar->beAttack(_damage);
+		}
 		auto towers = manager->_towerList[_color ^ 1];
 		for (auto tower : towers)
 		{
@@ -77,11 +83,11 @@ void SkillBase::collisionDetection()
 				&&player->getNowHPValue() > 0.0&& box.intersectsRect(player->getBoundingBox()))
 			{
 				std::stringstream str;
-				str << _damage;
+				str << -_damage;
 				std::string s = "+" + str.str();
-				auto text = Tip::create(s, 0.1f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
-				text->setPosition(Vec2(this->getContentSize().width *0.8,
-					this->getContentSize().height*1.2));
+				auto text = Tip::create(s, 0.1f, cocos2d::Color4B::GREEN);
+				text->setPosition(Vec2(player->getContentSize().width*player->getScale() *0.8,
+					player->getContentSize().height*player->getScale()*1.2));
 				text->setScale(1.0/player->getScale());
 				player->addChild(text);
 				player->addNowHPValue(-_damage);
