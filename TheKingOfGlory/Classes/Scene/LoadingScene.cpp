@@ -208,7 +208,6 @@ void LoadingScene::loadResources()
 
 void LoadingScene::createBackground()
 {
-	//��ӱ���ͼ
 	auto background = Sprite::create("Pictures/Background/LoadingBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -216,7 +215,6 @@ void LoadingScene::createBackground()
 
 void LoadingScene::createProgressBar()
 {
-	//���������
 	auto barSprite = Sprite::create("Pictures/UI/Bar.png");
 	progress = ProgressTimer::create(barSprite);
 	progress->setPercentage(0.0f);
@@ -248,7 +246,6 @@ void LoadingScene::loadEffect(ValueVector effectFiles)
 
 void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 {
-	//���ؾ����
 	for (Value &v : spriteFiles) {
 		SpriteFrameCache::getInstance()->addSpriteFramesWithFile(v.asString().c_str());
 		progressUpdate();
@@ -258,18 +255,15 @@ void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 void LoadingScene::progressUpdate()
 {
 	if (--sourceCount) {
-		//���ʣ�����Դ�����ý������
 		progress->setPercentage(100.0f - (progress_Interval * sourceCount));
 	}
 	else {
-		//��Ϸ��Դ������ϣ��л�����
 		auto pft = ProgressFromTo::create(0.5f, progress->getPercentage(), 100);
 
 		auto callFunc = CallFunc::create([=] {
 
 			auto delay = DelayTime::create(2.0f);
 			const auto transition = TransitionFade::create(1, LoginScene::createScene());
-			//const auto transition = TransitionFade::create(1, SelectScene::createScene());
 			auto action = Sequence::create(delay, transition, NULL);
 			Director::getInstance()->replaceScene(transition);
 		});

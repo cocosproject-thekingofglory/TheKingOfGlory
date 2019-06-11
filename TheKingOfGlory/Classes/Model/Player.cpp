@@ -4,6 +4,7 @@
 #include "GameMap.h"
 #include "UI/CountDown.h"
 #include "SkillBase.h"
+#include "../Manager/Manager.h"
 
 
 USING_NS_CC;
