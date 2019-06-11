@@ -1,15 +1,14 @@
 #include "GameScene.h"
 #include "Util/GameAudio.h"
-#include "ui/CocosGUI.h"
 #include "StartScene.h"
 #include "SettingsScene.h"
 #include "Model/GameMap.h"
 #include "Controller/GameController.h"
 #include "../Model/StatusList.h"
-
-
 USING_NS_CC;
 using namespace CocosDenshion;
+
+
 
 void GameScene::onEnter()
 {
@@ -19,29 +18,28 @@ void GameScene::onEnter()
 
 void GameScene::createStatusButton()
 {
-	auto button = Button::create("Pictures/StatusList/statusButton.png");
-	button->setScaleX(2.0);
-	button->setPosition(Vec2(this->getContentSize().width - button->getContentSize().width * 2
+	statusButton = Button::create("Pictures/StatusList/statusButton.png");
+	statusButton->setScaleX(2.0);
+	statusButton->setPosition(Vec2(this->getContentSize().width - statusButton->getContentSize().width * 2
 		, this->getContentSize().height / 4 * 3));
-	button->setEnabled(true);
-	button->setSwallowTouches(true);
+	statusButton->setEnabled(false);
+	statusButton->setSwallowTouches(true);
 
-	button->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
+	statusButton->addTouchEventListener([=](Ref*pSender, Widget::TouchEventType type)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
 			if (hasList)return;
-			auto list = StatusList::createStatusList();
+			auto list =StatusList::createStatusList();
 			list->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
 			this->addChild(list, 4);
 		}
 	});
-	this->addChild(button, 4);
+	this->addChild(statusButton, 4);
 }
-
 void GameScene::createMenuButton()
 {
-	//Ìí¼Ó²Ëµ¥°´Å¥
+	//æ·»åŠ èœå•æŒ‰é’®
 	auto menuItem = MenuItemImage::create(
 		"Pictures/UI/SettingNormal.png",
 		"Pictures/UI/SettingSelected.png",
@@ -57,7 +55,7 @@ void GameScene::createMenuButton()
 
 void GameScene::updateMenu()
 {
-	//¸üÐÂ²Ëµ¥£¬½ÓÊÕµ½UpdateMenuÊÂ¼þÊÇÏìÓ¦
+	//æ›´æ–°èœå•ï¼ŒæŽ¥æ”¶åˆ°UpdateMenuäº‹ä»¶æ˜¯å“åº”
 	if (hasMenu)
 		removeMenu();
 	else
@@ -68,7 +66,7 @@ void GameScene::createMenu()
 {
 	if (hasMenu)
 		return;
-	//Ìí¼Ó²Ëµ¥Í¼Æ¬
+	//æ·»åŠ èœå•å›¾ç‰‡
 	menu = Sprite::create("Pictures/UI/Menu1.png");
 	menu->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(menu,4);
@@ -80,29 +78,48 @@ void GameScene::createMenu()
 	Size menuSize = menu->getContentSize();
 	float menuBottom = visible_Size.height / 2 - menuSize.height / 2;
 
-	//Ìí¼Ó¼ÌÐøÓÎÏ·ÎÄ×Ö
+	//æ·»åŠ ç»§ç»­æ¸¸æˆæ–‡å­—
 	continueLabel = Label::createWithTTF("Continue", text_Font, text_Size);
 	continueLabel->setTextColor(text_Color);
 	continueLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.8));
 	this->addChild(continueLabel, 4);
 
-	//Ìí¼ÓÓÎÏ·ÉèÖÃÎÄ×Ö
-	settingLabel = Label::createWithTTF("Setting", text_Font, text_Size);
-	settingLabel->setTextColor(text_Color);
-	settingLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.6));
-	this->addChild(settingLabel, 4);
+	//æ·»åŠ éŸ³ä¹è®¾ç½®æ–‡å­—
+	bgmLabel = Label::createWithTTF("Bgm", text_Font, text_Size);
+	bgmLabel->setTextColor(text_Color);
+	bgmLabel->setPosition(Vec2(visible_Size.width *0.48, menuBottom + menuSize.height*0.6));
+	this->addChild(bgmLabel, 4);
+	
+	musicCheckBox = ui::CheckBox::create("Pictures/UI/checkbox_normal.png", "Pictures/UI/checkbox_active.png");
+	musicCheckBox->setPosition(Vec2(visible_Size.width *0.53, menuBottom + menuSize.height*0.6));
+	musicCheckBox->setSelected(GameAudio::getInstance()->getBgmOn());
+	musicCheckBox->addEventListener([=](Ref*, ui::CheckBox::EventType type)
+	{
+		GameAudio::getInstance()->setBgmOn(type == ui::CheckBox::EventType::SELECTED);
+	});
+	this->addChild(musicCheckBox,4);
 
-	//Ìí¼ÓÖØÐÂ¿ªÊ¼ÎÄ×Ö
-	restartLabel = Label::createWithTTF("Restart", text_Font, text_Size);
-	restartLabel->setTextColor(text_Color);
-	restartLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.4));
-	this->addChild(restartLabel, 4);
 
-	//Ìí¼Ó·µ»ØÖ÷²Ëµ¥ÎÄ×Ö
-	returnLabel = Label::createWithTTF("Main Menu", text_Font, text_Size);
-	returnLabel->setTextColor(text_Color);
-	returnLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
-	this->addChild(returnLabel, 4);
+	//æ·»åŠ éŸ³æ•ˆè®¾ç½®æ–‡å­—
+	effectLabel = Label::createWithTTF("Effect", text_Font, text_Size);
+	effectLabel->setTextColor(text_Color);
+	effectLabel->setPosition(Vec2(visible_Size.width *0.48, menuBottom + menuSize.height*0.4));
+	this->addChild(effectLabel, 4);
+
+	effectCheckBox = ui::CheckBox::create("Pictures/UI/checkbox_normal.png", "Pictures/UI/checkbox_active.png");
+	effectCheckBox->setPosition(Vec2(visible_Size.width *0.53, menuBottom + menuSize.height*0.4));
+	effectCheckBox->setSelected(GameAudio::getInstance()->getEffectOn());
+	effectCheckBox->addEventListener([=](Ref*, ui::CheckBox::EventType type)
+	{
+		GameAudio::getInstance()->setEffectOn(type == ui::CheckBox::EventType::SELECTED);
+	});
+	this->addChild(effectCheckBox, 4);
+	
+	//æ·»åŠ é€€å‡ºæ¸¸æˆæ–‡å­—
+	exitLabel = Label::createWithTTF("Exit", text_Font, text_Size);
+	exitLabel->setTextColor(text_Color);
+	exitLabel->setPosition(Vec2(visible_Size.width / 2, menuBottom + menuSize.height*0.2));
+	this->addChild(exitLabel, 4);
 
 	menuListener->setEnabled(true);
 	hasMenu = true;
@@ -113,13 +130,15 @@ void GameScene::removeMenu()
 {
 	if (!hasMenu)
 		return;
-	//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬É¾³ý²Ëµ¥
+	//åœç”¨èœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œåˆ é™¤èœå•
 	menuListener->setEnabled(false);
 	this->removeChild(menu, true);
 	this->removeChild(continueLabel, true);
-	this->removeChild(settingLabel, true);
-	this->removeChild(restartLabel, true);
-	this->removeChild(returnLabel, true);
+	this->removeChild(bgmLabel, true);
+	this->removeChild(effectLabel, true);
+	this->removeChild(exitLabel, true);
+	this->removeChild(musicCheckBox, true);
+	this->removeChild(effectCheckBox, true);
 	hasMenu = false;
 }
 
@@ -137,40 +156,81 @@ void GameScene::createResultBox(EventCustom* event)
 	resultText->setColor(Color3B(0, 0, 255));
 	resultText->setPosition(Vec2(boxSize.width / 2, boxSize.height*0.7));
 
-	auto restartButton = ui::Button::create("Pictures/UI/button.png");
-	restartButton->setScale(1.2);
-	restartButton->setTitleFontName("fonts/Marker Felt.ttf");
-	restartButton->setTitleText("Restart");
-	restartButton->setTitleColor(Color3B(255, 250, 205));
-	restartButton->setTitleFontSize(20);
-	restartButton->setPosition(Vec2(boxSize.width*0.3, boxSize.height*0.3));
-	restartButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
-	{
-		if (type == Widget::TouchEventType::ENDED)
-		{
-			Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
-		}
-	});
 
 	auto returnButton = ui::Button::create("Pictures/UI/button.png");
 	returnButton->setScale(1.2);
 	returnButton->setTitleFontName("fonts/Marker Felt.ttf");
-	returnButton->setTitleText("Main Menu");
+	returnButton->setTitleText("Exit");
 	returnButton->setTitleColor(Color3B(255, 250, 205));
-	returnButton->setTitleFontSize(18);
-	returnButton->setPosition(Vec2(boxSize.width*0.7, boxSize.height*0.3));
+	returnButton->setTitleFontSize(24);
+	returnButton->setPosition(Vec2(boxSize.width*0.5, boxSize.height*0.3));
 	returnButton->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type)
 	{
 		if (type == Widget::TouchEventType::ENDED)
 		{
-			Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
+			Director::getInstance()->end();
 		}
 	});
 
 	box->addChild(resultText, 4);
-	box->addChild(restartButton, 4);
 	box->addChild(returnButton, 4);
 
+	auto VsText = Text::create("VS", "fonts/arial.ttf", 32);
+	VsText->setPosition(Vec2(visible_Size.width/2, visible_Size.height/2));
+	VsText->setColor(Color3B::WHITE);
+	this->addChild(VsText,4);
+
+	auto redText = Text::create(std::to_string(redRank.first), "fonts/arial.ttf", 32);
+	redText->setPosition(Vec2(visible_Size.width*0.45, visible_Size.height/2));
+	redText->setColor(Color3B::RED);
+	this->addChild(redText,4);
+
+	auto blueText = Text::create(std::to_string(blueRank.first), "fonts/arial.ttf", 32);
+	blueText->setPosition(Vec2(visible_Size.width*0.55, visible_Size.height/2));
+	blueText->setColor(Color3B::BLUE);
+	this->addChild(blueText,4);
+
+}
+
+void GameScene::createRank()
+{
+	auto bg = Sprite::create("Pictures/UI/rankBg.png");
+	bg->setPosition(Vec2(visible_Size.width*0.8, visible_Size.height*0.96));
+	this->addChild(bg);
+
+	auto VsText = Text::create("VS", "fonts/arial.ttf", 32);
+	VsText->setPosition(Vec2(visible_Size.width*0.8, visible_Size.height*0.96));
+	VsText->setColor(Color3B::WHITE);
+	this->addChild(VsText);
+
+	redRank.first = 0;
+	auto& redText = redRank.second;
+	redText = Text::create("0", "fonts/arial.ttf", 32);
+	redText->setPosition(Vec2(visible_Size.width*0.75, visible_Size.height*0.96));
+	redText->setColor(Color3B::RED);
+	this->addChild(redText);
+
+	blueRank.first = 0;
+	auto& blueText = blueRank.second;
+	blueText = Text::create("0", "fonts/arial.ttf", 32);
+	blueText->setPosition(Vec2(visible_Size.width*0.85, visible_Size.height*0.96));
+	blueText->setColor(Color3B::BLUE);
+	this->addChild(blueText);
+}
+
+void GameScene::updateRank(cocos2d::EventCustom * event)
+{
+	bool isRed = static_cast<bool>(event->getUserData());
+	if (isRed)
+	{
+		redRank.first++;
+		redRank.second->setText(std::to_string(redRank.first));
+	}
+	else
+	{
+		blueRank.first++;
+		blueRank.second->setText(std::to_string(blueRank.first));
+	}
 }
 
 void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
@@ -183,25 +243,20 @@ void GameScene::onTouchEnded(cocos2d::Touch * touch, cocos2d::Event * event)
 	{
 		removeMenu();
 	}
-	else if (this->rectOfLabel(settingLabel).containsPoint(nodeLocation))
+	else if (this->rectOfLabel(exitLabel).containsPoint(nodeLocation))
+
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬É¾³ý²Ëµ¥,½øÈëÓÎÏ·ÉèÖÃ½çÃæ
-		removeMenu();
-		Director::getInstance()->pushScene(TransitionFade::create(1, SettingsScene::createScene()));
+		Director::getInstance()->end();
 	}
-	else if (this->rectOfLabel(restartLabel).containsPoint(nodeLocation))
+	else if (musicCheckBox->getBoundingBox().containsPoint(nodeLocation))
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬ÖØÐÂ¿ªÊ¼ÓÎÏ·
-		menuListener->setEnabled(false);
-		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, GameScene::createScene()));
+		musicCheckBox->setSelected(!musicCheckBox->getSelectedState());
+		GameAudio::getInstance()->setBgmOn(musicCheckBox->getSelectedState());
 	}
-	else if (this->rectOfLabel(returnLabel).containsPoint(nodeLocation))
+	else if (effectCheckBox->getBoundingBox().containsPoint(nodeLocation))
 	{
-		//Í£ÓÃ²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬·µ»ØÖ÷²Ëµ¥
-		menuListener->setEnabled(false);
-		hasMenu = false;
-		Director::getInstance()->replaceScene(TransitionFade::create(1, StartScene::createScene()));
+		effectCheckBox->setSelected(!effectCheckBox->getSelectedState());
+		GameAudio::getInstance()->setEffectOn(effectCheckBox->getSelectedState());
 	}
 }
 
@@ -213,23 +268,37 @@ cocos2d::Rect GameScene::rectOfLabel(cocos2d::Label * label)
 		label->getContentSize().height);
 }
 
-cocos2d::Scene * GameScene::createScene()
+cocos2d::Scene * GameScene::createScene(Client* client, Server*server )
 {
 	auto scene = Scene::create();
-	auto layer = GameScene::create();
+	auto layer = GameScene::create(client,server);
 	layer->setName("GameScene");
 	scene->addChild(layer);
 	return scene;
 }
 
-bool GameScene::init()
+GameScene * GameScene::create(Client * client, Server * server)
+{
+	GameScene *gamescene = new (std::nothrow) GameScene();
+	if (gamescene && gamescene->init(client, server))
+	{
+		gamescene->autorelease();
+		return gamescene;
+	}
+	CC_SAFE_DELETE(gamescene);
+
+	return nullptr;
+}
+
+bool GameScene::init(Client* client, Server*server)
 {
 	if (!Layer::init())
 		return false;
 
+
 	visible_Size = Director::getInstance()->getVisibleSize();
 
-	//´´½¨²Ëµ¥ÊÂ¼þ¼àÌýÆ÷£¬ÏÈ²»ÆôÓÃ
+	//åˆ›å»ºèœå•äº‹ä»¶ç›‘å¬å™¨ï¼Œå…ˆä¸å¯ç”¨
 	menuListener = EventListenerTouchOneByOne::create();
 	menuListener->onTouchBegan = [](Touch* touch, Event* event) {return true; };
 	menuListener->onTouchEnded = CC_CALLBACK_2(GameScene::onTouchEnded, this);
@@ -237,13 +306,23 @@ bool GameScene::init()
 	menuListener->setEnabled(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(menuListener, -1);
 
-	//´´½¨×Ô¶¨ÒåÊÂ¼þ¼àÌýÆ÷£¬ÓÃÓÚ´ò¿ª¹Ø±Õ²Ëµ¥
+	auto gameStartListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom* event) {
+		statusButton->setEnabled(true);
+	});
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameStartListener, 1);
+
+
+	//åˆ›å»ºè‡ªå®šä¹‰äº‹ä»¶ç›‘å¬å™¨ï¼Œç”¨äºŽæ‰“å¼€å…³é—­èœå•
 	auto updateMenuListener = EventListenerCustom::create("UpdateMenu", CC_CALLBACK_0(GameScene::updateMenu, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(updateMenuListener, 1);
 
-	//´´½¨×Ô¶¨ÒåÊÂ¼þ¼àÌýÆ÷£¬ÓÎÏ·½áÊøÊ±µ¯³ö¶Ô»°¿ò
+	//åˆ›å»ºè‡ªå®šä¹‰äº‹ä»¶ç›‘å¬å™¨ï¼Œæ¸¸æˆç»“æŸæ—¶å¼¹å‡ºå¯¹è¯æ¡†
 	auto gameOverListener = EventListenerCustom::create("GameOver", CC_CALLBACK_1(GameScene::createResultBox, this));
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(gameOverListener, 1);
+
+
+	auto rankUpdateListener = EventListenerCustom::create("UpdateRank", CC_CALLBACK_1(GameScene::updateRank, this));
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(rankUpdateListener, 1);
 
 	auto bg = Sprite::create("Pictures/Background/WhiteBackground.png");
 	bg->setScale(100);
@@ -252,20 +331,21 @@ bool GameScene::init()
 	//this->setAnchorPoint(Vec2::ZERO);
 	log("visible:x:%f  y:%f", visible_Size.width, visible_Size.height);
 
-	//Ìí¼ÓµØÍ¼
+	//æ·»åŠ åœ°å›¾
 	auto map = GameMap::create();
-	map->setMap("1v1");
+	map->setMap("map/map");
 	map->setPosition(Vec2::ZERO);
-	map->setScale(0.5f);
+	//map->setScale(0.5f);
 	this->addChild(map, -1);
 
-	auto gameController = GameController::create();
+	auto gameController = GameController::create(client,server);
+
 	gameController->setMap(map);
 	this->addChild(gameController, -1);
 
 	createMenuButton();
-
 	createStatusButton();
+	createRank();
 
 	return true;
 }

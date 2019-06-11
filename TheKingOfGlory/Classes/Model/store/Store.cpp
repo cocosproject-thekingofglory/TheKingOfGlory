@@ -31,9 +31,14 @@ void Store::createListener()
 	auto listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(Store::onTouchBegan, this);
 	listener->onTouchEnded = CC_CALLBACK_2(Store::onTouchEnded, this);
-	listener->setEnabled(true);
+	listener->setEnabled(false);
 	listener->setSwallowTouches(false);
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 9);
+
+	auto customListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom*) {
+		listener->setEnabled(true);
+	});
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(customListener, 1);
 }
 bool Store::onTouchBegan(Touch*touch, Event*event)
 {
@@ -59,9 +64,9 @@ void Store::createBg()
 	_bg = Sprite::createWithSpriteFrameName("bg_shop.png");
 	_bg->setScaleY(0.6);
 	_bg->setPosition(Vec2(_visibleSize.width / 2, _visibleSize.height / 2));
-	
+
 	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(_bg, 1);
-	
+
 	_closeButton = Button::create("Pictures/Store/closeButton1.png");
 	_closeButton->setScale(2);
 	_closeButton->setPosition(Vec2(_bg->getContentSize().width - _closeButton->getContentSize().width / 2
@@ -98,7 +103,7 @@ void Store::createBg()
 	Money->setPosition(Vec2(Money->getContentSize().width + Money->getContentSize().width / 2
 		, _bg->getContentSize().height - Money->getContentSize().height * 10));
 	_bg->addChild(Money);
-	
+
 	float sy = _bg->getContentSize().height - Title->getContentSize().height * 2;
 	float dis = _bg->getContentSize().width / 6;
 	//log("!!!!!%f %f", sy, dis);
@@ -116,7 +121,7 @@ void Store::createBg()
 
 	if (!VIP)
 	{
-		
+
 		_vipButton = Button::create("Pictures/Store/text_be_vip.png");
 		_vipButton->setScale(2);
 		_vipButton->setPosition(Vec2(_bg->getContentSize().width / 2, _vipButton->getContentSize().height));
@@ -132,7 +137,7 @@ void Store::createBg()
 				vipSprite->setPosition(Vec2(_bg->getContentSize().width / 2, _bg->getContentSize().height / 2));
 				vipSprite->setScale(0.8);
 				_bg->addChild(vipSprite, 400);
-				EQUIPMENT_CNT = 15;//µã³äÖµ¶à5¼þ×°±¸
+				EQUIPMENT_CNT = 15;//ÂµÃ£Â³Ã¤Ã–ÂµÂ¶Ã 5Â¼Ã¾Ã—Â°Â±Â¸
 				auto sequence = Sequence::create(DelayTime::create(3.0f), CallFunc::create([=]()
 				{
 					_bg->removeChild(vipSprite, true);

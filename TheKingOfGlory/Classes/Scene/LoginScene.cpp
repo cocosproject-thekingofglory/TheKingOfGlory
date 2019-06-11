@@ -94,6 +94,8 @@ void LoginScene::initUserBox()
 	usernameInput->setMaxLengthEnabled(true);
 	usernameInput->setPosition(usernameBG->getContentSize() / 2);
 	usernameInput->addEventListener(CC_CALLBACK_2(LoginScene::textFieldEvent, this));
+	usernameInput->setTouchSize(usernameBG->getContentSize());
+	usernameInput->setTouchAreaEnabled(true);
 
 	usernameBG->addChild(usernameInput);
 

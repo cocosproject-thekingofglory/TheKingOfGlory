@@ -8,7 +8,7 @@ bool StatusList::init()
 	}
 
 	this->setScale(3.0);
-	
+
 	auto _closeButton = Button::create("Pictures/Store/closeButton1.png");
 	//_closeButton = Sprite::createWithSpriteFrameName("closeButton1.png");
 	_closeButton->setScale(0.5);
@@ -26,7 +26,6 @@ bool StatusList::init()
 	_closeButton->setPosition(Vec2(160, 200));
 
 	this->addChild(_closeButton,40);
-
 	auto localPlayer= Manager::getInstance()->playerManager->getLocalPlayer();
 
 	float mid = 90;

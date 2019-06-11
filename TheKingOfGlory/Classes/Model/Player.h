@@ -10,10 +10,11 @@ USING_NS_CC;
 using namespace ui;
 
 //基础属性
-const float PLAYER_ATTACK_RADIUS = 10;
+const float PLAYER_ATTACK_RADIUS = 20;
 const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_SKILLRECOVER_VALUE = -10.0;
 const float PLAYER_HPVALUE = 200;
-const float PLAYER_MOVE_SPEED = 10.0;
+const float PLAYER_MOVE_SPEED =6.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 const float PLAYER_DEFEND = 0.2;
 //经验、金钱
@@ -23,9 +24,9 @@ const int PLAYER_MAX_LEVEL = 15;
 const int PLAYER_INITIAL_LEVEL = 1;
 const int PLAYER_INITIAL_MONEY = 100;
 //升级加属性
-const float PLAYER_LEVEL_UP_DAMAGE = 5.0;
+const float PLAYER_LEVEL_UP_DAMAGE = 10.0;
 const float PLAYER_LEVEL_UP_DEFEND = 0.01;
-const float PLAYER_LEVEL_UP_HPVALUE = 20;
+const float PLAYER_LEVEL_UP_HPVALUE = 50;
 
 class Player :public SpriteBase
 {
@@ -40,8 +41,8 @@ public:
 		BEINGHIT,
 		SKILL1,
 		SKILL2,
-		SKILL3
-
+		SKILL3,
+		SKILLRECOVER
 	};
 
 	enum class Direction : std::int8_t
@@ -50,8 +51,8 @@ public:
 		RIGHT,
 		UP,
 		DOWN,
-		LEFTDOWN,
-		LEFTUP,
+		LEFTDOWN,  
+		LEFTUP,  
 		RIGHTDOWN,
 		RIGHTUP,
 		NONE
@@ -66,16 +67,14 @@ public:
 		SKILL
 	};
 
-	enum PlayerType {
-		WARRIOR,
-		MAGE,
-		ARCHER
-	};
 
-	char* roleName[3] = {
+	char* roleName[6] = {
 		"warrior",
 		"aviator",
-		"Archer"
+		"mage",
+		"paladin",
+		"ranger",
+		"cavalier"
 	};
 
 	static Player* createPlayer(const std::string& id, int role,int color);
@@ -84,7 +83,7 @@ public:
 	virtual bool init(int role,int color);//初始化一些条件
 	bool initWithRole(int role,int color);//只是初始化名字
 
-	void setStatus(Status);//设置状态
+	virtual void setStatus(Status);//设置状态
 	Status getStatus();//获取五种状态
 
 	void isLocal(bool a);//？
@@ -129,6 +128,7 @@ public:
 	void setRecover(bool recover) { _isRecover = recover; }
 	bool getRecover() { return _isRecover; }
 
+	void skillRecover();
 	void startMove(Vec2 destination);
 
 	void judgeDirection(float dx, float dy);
@@ -169,6 +169,8 @@ protected:
 	bool _isAttack;
 	bool _isSkill;
 	bool _isRecover;
+	Status _status;
+	Direction _direction;
 
 	std::string _id;
 	std::string _roleName;
@@ -176,10 +178,10 @@ protected:
 	std::vector<std::string> _animationNames;
 
 private:
-	PlayerType _type;
+	bool isOnline;
 
-	Status _status;
-	Direction _direction;
+	int _role;
+
 
 	float _speed;
 

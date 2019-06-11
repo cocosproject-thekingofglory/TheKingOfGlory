@@ -1,5 +1,6 @@
 #include "SkillBase.h"
 #include "Manager/Manager.h"
+#include "UI/Tip.h"
 USING_NS_CC;
 
 
@@ -44,25 +45,51 @@ void SkillBase::collisionDetection()
 	auto box = this->getBoundingBox();
 	auto manager=dynamic_cast<Manager*>(cocos2d::Director::getInstance()->getRunningScene()->
 		getChildByName("GameScene")->getChildByName("GameController")->getChildByName("Manager"));
-	auto players = manager->playerManager->getPlayerList();
-	for (auto pair : players)
+	if (_damage > 0)
 	{
-		auto player = pair.second;
-		if (player->getColor() != _color & box.intersectsRect(player->getBoundingBox()))
-			player->beAttack(_damage);
+		auto players = manager->playerManager->getPlayerList();
+		for (auto pair : players)
+		{
+			auto player = pair.second;
+			if (player->getColor() != _color & box.intersectsRect(player->getBoundingBox()))
+				player->beAttack(_damage);
+		}
+		auto soldiers = manager->_soldierList[_color ^ 1];
+		for (auto soldier : soldiers)
+		{
+			if (box.intersectsRect(soldier->getBoundingBox()))
+				soldier->beAttack(_damage);
+		}
+		auto towers = manager->_towerList[_color ^ 1];
+		for (auto tower : towers)
+		{
+			if (box.intersectsRect(tower->getBoundingBox()))
+				tower->beAttack(_damage);
+		}
 	}
-	auto soldiers = manager->_soldierList[_color ^ 1];
-	for (auto soldier: soldiers)
+	else
 	{
-		if (box.intersectsRect(soldier->getBoundingBox()))
-			soldier->beAttack(_damage);
+		auto players = manager->playerManager->getPlayerList();
+		for (auto pair : players)
+		{
+			auto player = pair.second;
+			if (player->getColor() != _color && player->getStatus() != Player::Status::DEAD
+				&&player->getNowHPValue() > 0.0&& box.intersectsRect(player->getBoundingBox()))
+			{
+				std::stringstream str;
+				str << _damage;
+				std::string s = "+" + str.str();
+				auto text = Tip::create(s, 0.1f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
+				text->setPosition(Vec2(this->getContentSize().width *0.8,
+					this->getContentSize().height*1.2));
+				text->setScale(1.0/player->getScale());
+				player->addChild(text);
+				player->addNowHPValue(-_damage);
+			}
+
+		}
 	}
-	auto towers = manager->_towerList[_color ^ 1];
-	for (auto tower : towers)
-	{
-		if (box.intersectsRect(tower->getBoundingBox()))
-			tower->beAttack(_damage);
-	}
+
 }
 
 void SkillBase::remove()

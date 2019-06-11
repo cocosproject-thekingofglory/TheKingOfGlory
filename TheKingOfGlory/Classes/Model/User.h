@@ -13,8 +13,8 @@ public:
         return &INSTANCE;
     }
 
-    void setUID(const std::string & uid) { this->uid = uid; }
-    std::string getUID() const { return uid; }
+	void setRole(int role) { this->role = role; }
+	int getRole() { return role; }
 
     void setName(const std::string& name) { this->name = name; };
     std::string getName() const { return name; };
@@ -22,10 +22,7 @@ public:
 private:
     User() {};
 
-    std::string uid;
+	int role;
     std::string name;
 };
-
-
-
 

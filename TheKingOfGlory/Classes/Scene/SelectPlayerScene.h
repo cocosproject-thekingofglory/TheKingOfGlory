@@ -1,23 +1,24 @@
 #pragma once
 #include"cocos2d.h"
-#include"SimpleAudioEngine.h"
-#include"Model/Player.h"
-#include"Scene/GameScene.h"
+#include "Network/Client.h"
+#include "Network/Server.h"
+
 
 
 class SelectPlayerScene :public cocos2d::Layer
 {
 private:
-	cocos2d::Size visible_Size;
-
+	bool isOnline;
+	Client * _client;
+	Server * _server;
+	cocos2d::Label* connectionMsg;
+	int timer_=0;
 public:
-	static cocos2d::Scene* createScene();
+	static cocos2d::Scene* createScene(Client* client, Server*server = nullptr);
+	static SelectPlayerScene* create(Client * client, Server * server);
 
+	virtual bool init(Client* client, Server* server);
 
-	virtual bool init();
-	void yaseCallback(cocos2d::Ref* pSender);
-	void houyiCallback(cocos2d::Ref* pSender);
-	void dajiCallback(cocos2d::Ref* pSender);
+	void startSchedule();
 
-	CREATE_FUNC(SelectPlayerScene);
 };

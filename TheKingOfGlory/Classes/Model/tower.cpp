@@ -1,5 +1,6 @@
 #include "Tower.h"
 #include "GameMap.h"
+#include "UI/Tip.h"
 
 Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 {
@@ -45,6 +46,7 @@ bool Tower::attack()
 			auto target = _attackTargetList.at(i);
 			auto bullet=BulletBase::create(this, target, "bullet", "bullet (1).png");
 			GameMap::getCurrentMap()->addChild(bullet);
+			bullet->setPosition(getPosition());
 			Vec2 pos = Vec2(getPosition().x + getContentSize().width / 2, getPosition().y + getContentSize().height / 2);
 			bullet->setPosition(pos);
 			return true;
@@ -57,6 +59,14 @@ float Tower::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
 	nowHP -= damage;
+	std::stringstream str;
+	str << damage;
+	std::string s = "-" + str.str();
+	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
+	text->setPosition(Vec2(this->getContentSize().width *0.8,
+		this->getContentSize().height*1.2));
+	text->setScale(1.0/this->getScale());
+	addChild(text);
 	if (nowHP <= 0.0)
 	{
 		for (int i = 0; i < _beAttackTargetList.size(); i++)

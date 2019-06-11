@@ -1,21 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Util\GameAudio.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Model\BulletBase.cpp">
       <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\GameMap.cpp">
       <Filter>Model</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Model\GunCar.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Hero.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\Home.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Model\Player.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\SkillBase.cpp">
       <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\Soldier.cpp">
@@ -27,8 +33,20 @@
     <ClCompile Include="..\Classes\Model\Tower.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Controller\GameController.cpp">
-      <Filter>Controller</Filter>
+    <ClCompile Include="..\Classes\Util\AnimationLoader.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\GameAudio.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Network\Client.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Network\Server.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\HelloWorldScene.cpp">
       <Filter>Scene</Filter>
@@ -39,13 +57,16 @@
     <ClCompile Include="..\Classes\Scene\LoginScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Scene\GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scene\SelectScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\Scene\SettingsScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Scene\StartScene.cpp">
-      <Filter>Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Scene\GameScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Manager\Manager.cpp">
@@ -54,47 +75,56 @@
     <ClCompile Include="..\Classes\Manager\PlayerManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Controller\GameController.cpp">
+      <Filter>Controller</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\UI\CountDown.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Util\PathArithmetic.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\Model\Home.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="..\Classes\UI\Tip.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\store\EquipmentBase.cpp">
+      <Filter>Model\store</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Model\StatusList.cpp">
       <Filter>Model\store</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Model\store\Store.cpp">
       <Filter>Model\store</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Model\GunCar.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="..\Classes\UI\Skill.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Model\StatusList.cpp">
-      <Filter>Model</Filter>
+    <ClCompile Include="..\Classes\Scene\SelectPlayerScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Network\ChatBox.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="main.h" />
-    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Util\GameAudio.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\User.h">
-      <Filter>Util</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Model\BulletBase.h">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\GameMap.h">
       <Filter>Model</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Model\GunCar.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Hero.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\Home.h">
+      <Filter>Model</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\Model\Player.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Model\SkillBase.h">
       <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\Soldier.h">
@@ -106,8 +136,26 @@
     <ClInclude Include="..\Classes\Model\Tower.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Controller\GameController.h">
-      <Filter>Controller</Filter>
+    <ClInclude Include="..\Classes\Model\User.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\AnimationLoader.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\GameAudio.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Util\PathArithmetic.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\Client.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\Server.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\socket_message.h">
+      <Filter>Network</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\GameScene.h">
       <Filter>Scene</Filter>
@@ -119,6 +167,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\LoginScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SelectScene.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Scene\SettingsScene.h">
@@ -133,14 +184,14 @@
     <ClInclude Include="..\Classes\Manager\PlayerManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Controller\GameController.h">
+      <Filter>Controller</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\UI\CountDown.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Util\PathArithmetic.h">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Model\Home.h">
-      <Filter>Model</Filter>
+    <ClInclude Include="..\Classes\UI\Tip.h">
+      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Model\store\EquipmentBase.h">
       <Filter>Model\store</Filter>
@@ -148,37 +199,49 @@
     <ClInclude Include="..\Classes\Model\store\Store.h">
       <Filter>Model\store</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Model\GunCar.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Model\StatusList.h">
-      <Filter>Model</Filter>
+      <Filter>Model\store</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\UI\Skill.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scene\SelectPlayerScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\ChatBox.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Network\GameMsg_generated.h">
+      <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Controller">
-      <UniqueIdentifier>{2da16d91-3d7d-49e8-847d-4495994ccdfa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Manager">
-      <UniqueIdentifier>{df02b2c1-ee08-49fb-bd08-78d554eaca5e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scene">
-      <UniqueIdentifier>{ab69d6f8-7fe4-4744-a005-3292f1824ff9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Model">
-      <UniqueIdentifier>{fc4e1b99-8fac-4fe5-ae5a-23ab53bb529f}</UniqueIdentifier>
+      <UniqueIdentifier>{13d29f01-0fcd-43ef-b248-71f2f3174f7c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Util">
-      <UniqueIdentifier>{88684ed0-94b9-47c2-9c6b-5932b8ec7e9c}</UniqueIdentifier>
+      <UniqueIdentifier>{00ac8c99-14cd-49e1-b60b-3973cc2fd403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{5b3a3f4e-9d13-423f-8913-2aeab3273e4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{e4215b5a-c280-4c75-a08a-85873c287e8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{850cb0dd-45e7-4157-b23f-ca01a8eb9192}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{c6ab5db0-e7fd-481f-b3b1-c9b56bc3a35e}</UniqueIdentifier>
     </Filter>
     <Filter Include="UI">
-      <UniqueIdentifier>{c2ccd54b-eeea-497a-a73b-4e10d994a5b5}</UniqueIdentifier>
+      <UniqueIdentifier>{92bffbe4-a917-4b95-958c-c081a92d40f5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Model\store">
-      <UniqueIdentifier>{e6fae104-65da-44cd-a907-5c596653bf6d}</UniqueIdentifier>
+      <UniqueIdentifier>{3206cd8b-8898-44ff-9f1f-06708d06a9e2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
