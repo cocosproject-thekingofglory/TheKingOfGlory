@@ -12,6 +12,7 @@ private:
 	cocos2d::TMXTiledMap * tileMap;
 	cocos2d::TMXLayer * collidable;
 	cocos2d::TMXObjectGroup* objectLayer;
+	cocos2d::TMXObjectGroup* pathLayer;
 	cocos2d::ValueMap player_red;
 	cocos2d::ValueMap player_blue;
 	std::vector<cocos2d::ValueMap> towers_red;
@@ -25,6 +26,8 @@ private:
 	cocos2d::ValueMap monster_red;
 	cocos2d::ValueMap monster_blue;
 	cocos2d::Sprite* _centerSprite;
+	std::vector<std::vector<cocos2d::ValueMap>> soldier_red_path;
+	std::vector<std::vector<cocos2d::ValueMap>> soldier_blue_path;
 
 	bool initGrid();
 	void setViewPointCenter();
@@ -55,6 +58,9 @@ public:
 	void setSpritePosition(cocos2d::Sprite* sprite, Type type);
 	void addCenterSprite(cocos2d::Sprite* sprite) { _centerSprite = sprite; setViewPointCenter(); }
 	cocos2d::Vec2 getObjectPosition(Type type);
+
+	std::vector<std::vector<cocos2d::ValueMap>>& getSoldierPath(int color);
+
 
 	CREATE_FUNC(GameMap);
 };

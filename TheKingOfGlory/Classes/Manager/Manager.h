@@ -49,7 +49,7 @@ public:
 	PlayerManager* playerManager;
 
 
-	Soldier* createSoldier(const std::string &filename, const int color);
+	Soldier* createSoldier(const std::string &filename, const int color,int path);
 
 	GunCar* createGunCar(const std::string &filename, const int color);
 

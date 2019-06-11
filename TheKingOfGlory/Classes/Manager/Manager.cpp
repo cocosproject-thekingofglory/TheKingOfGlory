@@ -9,11 +9,12 @@ USING_NS_CC;
 //Manager* Manager::_instance;
 
 
-Soldier* Manager::createSoldier(const std::string &filename, const int color)
+Soldier* Manager::createSoldier(const std::string &filename, const int color,int path)
 {
 	auto soldier = Soldier::createWithSpriteFrameName(filename, color);
 	if (soldier)
 	{
+		soldier->addPath(GameMap::getCurrentMap()->getSoldierPath(color).at(path));
 		_soldierList[color].pushBack(soldier);
 		return soldier;
 	}
@@ -92,19 +93,19 @@ bool Manager::init()
 		auto tower_red_1 = createTower(RED_TOWER_FILENAME,RED);
 		tower_red_1->setScale(0.3);
 		GameMap::getCurrentMap()->addSprite(tower_red_1, GameMap::Type::Tower_Red);
-		if (isOnline)
-			if (mode == Mode::Five)
+		if (isOnline&&mode == Mode::Five)
+		{
+			for (int i = 1; i < 6; i++)
 			{
-				for (int i = 1; i < 6; i++)
-				{
-					auto tower_blue = createTower(BLUE_TOWER_FILENAME, BLUE);
-					tower_blue->setScale(0.3);
-					GameMap::getCurrentMap()->addTower(tower_blue, BLUE, i);
-					auto tower_red = createTower(RED_TOWER_FILENAME, RED);
-					tower_red->setScale(0.3);
-					GameMap::getCurrentMap()->addTower(tower_red, RED, i);
-				}
+				auto tower_blue = createTower(BLUE_TOWER_FILENAME, BLUE);
+				tower_blue->setScale(0.3);
+				GameMap::getCurrentMap()->addTower(tower_blue, BLUE, i);
+				auto tower_red = createTower(RED_TOWER_FILENAME, RED);
+				tower_red->setScale(0.3);
+				GameMap::getCurrentMap()->addTower(tower_red, RED, i);
 			}
+		}
+
 		//商店
 		auto store_blue = createStore(BLUE_STORE_FILENAME, BLUE);
 		store_blue->setScale(1);
@@ -134,7 +135,7 @@ bool Manager::init()
 				player->setAttack(true);
 				player->setSkill(true);
 			}
-			time_AI = 0;
+			time_AI = 1;
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
@@ -365,21 +366,46 @@ void Manager::scheduleGunCarAttack()
 
 void Manager::scheduleCreateSoldier()
 {
-	if (_soldierList[RED].size() < 10)
+	if (isOnline&&mode == Mode::Five)
 	{
-		auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED);
-		soldier_red->startMove();
-		GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Soldier_Red);
+		if (_soldierList[RED].size() < 30)
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED, 0);
+				soldier_red->startMove();
+				GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Soldier_Red);
+			}
 
+
+		}
+		if (_soldierList[BLUE].size() < 30)
+		{
+			for (int i = 0; i < 3; ++i)
+			{
+				auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE, i);
+				soldier_blue->startMove();
+				GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Solider_Blue);
+			}
+		}
+	}
+	else
+	{
+		if (_soldierList[RED].size() < 10)
+		{
+			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED, 0);
+			soldier_red->startMove();
+			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Soldier_Red);
+
+		}
+		if (_soldierList[BLUE].size() < 10)
+		{
+			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE, 0);
+			soldier_blue->startMove();
+			GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Solider_Blue);
+		}
 	}
 
-	if (_soldierList[BLUE].size() < 10)
-	{
-		auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE);
-		soldier_blue->startMove();
-		GameMap::getCurrentMap()->addSprite(soldier_blue, GameMap::Type::Solider_Blue);
-
-	}
 }
 
 void Manager::scheduleCreateGunCar()
@@ -589,7 +615,12 @@ void Manager::AIHero()
 				if (player->getAttackTarget().size())
 				{
 					player->attack();
-					if (time_AI >= 80)
+					if (time_AI % 50 == 0)
+					{
+						if ((player->getNowHPValue() / player->getHPValue()) < 0.5)
+							player->skillRecover();
+					}
+					if (time_AI%30==0)
 					{
 						time_AI = 50;
 						int n = rand() % 3;
@@ -600,6 +631,8 @@ void Manager::AIHero()
 						case 3:player->skill3(); break;
 						}
 					}
+					if (time_AI >= 15000)
+						time_AI = 1;
 				}
 				else
 				{

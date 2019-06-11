@@ -61,6 +61,49 @@ void GameMap::setMap(const std::string& mapName)
 		towers_blue.push_back(objectLayer->getObject("tower_blue"+std::to_string(i)));
 	}
 
+	pathLayer= tileMap->getObjectGroup("soldierPath");
+	{
+		auto pathM1 = pathLayer->getObject("pathM1");
+		{
+			std::vector<ValueMap> pathM;
+			pathM.push_back(pathM1);
+			for (int i = 2; i <= 6; ++i)
+			{
+				pathM.push_back(pathLayer->getObject("pathM" + std::to_string(i)));
+			}
+			soldier_red_path.push_back(pathM);
+		}
+		{
+			std::vector<ValueMap> pathL;
+			pathL.push_back(pathM1);
+			for (int i = 1; i <= 4; ++i)
+			{
+				pathL.push_back(pathLayer->getObject("pathL" + std::to_string(i)));
+			}
+			pathL.push_back(pathLayer->getObject("pathM6"));
+			soldier_red_path.push_back(pathL);
+		}
+		{
+			std::vector<ValueMap> pathR;
+			pathR.push_back(pathM1);
+			for (int i = 1; i <= 4; ++i)
+			{
+				pathR.push_back(pathLayer->getObject("pathL" + std::to_string(i)));
+			}
+			pathR.push_back(pathLayer->getObject("pathM6"));
+			soldier_red_path.push_back(pathR);
+		}
+	}
+	for (auto& path : soldier_red_path)
+	{
+		std::vector<ValueMap> pathblue;
+		for (int i = path.size() - 1; i >= 0; --i)
+		{
+			pathblue.push_back(ValueMap(path.at(i)));
+		}
+		soldier_blue_path.push_back(pathblue);
+	}
+
 	mapInfo.resize(getMapSize().width);
 	for (int i = 0; i < getMapSize().width; i++)
 	{
@@ -284,6 +327,14 @@ cocos2d::Vec2 GameMap::getObjectPosition(Type type)
 	}
 
 	return position;
+}
+
+std::vector<std::vector<ValueMap>>& GameMap::getSoldierPath(int color)
+{
+	if (color == 0)
+		return soldier_red_path;
+	else
+		return soldier_blue_path;
 }
 
 void GameMap::setViewPointCenter()

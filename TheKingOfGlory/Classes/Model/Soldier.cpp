@@ -62,13 +62,20 @@ void Soldier::move()
 {
 	if (getStatus() == Status::MOVING)
 	{
-		//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
-
 		auto position = this->getPosition();
+		//直线移动，遇到障碍物则在小范围内随机移动，再继续向目的地移动
 
 		if (position.equals(getBigDestination()))
 		{
-			randomBigDestination();
+			if (moveStep >= path.size())
+			{
+				randomBigDestination();
+			}
+			else
+			{
+				setBigDestination(path.at(moveStep++));
+			}
+
 		}
 
 		if (position.equals(getSmallDestination()))
@@ -124,12 +131,12 @@ void Soldier::startMove()
 		Vec2 toPosition;
 		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
 		else toPosition = RED_STORE;*/
-		if (getColor() == BLUE)
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
-		else
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
+		//if (getColor() == BLUE)
+			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
+		//else
+			//toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
 		runAnimation("soldier_move_right", this);
-		this->setBigDestination(toPosition);
+		//this->setBigDestination(toPosition);
 		schedule(CC_CALLBACK_0(Soldier::move,this),0.05f,"move");
 		setStatus(Status::MOVING);
 	}
@@ -137,7 +144,6 @@ void Soldier::startMove()
 
 void Soldier::stopMove()
 {
-	//stopAnimation("soldierMove",this);
 	unschedule("move");
 }
 
