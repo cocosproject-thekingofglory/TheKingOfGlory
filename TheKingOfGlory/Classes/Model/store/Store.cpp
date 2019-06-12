@@ -3,7 +3,7 @@
 
 bool Store::init(int color)
 {
-	if (!Tower::init(color))
+	if (!Tower::init(color,STORE))
 	{
 		return false;
 	}

@@ -123,7 +123,6 @@ void Player::stopMove()
 }
 
 
-//血条问题仍要讨论
 bool Player::attack()
 {
 	if (_isAttack&&getStatus() != Status::ATTACKING)
@@ -140,7 +139,44 @@ bool Player::attack()
 				{
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
+					
+					std::string stip;
+					stip.append(StringUtils::format("+ %d", target->getKillMoney()));
+					auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+					tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+					Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+					auto moveup = MoveTo::create(1.0, to);
+					tip->runAction(moveup);
+					this->addChild(tip);
+
+					if (target->getType() == SpriteBase::REDBUFF && !red_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Red Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDamage(RED_BUFF_ADD_DAMAGE);
+						red_buffExist = true;
+					}
+					else if (target->getType() == SpriteBase::BLUEBUFF && !blue_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Blue Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDefend(BLUE_BUFF_ADD_DEFEND);
+						blue_buffExist = true;
+					}
 				}
+				
 				break;
 			}
 		}
@@ -151,6 +187,7 @@ bool Player::attack()
 	}
 	return true;
 }
+
 
 void Player::stopAttack()
 {

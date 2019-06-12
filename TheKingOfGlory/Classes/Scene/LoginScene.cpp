@@ -34,14 +34,14 @@ void LoginScene::onEnter()
 {
 	Layer::onEnter();
 
-	//播放背景音乐
+	//鎾斁鑳屾櫙闊充箰
 	GameAudio::getInstance()->playBgm("Sounds/LoginBgm.mp3");
 
 }
 
 void LoginScene::createBackground()
 {
-	//添加背景图
+	//娣诲姞鑳屾櫙鍥?
 	auto background = Sprite::create("Pictures/Background/LoginBackground.png");
 	background->setPosition(Vec2(visible_Size.width / 2, visible_Size.height / 2));
 	this->addChild(background, -1);
@@ -49,14 +49,14 @@ void LoginScene::createBackground()
 
 void LoginScene::createLoginButton()
 {
-	//创建登录按钮
+	//鍒涘缓鐧诲綍鎸夐挳
 	auto loginButton = ui::Button::create("Pictures/UI/button_normal.png", "Pictures/UI/button_selected.png");
 	loginButton->setTitleText("Login");
 	loginButton->setTitleFontSize(32);
 	loginButton->setPosition(Vec2(visible_Size.width / 2, visible_Size.height*0.35f));
 	loginButton->setOpacity(233);
 
-	//按下登录按钮，如果文本框为空，则弹出对话框警告，否则保存用户名，切换场景
+	//鎸変笅鐧诲綍鎸夐挳锛屽鏋滄枃鏈涓虹┖锛屽垯寮瑰嚭瀵硅瘽妗嗚鍛婏紝鍚﹀垯淇濆瓨鐢ㄦ埛鍚嶏紝鍒囨崲鍦烘櫙
 	loginButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 	{
 		if (type != ui::Widget::TouchEventType::ENDED) return;
@@ -67,7 +67,7 @@ void LoginScene::createLoginButton()
 		}
 		else
 		{
-			//播放点击音效
+			//鎾斁鐐瑰嚮闊虫晥
 			GameAudio::getInstance()->playEffect("Sounds/LoginClick.wav");
 			username.substr(0, 16);
 			UserDefault::getInstance()->setStringForKey("username", username);
@@ -80,12 +80,12 @@ void LoginScene::createLoginButton()
 
 void LoginScene::initUserBox()
 {
-	//创建文本输入框
+	//鍒涘缓鏂囨湰杈撳叆妗?
 	usernameBG = Sprite::create("Pictures/UI/input_normal.png");
 	usernameBG->setScale(1.2f);
 	usernameBG->setOpacity(200);
 
-	usernameInput = ui::TextField::create("Input Username","fonts/arial.ttf",24);
+	usernameInput = ui::TextField::create("Input Username", "fonts/arial.ttf", 24);
 	usernameInput->setString(UserDefault::getInstance()->getStringForKey("username", ""));
 	usernameInput->setColor(Color3B::BLACK);
 	usernameInput->setCursorChar('|');
@@ -94,8 +94,6 @@ void LoginScene::initUserBox()
 	usernameInput->setMaxLengthEnabled(true);
 	usernameInput->setPosition(usernameBG->getContentSize() / 2);
 	usernameInput->addEventListener(CC_CALLBACK_2(LoginScene::textFieldEvent, this));
-	usernameInput->setTouchSize(usernameBG->getContentSize());
-	usernameInput->setTouchAreaEnabled(true);
 
 	usernameBG->addChild(usernameInput);
 
@@ -109,7 +107,7 @@ void LoginScene::initUserBox()
 
 void LoginScene::textFieldEvent(Ref* sender, ui::TextField::EventType event)
 {
-	//文本框状态改变时更换图片
+	//鏂囨湰妗嗙姸鎬佹敼鍙樻椂鏇存崲鍥剧墖
 	switch (event) {
 	case ui::TextField::EventType::ATTACH_WITH_IME:
 		usernameBG->setTexture("Pictures/UI/input_active.png");
@@ -119,4 +117,3 @@ void LoginScene::textFieldEvent(Ref* sender, ui::TextField::EventType event)
 		break;
 	}
 }
-

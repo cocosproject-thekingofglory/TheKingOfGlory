@@ -168,9 +168,9 @@ void Soldier::stopAttack()
 float Soldier::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
-	nowHP -= damage;
+	nowHP -= damage*(1-this->getDefend());
 	std::stringstream str;
-	str << damage ;
+	str << damage*(1-this->getDefend()) ;
 	std::string s = "-" + str.str();
 	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED);
 	text->setPosition(Vec2(this->getContentSize().width*getScale()*0.8,

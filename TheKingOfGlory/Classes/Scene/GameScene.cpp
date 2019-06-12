@@ -369,3 +369,4 @@ bool GameScene::init(Client* client, Server*server)
 	}, 1.0f, "UpdateTime");
 	return true;
 }
+

@@ -37,7 +37,7 @@ bool GunCar::init(int color)
 void GunCar::initAnimation()
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	åŠ¨ç”»å‘½åwei"move_01.png"
 	*/
 
 	const float delay = 0.1;
@@ -100,18 +100,20 @@ void GunCar::stopAttack()
 float GunCar::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
-	nowHP -= damage;
+  
+	nowHP -= damage * (1 - this->getDefend());
 	std::stringstream str;
-	str << damage ;
+	str << damage * (1 - this->getDefend());
 	std::string s = "-" + str.str();
 	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED);
 	text->setPosition(Vec2(this->getContentSize().width*getScale() *0.8,
 		this->getContentSize().height*getScale()*1.2));
 	text->setScale(1.0/this->getScale());
 	addChild(text);
+
 	if (nowHP <= 0.0)
 	{
-		//Í£Ö¹¶¯»­£¬²¢ÔÚÄÜ¹¥»÷ËüµÄÐ¡±øµÄÁÐ±íÖÐÉ¾³ýËü
+		//åœæ­¢åŠ¨ç”»ï¼Œå¹¶åœ¨èƒ½æ”»å‡»å®ƒçš„å°å…µçš„åˆ—è¡¨ä¸­åˆ é™¤å®ƒ
 		stopMove();
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{

@@ -5,6 +5,7 @@
 #include "ui/CocosGUI.h"
 #include "Util/AnimationLoader.h"
 #include "Model/BulletBase.h"
+#include "../UI/Tip.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -14,7 +15,7 @@ class BulletBase;
 const Vec2 RED_STORE = Vec2(10.0, 10.0);
 const Vec2 BLUE_STORE = Vec2(150.0, 150.0);
 
-const int RED = 0, BLUE = 1;
+const int RED = 0, BLUE = 1, YELLOW = 2;
 
 //被攻击对象的优先级
 const int attackGrade = 3;
@@ -23,6 +24,15 @@ const int SOLDIER = 1, HERO = 0, ACTIVE_HERO = 2;
 class SpriteBase :public cocos2d::Sprite, public AnimationLoader
 {
 public:
+
+	enum TYPE
+	{
+		REDBUFF, BLUEBUFF, TOWER, STORE,OTHER
+	};
+
+	void setType(TYPE type) { _type = type; }
+	TYPE getType() { return _type; }
+	TYPE _type = OTHER;
 
 	virtual bool init();
 	//阵营

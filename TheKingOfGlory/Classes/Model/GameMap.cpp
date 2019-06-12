@@ -48,10 +48,10 @@ void GameMap::setMap(const std::string& mapName)
 	tower_blue = objectLayer->getObject("tower_blue");
 	store_red = objectLayer->getObject("store_red");
 	store_blue = objectLayer->getObject("store_blue");
-	buff_red = objectLayer->getObject("buff_red");
-	buff_blue = objectLayer->getObject("buff_blue");
-	monster_red = objectLayer->getObject("monster_red");
-	monster_blue = objectLayer->getObject("monster_blue");
+	buff_red = objectLayer->getObject("red_buff");
+	buff_blue = objectLayer->getObject("blue_buff");
+	monster_red = objectLayer->getObject("red_monster");
+	monster_blue = objectLayer->getObject("blue_monster");
 
 	towers_red.push_back(tower_red);
 	towers_blue.push_back(tower_blue);

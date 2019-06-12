@@ -3,6 +3,8 @@
 #include "Model/SpriteBase.h"
 #include "Player.h"
 
+const float SECOND_RECOVER_HP = 20.0;
+
 class Home:public SpriteBase
 {
 public:
