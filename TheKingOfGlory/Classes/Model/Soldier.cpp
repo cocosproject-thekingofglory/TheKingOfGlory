@@ -1,17 +1,16 @@
-#include "Soldier.h"
 #include "Model/GameMap.h"
 #include "UI/Tip.h"
 #include <cmath>
+#include "Soldier.h"
 
 bool Soldier::init(int color)
 {
-	/*if (!SpriteBase::init())
+	if (!SpriteBase::init())
 	{
 		return false;
-	}*/
+	}
 	setColor(color);
 	setStatus(Status::STANDING);
-	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
 	setNowHPValue(SOLDIER_HPVALUE);
 	setDamage(SOLDIER_DAMAGE);
@@ -19,17 +18,14 @@ bool Soldier::init(int color)
 	setSpeed(SOLDIER_MOVE_SPEED);
 	setDefend(SOLDIER_DEFEND);
 
-	setKillExperience(SOLDIER_KILL_EXPRIENCE); 
+	setKillExperience(SOLDIER_KILL_EXP);
 	setKillMoney(SOLDIER_KILL_MONEY);
-
+	
+	this->setScale(0.6f);
 	initAnimation();
 	setHPBar();
-	this->setScale(0.6f);
-	//_soldier = Sprite::createWithSpriteFrameName("soldierMove_01.png");
-
-	//_bullet = Sprite::createWithSpriteFrameName("soldierBullet.png");
-	//_bullet->setVisible(false);
 	
+
 	return true;
 }
 
@@ -168,23 +164,19 @@ bool Soldier::attack()
 	return false;
 }
 
-void Soldier::stopAttack()
-{
-	stopAnimation("soldier_attack_right",this);
-}
+
 
 float Soldier::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
-	nowHP -= damage;
-	std::stringstream str;
-	str << damage ;
-	std::string s = "-" + str.str();
-	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
-	text->setPosition(Vec2(this->getContentSize().width*0.8,
-		this->getContentSize().height*1.2));
-	text->setScale(1.0/this->getScale());
-	addChild(text);
+	nowHP -= damage*(1-this->getDefend());
+
+	/*std::string stip;
+	stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
+	auto tip = Tip::create(stip, 1.0, Color4B::RED,24, "fonts/arial.ttf");
+	tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+	this->addChild(tip);*/
+
 	if (nowHP <= 0.0)
 	{
 		//停止动画，并在能攻击它的小兵的列表中删除它

@@ -13,9 +13,9 @@ const float SOLDIER_HPVALUE = 50.0;
 const int SOLDIER_ATTACK_INTERVAL = 100;
 const float SOLDIER_MOVE_SPEED = 10;
 const float SOLDIER_DEFEND = 0.1;
-//击杀经验、金钱
-const int SOLDIER_KILL_EXPRIENCE = 5;
+
 const int SOLDIER_KILL_MONEY = 10;
+const int SOLDIER_KILL_EXP = 5;
 
 const int SOLDIER_MOVE_ACTION = 1;
 
@@ -43,7 +43,7 @@ public:
 	virtual void stopMove();
 
 	virtual bool attack();//返回是否进行了攻击
-	virtual void stopAttack();
+	virtual void stopAttack(){ stopAnimation("soldier_attack_right", this); }
 
 	virtual float beAttack(const float damage);
 

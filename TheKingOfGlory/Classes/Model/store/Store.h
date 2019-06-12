@@ -39,4 +39,6 @@ private:
 	Sprite* _bg;
 	Button* _closeButton;
 	Button* _vipButton;
+
 };
+

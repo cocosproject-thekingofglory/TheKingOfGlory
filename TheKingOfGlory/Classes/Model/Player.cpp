@@ -5,6 +5,7 @@
 #include "UI/CountDown.h"
 #include "SkillBase.h"
 #include "UI/Tip.h"
+#include "../Manager/Manager.h"
 
 
 USING_NS_CC;
@@ -47,11 +48,16 @@ bool Player::init(int role, int color)
 
 	setMoney(PLAYER_INITIAL_MONEY);
 
+	setKillExperience(PLAYER_KILL_EXPRIENCE);
+	setKillMoney(PLAYER_KILL_MONEY);
+
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
 	_direction = Direction::DOWN;
 	_status = Status::STANDING;
+	red_buffExist = false;
+	blue_buffExist = false;
 	
 	//this->setScale(2);
 
@@ -140,7 +146,44 @@ bool Player::attack()
 				{
 					addEXP(target->getKillExperience());
 					addMoney(target->getKillMoney());
+					
+					std::string stip;
+					stip.append(StringUtils::format("+ %d", target->getKillMoney()));
+					auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+					tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+					Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+					auto moveup = MoveTo::create(1.0, to);
+					tip->runAction(moveup);
+					this->addChild(tip);
+
+					if (target->getType() == SpriteBase::REDBUFF && !red_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Red Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDamage(RED_BUFF_ADD_DAMAGE);
+						red_buffExist = true;
+					}
+					else if (target->getType() == SpriteBase::BLUEBUFF && !blue_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Blue Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+						Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						this->addChild(tip);
+						this->addDefend(BLUE_BUFF_ADD_DEFEND);
+						blue_buffExist = true;
+					}
 				}
+				
 				break;
 			}
 		}
@@ -545,6 +588,16 @@ void Player::updateLevel()
 		addDamage(PLAYER_LEVEL_UP_DAMAGE);
 		addDefend(PLAYER_LEVEL_UP_DEFEND);
 		addHPValue(PLAYER_LEVEL_UP_HPVALUE);
+		
+		std::string stip;
+		stip.append(StringUtils::format("Level up!!!"));
+		auto tip = Tip::create(stip, 1.0, Color4B::RED);
+		tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
+		Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height*1.5);
+		auto moveup = MoveTo::create(1.0, to);
+		tip->runAction(moveup);
+		this->addChild(tip);
+		
 	}
 }
 

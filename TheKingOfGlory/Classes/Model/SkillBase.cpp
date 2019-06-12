@@ -52,19 +52,93 @@ void SkillBase::collisionDetection()
 		{
 			auto player = pair.second;
 			if (player->getColor() != _color & box.intersectsRect(player->getBoundingBox()))
+			{
 				player->beAttack(_damage);
+				if (player->getNowHPValue() <= 0.0)
+				{
+					killedTarget(player);
+				}
+			}
 		}
 		auto soldiers = manager->_soldierList[_color ^ 1];
 		for (auto soldier : soldiers)
 		{
 			if (box.intersectsRect(soldier->getBoundingBox()))
+			{
 				soldier->beAttack(_damage);
+				if (soldier->getNowHPValue() <= 0.0)
+				{
+					killedTarget(soldier);
+				}
+			}
 		}
 		auto towers = manager->_towerList[_color ^ 1];
 		for (auto tower : towers)
 		{
 			if (box.intersectsRect(tower->getBoundingBox()))
+			{
 				tower->beAttack(_damage);
+				if (tower->getNowHPValue() <= 0.0)
+				{
+					killedTarget(tower);
+				}
+			}
+		}
+		auto cars = manager->_guncarList[_color ^ 1];
+		for (auto car : cars)
+		{
+			if (box.intersectsRect(car->getBoundingBox()))
+			{
+				car->beAttack(_damage);
+				if (car->getNowHPValue() <= 0.0)
+				{
+					killedTarget(car);
+				}
+			}
+		}
+		auto wildMonster = manager->_wildMonsterList;
+		for (auto wild : wildMonster)
+		{
+			if (box.intersectsRect(wild->getBoundingBox()))
+			{
+				wild->beAttack(_damage);
+				if (wild->getNowHPValue() <= 0.0)
+				{
+					killedTarget(wild);
+
+					auto localPlayer = Manager::getInstance()->playerManager->getLocalPlayer();
+					if (wild->getType() == SpriteBase::REDBUFF && !localPlayer->red_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Red Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::RED);
+						tip->setPosition(Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height / 2));
+						Vec2 to = Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						localPlayer->addChild(tip);
+						localPlayer->addDamage(RED_BUFF_ADD_DAMAGE);
+						localPlayer->red_buffExist = true;
+						
+					}
+					else if (localPlayer->getType() == SpriteBase::BLUEBUFF && !localPlayer->blue_buffExist)
+					{
+						std::string stip;
+						stip.append(StringUtils::format("Gain Blue Buff!!!"));
+						auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+						tip->setPosition(Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height / 2));
+						Vec2 to = Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height);
+						auto moveup = MoveTo::create(1.0, to);
+						tip->runAction(moveup);
+						localPlayer->addChild(tip);
+						localPlayer->addDefend(BLUE_BUFF_ADD_DEFEND);
+						localPlayer->blue_buffExist = true;
+					}
+
+
+				}
+			}
+
 		}
 	}
 	else
@@ -98,4 +172,20 @@ void SkillBase::remove()
 	stopAnimation(this);
 	removeFromParentAndCleanup(true);
 
+}
+
+void SkillBase::killedTarget(SpriteBase*target)
+{
+	auto localPlayer = Manager::getInstance()->playerManager->getLocalPlayer();
+	localPlayer->addEXP(target->getKillExperience());
+	localPlayer->addMoney(target->getKillMoney());
+
+	std::string stip;
+	stip.append(StringUtils::format("+ %d", target->getKillMoney()));
+	auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
+	tip->setPosition(Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height / 2));
+	Vec2 to = Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height);
+	auto moveup = MoveTo::create(1.0, to);
+	tip->runAction(moveup);
+	localPlayer->addChild(tip);
 }

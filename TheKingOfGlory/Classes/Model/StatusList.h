@@ -14,7 +14,7 @@ class StatusList :public Sprite
 {
 public:
 	virtual bool init();
-	
+
 	static StatusList*createStatusList();
 
 private:

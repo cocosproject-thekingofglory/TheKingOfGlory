@@ -17,7 +17,7 @@ bool Home::init(int color)
 {
 	this->setColor(color);
 	this->setAnchorPoint(Vec2::ZERO);
-	schedule(CC_CALLBACK_0(Home::recoverPlayer, this), 3.0f, "Recover");
+	schedule(CC_CALLBACK_0(Home::recoverPlayer, this), 1.0f, "Recover");
 	return true;
 }
 
@@ -30,19 +30,11 @@ void Home::recoverPlayer()
 {
 	for (auto& player : _recoverList)
 	{
-		if (!(player->getStatus() == Player::Status::DEAD))
+		if (!(player->getStatus() == Player::Status::DEAD)&&player->getNowHPValue()<player->getHPValue())
 		{
-			player->setNowHPValue(MIN(player->getNowHPValue() + 20.0, player->getHPValue()));
-			player->updateHPBar();
-			std::stringstream str;
-			str << MIN(player->getNowHPValue() + 20.0, player->getHPValue());
-			std::string s = "+" + str.str();
-			auto text = Tip::create(s, 0.3f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
-			text->setPosition(Vec2(this->getContentSize().width *0.8,
-				this->getContentSize().height*1.2));
-			text->setScale(1.0/player->getScale());
-			player->addChild(text);
-
+			player->addNowHPValue(player->getHPValue()/5);
+			//player->setNowHPValue(MIN(player->getNowHPValue() + 20.0, player->getHPValue()));
+			//player->updateHPBar();
 		}
 	}
 }

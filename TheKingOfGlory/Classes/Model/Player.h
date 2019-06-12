@@ -11,9 +11,9 @@ using namespace ui;
 
 //基础属性
 const float PLAYER_ATTACK_RADIUS = 20;
-const float PLAYER_DAMAGE = 20.0;
+const float PLAYER_DAMAGE = 200000.0;
 const float PLAYER_SKILLRECOVER_VALUE = -10.0;
-const float PLAYER_HPVALUE = 200;
+const float PLAYER_HPVALUE = 20000;
 const float PLAYER_MOVE_SPEED =6.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 const float PLAYER_DEFEND = 0.2;
@@ -27,6 +27,9 @@ const int PLAYER_INITIAL_MONEY = 100;
 const float PLAYER_LEVEL_UP_DAMAGE = 10.0;
 const float PLAYER_LEVEL_UP_DEFEND = 0.01;
 const float PLAYER_LEVEL_UP_HPVALUE = 50;
+
+const int PLAYER_KILL_EXPRIENCE = 20;
+const int PLAYER_KILL_MONEY = 100;
 
 class Player :public SpriteBase
 {
@@ -163,6 +166,9 @@ public:
 	void addEquipment(EquipmentBase*equip, int id) { _equipmentList.pushBack(equip); }
 	void removeEquipment(EquipmentBase*equip);
 	int getEquipmentCnt() { return _equipmentList.size(); }
+
+	bool red_buffExist;
+	bool blue_buffExist;
 protected:
 	bool _isLocal;
 	bool _isMove;
