@@ -84,5 +84,7 @@ private:
 	bool isOnline;
 	bool insideAttack(SpriteBase* beAttack, SpriteBase* attack);
 	int time_AI;
+	int time_soldier;
+	int time_gunCar;
 
 };

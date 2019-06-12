@@ -137,9 +137,11 @@ bool Manager::init()
 				player->setSkill(true);
 			}
 			time_AI = 1;
+			time_soldier = 1;
+			time_gunCar = 1;
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
-			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 2.0f, "CreateSoldier");
-			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 4.0f, "CreateGunCar");
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 1.0f, "CreateSoldier");
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 1.0f, "CreateGunCar");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			if (!isOnline)
 				schedule(CC_CALLBACK_0(Manager::AIHero, this), 0.5f, "PlayerAttack");
@@ -367,13 +369,17 @@ void Manager::scheduleGunCarAttack()
 
 void Manager::scheduleCreateSoldier()
 {
+	time_soldier++;
+	//if (time_soldier < 3)
+		//return;
+	time_soldier = 0;
 	if (isOnline&&mode == Mode::Five)
 	{
 		if (_soldierList[RED].size() < 30)
 		{
 			for (int i = 0; i < 3; ++i)
 			{
-				auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED, 0);
+				auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED, i);
 				soldier_red->startMove();
 				GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Soldier_Red);
 			}
@@ -411,6 +417,10 @@ void Manager::scheduleCreateSoldier()
 
 void Manager::scheduleCreateGunCar()
 {
+	time_gunCar++;
+	if (time_gunCar < 10)
+		return;
+	time_gunCar = 0;
 	if (isOnline&&mode == Mode::Five)
 	{
 		if (_soldierList[RED].size() < 15)
