@@ -1,6 +1,7 @@
 #pragma once
 #include "cocos2d.h"
 #include "Util/AnimationLoader.h"
+#include "SpriteBase.h"
 
 class SkillBase:public cocos2d::Sprite, public AnimationLoader
 {
@@ -18,5 +19,6 @@ private:
 	int _color;
 
 	std::string _animationName;
+	void killedTarget(SpriteBase*target);
 };
 

@@ -5,6 +5,7 @@
 #include "UI/CountDown.h"
 #include "SkillBase.h"
 #include "UI/Tip.h"
+#include "../Manager/Manager.h"
 
 
 USING_NS_CC;
@@ -47,11 +48,16 @@ bool Player::init(int role, int color)
 
 	setMoney(PLAYER_INITIAL_MONEY);
 
+	setKillExperience(PLAYER_KILL_EXPRIENCE);
+	setKillMoney(PLAYER_KILL_MONEY);
+
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
 	_direction = Direction::DOWN;
 	_status = Status::STANDING;
+	red_buffExist = false;
+	blue_buffExist = false;
 	
 	//this->setScale(2);
 
@@ -150,7 +156,7 @@ bool Player::attack()
 					tip->runAction(moveup);
 					this->addChild(tip);
 
-					if (target->getType() == SpriteBase::REDBUFF)
+					if (target->getType() == SpriteBase::REDBUFF && !red_buffExist)
 					{
 						std::string stip;
 						stip.append(StringUtils::format("Gain Red Buff!!!"));
@@ -160,24 +166,10 @@ bool Player::attack()
 						auto moveup = MoveTo::create(1.0, to);
 						tip->runAction(moveup);
 						this->addChild(tip);
-						this->addDamage(10.0);
-						Manager::getInstance()->_wildMonsterList.eraseObject(static_cast<Tower*>(target));
-
-						auto sequence=Sequence::create(DelayTime::create(10.0),CallFunc::create([=]()
-						{
-							this->addDamage(-10.0);
-							std::string stip;
-							stip.append(StringUtils::format("Lose Red Buff!!!"));
-							auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
-							tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-							Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
-							auto moveup = MoveTo::create(1.0, to);
-							tip->runAction(moveup);
-							this->addChild(tip);
-							Manager::getInstance()->_wildMonsterList.pushBack(static_cast<Tower*>(target));
-						}), NULL);
+						this->addDamage(RED_BUFF_ADD_DAMAGE);
+						red_buffExist = true;
 					}
-					else if (target->getType() == SpriteBase::BLUEBUFF)
+					else if (target->getType() == SpriteBase::BLUEBUFF && !blue_buffExist)
 					{
 						std::string stip;
 						stip.append(StringUtils::format("Gain Blue Buff!!!"));
@@ -187,21 +179,8 @@ bool Player::attack()
 						auto moveup = MoveTo::create(1.0, to);
 						tip->runAction(moveup);
 						this->addChild(tip);
-						this->addDefend(0.2);
-						Manager::getInstance()->_wildMonsterList.eraseObject(static_cast<Tower*>(target));
-						auto sequence = Sequence::create(DelayTime::create(10.0), CallFunc::create([=]()
-						{
-							this->addDamage(-10.0);
-							std::string stip;
-							stip.append(StringUtils::format("Lose Blue Buff!!!"));
-							auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
-							tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-							Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height);
-							auto moveup = MoveTo::create(1.0, to);
-							tip->runAction(moveup);
-							this->addChild(tip);
-							Manager::getInstance()->_wildMonsterList.pushBack(static_cast<Tower*>(target));
-						}), NULL);
+						this->addDefend(BLUE_BUFF_ADD_DEFEND);
+						blue_buffExist = true;
 					}
 				}
 				

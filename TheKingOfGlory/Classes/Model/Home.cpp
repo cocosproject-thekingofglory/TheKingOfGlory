@@ -32,7 +32,7 @@ void Home::recoverPlayer()
 	{
 		if (!(player->getStatus() == Player::Status::DEAD)&&player->getNowHPValue()<player->getHPValue())
 		{
-			player->addNowHPValue(SECOND_RECOVER_HP);
+			player->addNowHPValue(player->getHPValue()/5);
 			//player->setNowHPValue(MIN(player->getNowHPValue() + 20.0, player->getHPValue()));
 			//player->updateHPBar();
 		}

@@ -1,17 +1,16 @@
-#include "Soldier.h"
 #include "Model/GameMap.h"
 #include "UI/Tip.h"
 #include <cmath>
+#include "Soldier.h"
 
 bool Soldier::init(int color)
 {
-	/*if (!SpriteBase::init())
+	if (!SpriteBase::init())
 	{
 		return false;
-	}*/
+	}
 	setColor(color);
 	setStatus(Status::STANDING);
-	setAttackRadius(SOLDIER_ATTACK_RADIUS);
 	setHPValue(SOLDIER_HPVALUE);
 	setNowHPValue(SOLDIER_HPVALUE);
 	setDamage(SOLDIER_DAMAGE);
@@ -19,17 +18,14 @@ bool Soldier::init(int color)
 	setSpeed(SOLDIER_MOVE_SPEED);
 	setDefend(SOLDIER_DEFEND);
 
-	setKillExperience(SOLDIER_KILL_EXPRIENCE); 
+	setKillExperience(SOLDIER_KILL_EXP);
 	setKillMoney(SOLDIER_KILL_MONEY);
-
+	
+	this->setScale(0.6f);
 	initAnimation();
 	setHPBar();
-	this->setScale(0.6f);
-	//_soldier = Sprite::createWithSpriteFrameName("soldierMove_01.png");
-
-	//_bullet = Sprite::createWithSpriteFrameName("soldierBullet.png");
-	//_bullet->setVisible(false);
 	
+
 	return true;
 }
 
@@ -168,10 +164,7 @@ bool Soldier::attack()
 	return false;
 }
 
-void Soldier::stopAttack()
-{
-	stopAnimation("soldier_attack_right",this);
-}
+
 
 float Soldier::beAttack(const float damage)
 {

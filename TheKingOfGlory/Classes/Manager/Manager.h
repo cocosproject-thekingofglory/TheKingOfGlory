@@ -37,10 +37,10 @@ const std::string MONSTER3_RED_FILENAME = "monster3RedStand (1).png";
 const std::string MONSTER3_BLUE_FILENAME = "monster3BlueStand (1).png";
 const std::string MONSTER4_RED_FILENAME = "monster4RedStand (1).png";
 const std::string MONSTER4_BLUE_FILENAME = "monster4BlueStand (1).png";
-const std::string REDBUFF1_FILENAME = "redBuff1Stand (1).png";
-const std::string REDBUFF2_FILENAME = "redBuff2Stand (1).png";
-const std::string BLUEBUFF1_FILENAME = "blueBuff1Stand (1).png";
-const std::string BLUEBUFF2_FILENAME = "blueBuff2Stand (1).png";
+
+const std::string RED_BUFF_FILENAME = "redbuff_stand_leftdown (1).png";
+
+const std::string BLUE_BUFF_FILENAME = "bluebuff_stand_rightdown (1).png";
 
 
 class Manager :public cocos2d::Layer
@@ -62,10 +62,12 @@ public:
 	void scheduleWildMonsterAttack();
 	void scheduleCreateSoldier();
 	void scheduleCreateGunCar();
+	void scheduleCreateWildMonster();
 	void scheduleDeadDetect();
 	void scheduleTowerAttack();
 	void scheduleHomeRecover();
-  	//void scheduleCreateMonster();
+	void scheduleBuffDetect();
+  	
 	void AIHero();
 
 	virtual bool init();

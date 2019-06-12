@@ -382,6 +382,11 @@ void LoadingScene::loadResources()
 	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_attack_rightdown.plist"));
 	spriteSheets.push_back(Value("Pictures/Soldier/guntruck_move_rightdown.plist"));
 
+	spriteSheets.push_back(Value("Pictures/Wild/redbuff_stand_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Wild/redbuff_attack_leftdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Wild/bluebuff_stand_rightdown.plist"));
+	spriteSheets.push_back(Value("Pictures/Wild/bluebuff_attack_rightdown.plist"));
+
 	musics.push_back(Value("Sounds/StartBgm.mp3"));
 	musics.push_back(Value("Sounds/GameBgm.mp3"));
 	musics.push_back(Value("Sounds/LoginBgm.mp3"));

@@ -1,11 +1,12 @@
 #include "Tower.h"
 #include "GameMap.h"
 #include "UI/Tip.h"
+#include "../Manager/Manager.h"
 
-Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
+Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color, TYPE type )
 {
 	auto tower = new Tower();
-	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color))
+	if (tower&&tower->initWithSpriteFrameName(filename)&& tower->init(color,type))
 	{
 		tower->autorelease();
 		return tower;
@@ -14,10 +15,12 @@ Tower* Tower::createWithSpriteFrameName(const std::string& filename,int color)
 	return nullptr;
 }
 
-bool Tower::init(int color)
+bool Tower::init(int color, TYPE type)
 {
 	setAnchorPoint(Vec2::ZERO);
 	setColor(color);
+	setType(type);
+
 	if (_type == TOWER)
 	{
 		setAttackRadius(TOWER_ATTACK_RADIUS);
@@ -37,8 +40,8 @@ bool Tower::init(int color)
 		setDamage(BUFF_DAMAGE);
 		setAttackInterval(BUFF_ATTACK_INTERVAL);
 		setDefend(BUFF_DEFEND);
-		setKillExperience(BUFF_KILL_EXPRIENCE);
-		setKillMoney(BUFF_KILL_MONEY);
+		setKillExperience(TOWER_KILL_EXPRIENCE);
+		setKillMoney(TOWER_KILL_EXPRIENCE);
 	}
 
 	initAnimation();
@@ -48,11 +51,22 @@ bool Tower::init(int color)
 
 void Tower::initAnimation()
 {
-	loadAnimation("blast",0.1f, 8);
+	if(_type==TOWER)loadAnimation("blast",0.1f, 8);
+	else if (_type == REDBUFF)
+	{
+		loadAnimation("redbuff_stand_leftdown", 0.1f, 8);
+		loadAnimation("redbuff_attack_leftdown", 0.1f, 8);
+	}
+	else if (_type == BLUEBUFF)
+	{
+		loadAnimation("bluebuff_stand_rightdown", 0.1f, 8);
+		loadAnimation("bluebuff_attack_rightdown", 0.1f, 8);
+	}
 }
 
 bool Tower::attack()
 {
+	
 	for (int i = _attackTargetList.size() - 1; i >= 0; i--)
 	{
 		if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
@@ -70,6 +84,55 @@ bool Tower::attack()
 	return false;
 }
 
+void Tower::runAttackAnimation()
+{
+	if (_type == REDBUFF)
+	{
+		runAnimation("redbuff_attack_leftdown", this);
+	}
+	else if (_type == BLUEBUFF)
+	{
+		runAnimation("bluebuff_attack_rightdown", this);
+	}
+}
+
+void Tower::stopAttackAnimation()
+{
+	if (_type == REDBUFF)
+	{
+		stopAnimation("redbuff_attack_leftdown", this);
+	}
+	else if (_type == BLUEBUFF)
+	{
+		stopAnimation("bluebuff_attack_rightdown", this);
+	}
+}
+
+
+void Tower::runStandAnimation()
+{
+	if (_type == REDBUFF)
+	{
+		runAnimation("redbuff_stand_leftdown", this);
+	}
+	else if (_type == BLUEBUFF)
+	{
+		runAnimation("bluebuff_stand_rightdown", this);
+	}
+}
+void Tower::stopStandAnimation()
+{
+	if (_type == REDBUFF)
+	{
+		stopAnimation("redbuff_stand_leftdown", this);
+	}
+	else if (_type == BLUEBUFF)
+	{
+		stopAnimation("bluebuff_stand_rightdown", this);
+	}
+}
+
+
 float Tower::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
@@ -85,21 +148,32 @@ float Tower::beAttack(const float damage)
 	tip->runAction(moveup);
 	tip->setScale(1.0/this->getScale());
 	this->addChild(tip);
-
+	setNowHPValue(MAX(nowHP, 0));
+	updateHPBar();
 	if (nowHP <= 0.0)
-	
+
 	{
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{
 			_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
 		}
+		if (_type == REDBUFF)
+		{
+			stopAnimation("redbuff_stand_leftdown", this);
+			stopAnimation("redbuff_attack_leftdown", this);
+		}
+		else if (_type == BLUEBUFF)
+		{
+			stopAnimation("bluebuff_attack_rightdown", this);
+			stopAnimation("bluebuff_stand_rightdown", this);
+		}
 		//playDestoryAnimation();
 	}
-	setNowHPValue(MAX(nowHP, 0));
-	updateHPBar();
+	
 	return nowHP;
 
 }
+
 
 void Tower::destroy()
 {
