@@ -23,11 +23,34 @@ bool HelpScene::init()
 	bg->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	this->addChild(bg, -1);
 
-	auto *chnStrings = Dictionary::createWithContentsOfFile("fonts/Text.xml");
-	const char *str1 = ((String*)chnStrings->objectForKey("line1"))->getCString();
-	auto helpLabel = createLabel(str1);
-	helpLabel->setPosition(Vec2(visibleSize.width * 0.5f, visibleSize.height * 0.5f));
-	this->addChild(helpLabel);
+	auto label1 = createLabel("God travels across the boundless universe in an ark.");
+	label1->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.8f));
+	auto label2 = createLabel("They use powerful force in the universe to create heroes.");
+	label2->setPosition(Vec2(visibleSize.width * 0, visibleSize.height * 0.75f));
+	auto label3 = createLabel("To survive or to destroy, the road ahead is changeable.");
+	label3->setPosition(Vec2(visibleSize.width * 0.06f, visibleSize.height * 0.70f));
+	auto label4 = createLabel("Go fight! Heros.");
+	label4->setPosition(Vec2(visibleSize.width * 0.4f, visibleSize.height * 0.65f));
+	auto label5 = createLabel("Operational mode:");
+	auto label6 = createLabel("Mouse Click: Move,Attack,LaunchSkill");
+	auto label7 = createLabel("Key Q: SkillOne");
+	auto label8 = createLabel("Key W: SkillTwo");
+	auto label9 = createLabel("Key E: SkillThree");
+	label5->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.55f));
+	label6->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.45f));
+	label7->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.40f));
+	label8->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.35f));
+	label9->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.30f));
+
+	this->addChild(label1);
+	this->addChild(label2);
+	this->addChild(label3);
+	this->addChild(label4);
+	this->addChild(label5);
+	this->addChild(label6);
+	this->addChild(label7);
+	this->addChild(label8);
+	this->addChild(label9);
 
 	addChild(createText());
 
@@ -66,8 +89,8 @@ void HelpScene::menuOkCallback(cocos2d::Ref * pSender)
 
 cocos2d::Label * HelpScene::createLabel(const char * text)
 {
-	auto label = Label::createWithTTF(fontToUTF8(text), "fonts/arial.ttf", 64);
-	label->enableShadow(Color4B::WHITE, Size(10, 10), 2);
+	auto label = Label::createWithTTF(fontToUTF8(text), "fonts/Courgette-Regular.ttf", 40);
+	label->setColor(Color3B::WHITE);
 	label->setAnchorPoint(Vec2::ANCHOR_MIDDLE_LEFT);
 	return label;
 }
