@@ -5,7 +5,6 @@
 #include "UI/CountDown.h"
 #include "SkillBase.h"
 #include "UI/Tip.h"
-#include "../Manager/Manager.h"
 
 
 USING_NS_CC;
@@ -48,16 +47,11 @@ bool Player::init(int role, int color)
 
 	setMoney(PLAYER_INITIAL_MONEY);
 
-	setKillExperience(PLAYER_KILL_EXPRIENCE);
-	setKillMoney(PLAYER_KILL_MONEY);
-
 	_isMove = false;
 	_isAttack = false;
 	_isSkill = false;
 	_direction = Direction::DOWN;
 	_status = Status::STANDING;
-	red_buffExist = false;
-	blue_buffExist = false;
 	
 	//this->setScale(2);
 
@@ -129,7 +123,6 @@ void Player::stopMove()
 }
 
 
-//血条问题仍要讨论
 bool Player::attack()
 {
 	if (_isAttack&&getStatus() != Status::ATTACKING)
@@ -195,6 +188,7 @@ bool Player::attack()
 	return true;
 }
 
+
 void Player::stopAttack()
 {
 	if (_isAttack)
@@ -213,9 +207,9 @@ float Player::beAttack(const float damage)
 		std::stringstream str;
 		str << damage * (1 - getDefend());
 		std::string s = "-" + str.str();
-		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED, 24, "fonts/arial.ttf");
-		text->setPosition(Vec2(this->getContentSize().width *0.8,
-			this->getContentSize().height*1.2));
+		auto text = Tip::create(s, 1.0f, cocos2d::Color4B::RED);
+		text->setPosition(Vec2(this->getContentSize().width *getScale()*0.8,
+			this->getContentSize().height*getScale()*1.2));
 		text->setScale(1.0/this->getScale());
 		addChild(text);
 		setNowHPValue(MAX(nowHP, 0));
@@ -279,16 +273,33 @@ void Player::skillRecover()
 	{
 		stopMove();
 		setStatus(Status::SKILLRECOVER);
-		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor()^1, PLAYER_SKILLRECOVER_VALUE);
+		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor() ^ 1, PLAYER_SKILLRECOVER_VALUE);
 		GameMap::getCurrentMap()->addSprite(skill);
 		skill->setPosition(this->getPosition());
-
 
 
 		auto sequence = Sequence::create(DelayTime::create(1.8f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
 		}), NULL);
 		this->runAction(sequence);
+	}
+}
+
+void Player::skillSpeedUp()
+{
+	if (_isSkill)
+	{
+
+		setSpeed(getSpeed()*3.0f);
+		auto text = Tip::create("Speed Up", 5.0f, cocos2d::Color4B::BLUE, 24, "fonts/arial.ttf");
+		text->setPosition(Vec2(getContentSize().width *getScale()*0.8,
+			getContentSize().height*getScale()*1.2));
+		text->setScale(1.0 /getScale());
+		addChild(text);
+		scheduleOnce([=](float) 
+		{
+			this->setSpeed(PLAYER_MOVE_SPEED);
+		}, 5.0f, "ResetSpeed");
 	}
 }
 
@@ -588,16 +599,6 @@ void Player::updateLevel()
 		addDamage(PLAYER_LEVEL_UP_DAMAGE);
 		addDefend(PLAYER_LEVEL_UP_DEFEND);
 		addHPValue(PLAYER_LEVEL_UP_HPVALUE);
-		
-		std::string stip;
-		stip.append(StringUtils::format("Level up!!!"));
-		auto tip = Tip::create(stip, 1.0, Color4B::RED);
-		tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-		Vec2 to = Vec2(this->getContentSize().width / 2, this->getContentSize().height*1.5);
-		auto moveup = MoveTo::create(1.0, to);
-		tip->runAction(moveup);
-		this->addChild(tip);
-		
 	}
 }
 

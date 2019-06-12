@@ -37,6 +37,20 @@ void GameScene::createStatusButton()
 	});
 	this->addChild(statusButton, 4);
 }
+void GameScene::createTime()
+{
+	auto bg = Sprite::create("Pictures/UI/rankBg.png");
+	bg->setPosition(Vec2(visible_Size.width*0.13, visible_Size.height*0.96));
+	this->addChild(bg);
+
+	auto&time = gameTime.second;
+	time = Text::create("GameTime: 00:00", "fonts/arial.ttf", 32);
+	time->setPosition(Vec2(visible_Size.width*0.13, visible_Size.height*0.96));
+	time->setColor(Color3B::WHITE);
+	this->addChild(time);
+	bg->setScale((time->getContentSize().width+10)/ bg->getContentSize().width);
+	gameTime.first = 0;
+}
 void GameScene::createMenuButton()
 {
 	//添加菜单按钮
@@ -346,6 +360,13 @@ bool GameScene::init(Client* client, Server*server)
 	createMenuButton();
 	createStatusButton();
 	createRank();
-
+	createTime();
+	schedule([&](float) {
+		gameTime.first++;
+		int sec = gameTime.first % 60;
+		int min = gameTime.first / 60;
+		gameTime.second->setText("GameTime: " + StringUtils::format("%.2d:%.2d", min, sec));
+	}, 1.0f, "UpdateTime");
 	return true;
 }
+

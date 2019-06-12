@@ -37,7 +37,7 @@ bool GunCar::init(int color)
 void GunCar::initAnimation()
 {
 	/*
-	¶¯»­ÃüÃûwei"move_01.png"
+	åŠ¨ç”»å‘½åwei"move_01.png"
 	*/
 
 	const float delay = 0.1;
@@ -49,46 +49,8 @@ void GunCar::initAnimation()
 
 void GunCar::move()
 {
-	if (getStatus() == Status::MOVING)
-	{
-		//Ö±ÏßÒÆ¶¯£¬Óöµ½ÕÏ°­ÎïÔòÔÚÐ¡·¶Î§ÄÚËæ»úÒÆ¶¯£¬ÔÙ¼ÌÐøÏòÄ¿µÄµØÒÆ¶¯
-
-		auto position = this->getPosition();
-
-		if (position.equals(getBigDestination()))
-		{
-			randomBigDestination();
-		}
-
-		if (position.equals(getSmallDestination()))
-		{
-			setSmallDestination(getBigDestination());
-		}
-
-		Vec2 smallDestination = getSmallDestination();
-
-		int flagX = (position.x < smallDestination.x) ? 1 : -1, flagY = (position.y < smallDestination.y) ? 1 : -1;
-
-		this->setFlippedX(!(position.x <= _destination.x));
-		this->setRotation((position.x <= _destination.x) ? (-45.0) : (0));
-
-		float dx = flagX * MIN(getSpeed(), fabs(smallDestination.x - position.x));
-		float dy = flagY * MIN(getSpeed(), fabs(smallDestination.y - position.y));
-
-
-		Vec2 target = Vec2(position.x + dx, position.y + dy);
-
-		auto map = GameMap::getCurrentMap();
-
-		if (map->isCanAssess(map->positionToTileCoord(target)))
-		{
-			this->setPosition(target);
-		}
-		else
-		{
-			randomSmallDestination();
-		}
-	}
+	Soldier::move();
+	this->setRotation((isFlipped) ? (0) : (-45.0));
 
 }
 
@@ -96,17 +58,8 @@ void GunCar::startMove()
 {
 	if (_isMove)
 	{
-		srand(time(NULL));
-		Vec2 toPosition;
-		/*if (this->getColor() == RED)toPosition = BLUE_STORE;
-		else toPosition = RED_STORE;*/
-		if (getColor() == BLUE)
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Red);
-		else
-			toPosition = GameMap::getCurrentMap()->getObjectPosition(GameMap::Type::Tower_Blue);
 		runAnimation("guntruck_move_rightdown", this);
-		this->setBigDestination(toPosition);
-		schedule(CC_CALLBACK_0(Soldier::move, this), 0.05f, "move");
+		schedule(CC_CALLBACK_0(GunCar::move, this), 0.05f, "move");
 		setStatus(Status::MOVING);
 	}
 }
@@ -147,18 +100,20 @@ void GunCar::stopAttack()
 float GunCar::beAttack(const float damage)
 {
 	float nowHP = getNowHPValue();
-
+  
 	nowHP -= damage * (1 - this->getDefend());
-
-	/*std::string stip;
-	stip.append(StringUtils::format("- %.1f", damage*(1 - this->getDefend())));
-	auto tip = Tip::create(stip, 1.0, Color4B::RED);
-	tip->setPosition(Vec2(this->getContentSize().width / 2, this->getContentSize().height / 2));
-	this->addChild(tip);*/
+	std::stringstream str;
+	str << damage * (1 - this->getDefend());
+	std::string s = "-" + str.str();
+	auto text = Tip::create(s, 0.1f, cocos2d::Color4B::RED);
+	text->setPosition(Vec2(this->getContentSize().width*getScale() *0.8,
+		this->getContentSize().height*getScale()*1.2));
+	text->setScale(1.0/this->getScale());
+	addChild(text);
 
 	if (nowHP <= 0.0)
 	{
-		//Í£Ö¹¶¯»­£¬²¢ÔÚÄÜ¹¥»÷ËüµÄÐ¡±øµÄÁÐ±íÖÐÉ¾³ýËü
+		//åœæ­¢åŠ¨ç”»ï¼Œå¹¶åœ¨èƒ½æ”»å‡»å®ƒçš„å°å…µçš„åˆ—è¡¨ä¸­åˆ é™¤å®ƒ
 		stopMove();
 		for (int i = 0; i < _beAttackTargetList.size(); i++)
 		{

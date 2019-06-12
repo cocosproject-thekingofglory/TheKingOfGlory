@@ -21,10 +21,12 @@ private:
 	cocos2d::ui::Button* statusButton;
 	std::pair<int, cocos2d::ui::Text*> blueRank;
 	std::pair<int, cocos2d::ui::Text*> redRank;
+	std::pair<int, cocos2d::ui::Text*> gameTime;
 
 	void onEnter();
 	void createMenuButton();
 	void createStatusButton();
+	void createTime();
 	void updateMenu();
 	void createMenu();
 	void removeMenu();

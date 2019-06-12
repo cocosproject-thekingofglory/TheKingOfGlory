@@ -33,8 +33,15 @@ void Home::recoverPlayer()
 		if (!(player->getStatus() == Player::Status::DEAD)&&player->getNowHPValue()<player->getHPValue())
 		{
 			player->addNowHPValue(player->getHPValue()/5);
-			//player->setNowHPValue(MIN(player->getNowHPValue() + 20.0, player->getHPValue()));
-			//player->updateHPBar();
+			std::stringstream str;
+			str << player->getHPValue()/6;
+			std::string s = "+" + str.str();
+			auto text = Tip::create(s, 0.3f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
+			text->setPosition(Vec2(player->getContentSize().width *player->getScale()*0.8,
+				player->getContentSize().height*player->getScale()*1.2));
+			text->setScale(1.0/player->getScale());
+			player->addChild(text);
+
 		}
 	}
 }

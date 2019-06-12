@@ -37,11 +37,11 @@ const std::string MONSTER3_RED_FILENAME = "monster3RedStand (1).png";
 const std::string MONSTER3_BLUE_FILENAME = "monster3BlueStand (1).png";
 const std::string MONSTER4_RED_FILENAME = "monster4RedStand (1).png";
 const std::string MONSTER4_BLUE_FILENAME = "monster4BlueStand (1).png";
-
+const std::string REDBUFF1_FILENAME = "redBuff1Stand (1).png";
+const std::string REDBUFF2_FILENAME = "redBuff2Stand (1).png";
 const std::string RED_BUFF_FILENAME = "redbuff_stand_leftdown (1).png";
 
 const std::string BLUE_BUFF_FILENAME = "bluebuff_stand_rightdown (1).png";
-
 
 class Manager :public cocos2d::Layer
 {
@@ -51,9 +51,9 @@ public:
 
 	Soldier* createSoldier(const std::string &filename, const int color,int path);
 
-	GunCar* createGunCar(const std::string &filename, const int color);
+	GunCar* createGunCar(const std::string &filename, const int color,int path);
 
-	Tower* createTower(const std::string &filename, const int color,Tower::TYPE type=Tower::TOWER);
+	Tower* createTower(const std::string &filename, const int color);
 
 	Store* createStore(const std::string &filename, const int color);
 
@@ -67,7 +67,6 @@ public:
 	void scheduleTowerAttack();
 	void scheduleHomeRecover();
 	void scheduleBuffDetect();
-  	
 	void AIHero();
 
 	virtual bool init();
@@ -75,6 +74,7 @@ public:
 	Vector<GunCar*> _guncarList[2];
 	Vector<Tower*> _towerList[2];
 	Vector<Home*> _homeList;
+  	//Vector<Monster*> _monsterList[2];
   	Vector<Tower*>_wildMonsterList;
 	CREATE_FUNC(Manager);
 
@@ -87,5 +87,8 @@ private:
 	bool isOnline;
 	bool insideAttack(SpriteBase* beAttack, SpriteBase* attack);
 	int time_AI;
+	int time_soldier;
+	int time_gunCar;
 
 };
+

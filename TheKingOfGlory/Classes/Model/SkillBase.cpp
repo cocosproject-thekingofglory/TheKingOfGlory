@@ -151,7 +151,7 @@ void SkillBase::collisionDetection()
 				&&player->getNowHPValue() > 0.0&& box.intersectsRect(player->getBoundingBox()))
 			{
 				std::stringstream str;
-				str << _damage;
+				str << -_damage;
 				std::string s = "+" + str.str();
 				auto text = Tip::create(s, 0.1f, cocos2d::Color4B::GREEN, 24, "fonts/arial.ttf");
 				text->setPosition(Vec2(this->getContentSize().width *0.8,
@@ -173,7 +173,6 @@ void SkillBase::remove()
 	removeFromParentAndCleanup(true);
 
 }
-
 void SkillBase::killedTarget(SpriteBase*target)
 {
 	auto localPlayer = Manager::getInstance()->playerManager->getLocalPlayer();
