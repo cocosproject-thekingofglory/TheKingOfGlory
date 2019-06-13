@@ -237,7 +237,7 @@ void GameController::addSkill()
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill3);
 	skill3->setEnabled(false);
 
-	auto skill4 = Skill::create("Skill4", "Pictures/GameItem/" + roleName + "_skill4.png", 50.0f);
+	auto skill4 = Skill::create("Skill4", "Pictures/GameItem/" + roleName + "_skill4.png", 30.0f);
 	skill4->setPosition(Vec2(visibleSize.width*0.92, visibleSize.height*0.235));
 	skill4->setScale(0.8);
 	skill4->onTouch = [=]()
@@ -264,7 +264,7 @@ void GameController::addSkill()
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skill4);
 	skill4->setEnabled(false);
 
-	auto skillRecover = Skill::create("SkillRecover", "Pictures/GameItem/skillrecover.png", 50.0f);
+	auto skillRecover = Skill::create("SkillRecover", "Pictures/GameItem/skillrecover.png", 30.0f);
 	skillRecover->setPosition(Vec2(visibleSize.width*0.67, visibleSize.height*0.05));
 	skillRecover->setScale(0.8);
 	skillRecover->onTouch = [=]()
@@ -291,7 +291,7 @@ void GameController::addSkill()
 	cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(skillRecover);
 	skillRecover->setEnabled(false);
 
-	auto skillSpeed = Skill::create("SkillSpeed", "Pictures/GameItem/skillspeed.png", 30.0f);
+	auto skillSpeed = Skill::create("SkillSpeed", "Pictures/GameItem/skillspeed.png", 50.0f);
 	skillSpeed->setPosition(Vec2(visibleSize.width*0.56, visibleSize.height*0.05));
 	skillSpeed->setScale(0.8);
 	skillSpeed->onTouch = [=]()

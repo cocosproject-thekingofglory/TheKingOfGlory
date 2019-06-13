@@ -19,7 +19,7 @@ bool Soldier::init(int color)
 	setSpeed(SOLDIER_MOVE_SPEED);
 	setDefend(SOLDIER_DEFEND);
 
-	setKillExperience(SOLDIER_KILL_EXPRIENCE); 
+	setKillExperience(SOLDIER_KILL_EXP);
 	setKillMoney(SOLDIER_KILL_MONEY);
 
 	initAnimation();

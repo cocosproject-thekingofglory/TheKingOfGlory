@@ -28,7 +28,7 @@ Store* Store::createWithSpriteFrameName(const std::string& filename, int color)
 
 void Store::createListener()
 {
-	auto listener = EventListenerTouchOneByOne::create();
+	listener = EventListenerTouchOneByOne::create();
 	listener->onTouchBegan = CC_CALLBACK_2(Store::onTouchBegan, this);
 	listener->onTouchEnded = CC_CALLBACK_2(Store::onTouchEnded, this);
 	listener->setEnabled(false);
@@ -162,4 +162,12 @@ void Store::removeBg()
 	_equipmentList.clear();
 	_bg->removeAllChildrenWithCleanup(true);
 	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->removeChild(_bg, true);
+}
+
+void Store::destory()
+{
+
+	runAnimation("blast", this);
+	listener->setEnabled(true);
+
 }

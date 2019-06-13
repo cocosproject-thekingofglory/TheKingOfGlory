@@ -53,7 +53,7 @@ bool Warrior::init(int role, int color)
 
 void Warrior::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus()!=Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -69,7 +69,7 @@ void Warrior::skill1()
 
 void Warrior::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -92,7 +92,7 @@ void Warrior::skill2()
 
 void Warrior::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		setStatus(Status::SKILL3);
@@ -169,7 +169,7 @@ bool Aviator::init(int role, int color)
 
 void Aviator::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -190,7 +190,7 @@ void Aviator::skill1()
 
 void Aviator::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -213,7 +213,7 @@ void Aviator::skill2()
 
 void Aviator::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		setStatus(Status::SKILL3);
@@ -316,7 +316,7 @@ bool Mage::init(int role, int color)
 
 void Mage::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -360,7 +360,7 @@ void Mage::skill1()
 
 void Mage::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -401,7 +401,7 @@ void Mage::skill2()
 
 void Mage::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -570,7 +570,7 @@ bool Paladin::init(int role, int color)
 
 void Paladin::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -591,7 +591,7 @@ void Paladin::skill1()
 
 void Paladin::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -623,7 +623,7 @@ void Paladin::skill2()
 
 void Paladin::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		setStatus(Status::SKILL3);
@@ -771,7 +771,7 @@ bool Ranger::init(int role, int color)
 
 void Ranger::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -787,7 +787,7 @@ void Ranger::skill1()
 
 void Ranger::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -810,7 +810,7 @@ void Ranger::skill2()
 
 void Ranger::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		setStatus(Status::SKILL3);
@@ -907,7 +907,7 @@ bool Cavalier::init(int role, int color)
 
 void Cavalier::skill1()
 {
-	if (_isSkill&&getStatus() != Status::SKILL1)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL1)
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
@@ -929,7 +929,7 @@ void Cavalier::skill1()
 
 void Cavalier::skill2()
 {
-	if (_isSkill&&getStatus() != Status::SKILL2)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL2)
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
@@ -955,7 +955,7 @@ void Cavalier::skill2()
 
 void Cavalier::skill3()
 {
-	if (_isSkill&&getStatus() != Status::SKILL3)
+	if (_isSkill&&getStatus() != Status::DEAD&&getStatus() != Status::SKILL3)
 	{
 		stopMove();
 		setStatus(Status::SKILL3);

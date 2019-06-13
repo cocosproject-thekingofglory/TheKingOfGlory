@@ -5,31 +5,32 @@
 #include "Model/Soldier.h"
 #include "Util/PathArithmetic.h"
 #include "store/EquipmentBase.h"
+#include "tower.h"
 
 USING_NS_CC;
 using namespace ui;
 
 //基础属性
 const float PLAYER_ATTACK_RADIUS = 20;
-const float PLAYER_DAMAGE = 200000.0;
-const float PLAYER_SKILLRECOVER_VALUE = -10.0;
-const float PLAYER_HPVALUE = 20000;
+const float PLAYER_DAMAGE = 200.0;
+const float PLAYER_SKILLRECOVER_VALUE = -100.0;
+const float PLAYER_HPVALUE = 3500;
 const float PLAYER_MOVE_SPEED =6.0;
 const int PLAYER_ATTACK_INTERVAL = 200;
 const float PLAYER_DEFEND = 0.2;
 //经验、金钱
 const int PLAYER_INITIAL_EXP = 0;
-const int PLAYER_LEVEL_UP_EXP = 8;
+const int PLAYER_LEVEL_UP_EXP = 500;
 const int PLAYER_MAX_LEVEL = 15;
 const int PLAYER_INITIAL_LEVEL = 1;
 const int PLAYER_INITIAL_MONEY = 100;
 //升级加属性
 const float PLAYER_LEVEL_UP_DAMAGE = 10.0;
 const float PLAYER_LEVEL_UP_DEFEND = 0.01;
-const float PLAYER_LEVEL_UP_HPVALUE = 50;
+const float PLAYER_LEVEL_UP_HPVALUE = 300;
 
-const int PLAYER_KILL_EXPRIENCE = 20;
-const int PLAYER_KILL_MONEY = 100;
+const int PLAYER_KILL_EXPRIENCE = 200;
+const int PLAYER_KILL_MONEY = 200;
 
 class Player :public SpriteBase
 {

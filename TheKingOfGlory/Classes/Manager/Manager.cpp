@@ -121,7 +121,7 @@ bool Manager::init()
 
 		auto buff_red = Tower::createWithSpriteFrameName(RED_BUFF_FILENAME, YELLOW, SpriteBase::REDBUFF);
 		buff_red->setScale(1.5);
-		GameMap::getCurrentMap()->addSprite(buff_red, GameMap::Type::Soldier_Red);
+		GameMap::getCurrentMap()->addSprite(buff_red, GameMap::Type::Buff_Red);
 		_wildMonsterList.pushBack(buff_red);
 
 		playerManager = PlayerManager::create();
@@ -150,16 +150,16 @@ bool Manager::init()
 			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameStart");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateSoldier, this), 1.0f, "CreateSoldier");
 			schedule(CC_CALLBACK_0(Manager::scheduleCreateGunCar, this), 1.0f, "CreateGunCar");
-			schedule(CC_CALLBACK_0(Manager::scheduleCreateWildMonster, this), 1.0f, "CreateWildMonster");
-			schedule(CC_CALLBACK_0(Manager::scheduleWildMonsterAttack, this), 2.0f, "WildMonstertAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleCreateWildMonster, this), 30.0f, "CreateWildMonster");
+			schedule(CC_CALLBACK_0(Manager::scheduleWildMonsterAttack, this), 0.5f, "WildMonstertAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleTowerAttack, this), 0.5f, "TowertAttack");
 			if (!isOnline)
 				schedule(CC_CALLBACK_0(Manager::AIHero, this), 0.5f, "PlayerAttack");
-			schedule(CC_CALLBACK_0(Manager::scheduleSoldierAttack, this), 1.0f, "UpdateSoldierAttack");
+			schedule(CC_CALLBACK_0(Manager::scheduleSoldierAttack, this), 0.5f, "UpdateSoldierAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleGunCarAttack, this), 1.0f, "UpdateGunCarAttack");
 			schedule(CC_CALLBACK_0(Manager::scheduleHomeRecover, this), 1.0f, "Home");
 			schedule(CC_CALLBACK_0(Manager::scheduleDeadDetect, this), 1.0f, "DeadDetect");
-			schedule(CC_CALLBACK_0(Manager::scheduleBuffDetect, this), 10.0f, "BuffDetect");
+			schedule(CC_CALLBACK_0(Manager::scheduleBuffDetect, this), 20.0f, "BuffDetect");
 		});
 		cocos2d::Director::getInstance()->getRunningScene()->getChildByName("GameScene")->addChild(countDown, 2);
 
@@ -763,6 +763,7 @@ void Manager::scheduleTowerAttack()
 
 void Manager::scheduleHomeRecover()
 {
+	playerManager->getLocalPlayer()->addMoney(5);
 	for (auto& home : _homeList)
 	{
 		home->getRecoverList().clear();

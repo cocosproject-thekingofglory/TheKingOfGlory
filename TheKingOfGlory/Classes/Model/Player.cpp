@@ -125,7 +125,7 @@ void Player::stopMove()
 
 bool Player::attack()
 {
-	if (_isAttack&&getStatus() != Status::ATTACKING)
+	if (_isAttack&&getStatus() != Status::ATTACKING&&getStatus() != Status::DEAD)
 	{
 		stopMove();
 		setStatus(Status::ATTACKING);
@@ -214,8 +214,9 @@ float Player::beAttack(const float damage)
 		addChild(text);
 		setNowHPValue(MAX(nowHP, 0));
 		updateHPBar();
-		if (nowHP <= 0.0)
+		if (nowHP < 1.0)
 		{
+			setNowHPValue(0);
 			for (int i = 0; i < _beAttackTargetList.size(); i++)
 			{
 				_beAttackTargetList.at(i)->getAttackTarget().eraseObject(this, false);
@@ -269,7 +270,7 @@ float Player::beAttack(const float damage)
 
 void Player::skillRecover()
 {
-	if (_isSkill&&getStatus() != Status::SKILLRECOVER)
+	if (_isSkill&&getStatus() != Status::SKILLRECOVER&&getStatus() != Status::DEAD)
 	{
 		stopMove();
 		setStatus(Status::SKILLRECOVER);
@@ -290,7 +291,7 @@ void Player::skillSpeedUp()
 	if (_isSkill)
 	{
 
-		setSpeed(getSpeed()*3.0f);
+		setSpeed(getSpeed()*1.50f);
 		auto text = Tip::create("Speed Up", 5.0f, cocos2d::Color4B::BLUE, 24, "fonts/arial.ttf");
 		text->setPosition(Vec2(getContentSize().width *getScale()*0.8,
 			getContentSize().height*getScale()*1.2));
@@ -305,7 +306,7 @@ void Player::skillSpeedUp()
 
 void Player::startMove(Vec2 destination)
 {
-	if (_isMove)
+	if (_isMove&&getStatus()!=Status::ATTACKING&&getStatus() != Status::DEAD)
 	{
 		//设置一个大目的地和小目的地，大目的地为实际目的地，将大目的地分为小目的地
 		if (isOnline)

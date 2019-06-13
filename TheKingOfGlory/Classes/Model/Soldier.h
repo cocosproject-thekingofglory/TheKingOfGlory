@@ -7,15 +7,15 @@
 USING_NS_CC;
 
 //小兵的初始属性值
-const float SOLDIER_ATTACK_RADIUS = 3.0;
-const float SOLDIER_DAMAGE = 5.0;
-const float SOLDIER_HPVALUE = 50.0;
+const float SOLDIER_ATTACK_RADIUS = 10.0;
+const float SOLDIER_DAMAGE = 200.0;
+const float SOLDIER_HPVALUE = 2000;
 const int SOLDIER_ATTACK_INTERVAL = 100;
-const float SOLDIER_MOVE_SPEED = 10;
+const float SOLDIER_MOVE_SPEED = 5;
 const float SOLDIER_DEFEND = 0.1;
 
-const int SOLDIER_KILL_MONEY = 10;
-const int SOLDIER_KILL_EXP = 5;
+const int SOLDIER_KILL_MONEY = 50;
+const int SOLDIER_KILL_EXP = 50;
 
 const int SOLDIER_MOVE_ACTION = 1;
 
@@ -43,7 +43,7 @@ public:
 	virtual void stopMove();
 
 	virtual bool attack();//返回是否进行了攻击
-	virtual void stopAttack(){ stopAnimation("soldier_attack_right", this); }
+	virtual void stopAttack();
 
 	virtual float beAttack(const float damage);
 

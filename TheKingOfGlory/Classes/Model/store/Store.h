@@ -24,7 +24,7 @@ public:
 
 	//CREATE_FUNC(Store);
 private:
-	
+	EventListenerTouchOneByOne* listener;
 	void createListener();
 	void onTouchEnded(Touch*touch, Event*event);
 	bool onTouchBegan(Touch*touch, Event*event);
@@ -35,6 +35,7 @@ private:
 
 	void createBg();
 	void removeBg();
+	void destory();
 	Size _visibleSize;
 	Sprite* _bg;
 	Button* _closeButton;

@@ -11,26 +11,26 @@ USING_NS_CC;
 using namespace ui;
 
 //³õÊ¼ÊôÐÔÖµ
-const float TOWER_ATTACK_RADIUS =800;
-const float TOWER_DAMAGE = 50;
-const float TOWER_HPVALUE = 5000;
+const float TOWER_ATTACK_RADIUS =500;
+const float TOWER_DAMAGE = 1000;
+const float TOWER_HPVALUE = 20000;
 const int TOWER_ATTACK_INTERVAL = 180;
-const float TOWER_DEFEND = 0.2;
+const float TOWER_DEFEND = 0.5;
 //击杀经验和金钱
-const int TOWER_KILL_EXPRIENCE = 50;
-const int TOWER_KILL_MONEY = 100;
+const int TOWER_KILL_EXPRIENCE = 500;
+const int TOWER_KILL_MONEY = 500;
 //
-const float BUFF_ATTACK_RADIUS = 500;
-const float BUFF_DAMAGE = 5;
-const float BUFF_HPVALUE = 10;
+const float BUFF_ATTACK_RADIUS = 400;
+const float BUFF_DAMAGE = 300;
+const float BUFF_HPVALUE = 3000;
 const int BUFF_ATTACK_INTERVAL = 180;
 const float BUFF_DEFEND = 0.1;
 //击杀经验和金钱
-const int BUFF_KILL_EXPRIENCE = 50;
+const int BUFF_KILL_EXPRIENCE = 100;
 const int BUFF_KILL_MONEY = 100;
 
 const float BLUE_BUFF_ADD_DEFEND = 0.15;
-const float RED_BUFF_ADD_DAMAGE = 100;
+const float RED_BUFF_ADD_DAMAGE = 500;
 
 
 class Tower :public SpriteBase
@@ -44,7 +44,7 @@ public:
 
 	virtual bool attack();
 	virtual float beAttack(const float damage);
-	void destroy();
+	virtual void destroy();
 
 	void setHPBar();
 	void updateHPBar();
