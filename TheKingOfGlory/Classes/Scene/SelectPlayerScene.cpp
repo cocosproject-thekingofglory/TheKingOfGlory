@@ -38,6 +38,8 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 	_client = client;
 	_server = server;
 
+	selected = false;
+
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	//Ìí¼Ó±³¾°Í¼Æ¬
@@ -74,6 +76,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		warriorButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(0);
 			if (isOnline)
 			{
@@ -84,6 +87,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
+			selected = true;
 
 		});
 		this->addChild(warriorButton);
@@ -98,6 +102,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		aviatorButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(1);
 			if (isOnline)
 			{
@@ -108,6 +113,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
+			selected = true;
 
 		});
 		this->addChild(aviatorButton);
@@ -122,6 +128,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		mageButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(2);
 			if (isOnline)
 			{
@@ -132,6 +139,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
+			selected = true;
 
 		});
 		this->addChild(mageButton);
@@ -146,6 +154,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		paladinButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(3);
 			if (isOnline)
 			{
@@ -156,7 +165,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
-
+			selected = true;
 		});
 		this->addChild(paladinButton);
 	}
@@ -170,6 +179,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		rangerButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(4);
 			if (isOnline)
 			{
@@ -180,6 +190,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
+			selected = true;
 
 		});
 		this->addChild(rangerButton);
@@ -194,6 +205,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 		cavalierButton->addTouchEventListener([=](Ref* sender, ui::Widget::TouchEventType type)
 		{
 			if (type != ui::Widget::TouchEventType::ENDED) return;
+			if (selected) return;
 			User::getInstance()->setRole(5);
 			if (isOnline)
 			{
@@ -204,6 +216,7 @@ bool SelectPlayerScene::init(Client* client, Server* server)
 			{
 				Director::getInstance()->replaceScene(TransitionSplitCols::create(1, GameScene::createScene(nullptr)));
 			}
+			selected = true;
 
 		});
 		this->addChild(cavalierButton);

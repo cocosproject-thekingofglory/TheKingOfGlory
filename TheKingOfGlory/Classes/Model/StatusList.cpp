@@ -59,16 +59,11 @@ bool StatusList::init()
 	text5->setPosition(Vec2(mid, text5->getContentSize().height * 11));
 	this->addChild(text5, 40);
 
-	context = "Defend : ";
-	context.append(StringUtils::format("%.2f", localPlayer->getDefend()));
-	auto text6 = createText(context);
-	text6->setPosition(Vec2(mid, text6->getContentSize().height * 10));
-	this->addChild(text6, 40);
 
 	context = "Money : ";
 	context.append(StringUtils::format("%d", localPlayer->getMoney()));
 	auto text7 = createText(context);
-	text7->setPosition(Vec2(mid, text7->getContentSize().height * 9));
+	text7->setPosition(Vec2(mid, text7->getContentSize().height * 10));
 	this->addChild(text7, 40);
 
 
@@ -101,9 +96,12 @@ bool StatusList::init()
 
 StatusList*StatusList::createStatusList()
 {
+	if (hasList)
+		return NULL;
 	auto bg = new StatusList();
 	if (bg&& bg->init() && bg->initWithSpriteFrameName(BG_FILENAME))
 	{
+		hasList = true;
 		bg->autorelease();
 		return bg;
 	}
@@ -120,6 +118,7 @@ Text* StatusList::createText(std::string context)
 
 void StatusList::remove()
 {
+	if (!hasList)return;
 	this->removeAllChildrenWithCleanup(true);
 	this->removeFromParent();
 	hasList = false;

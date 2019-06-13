@@ -9,9 +9,9 @@ class Warrior :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2=100,
-		SKILL3=200
+		SKILL1 = 30,
+		SKILL2=30,
+		SKILL3=60
 	};
 	enum Radius
 	{
@@ -34,9 +34,9 @@ class Aviator :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2 = 100,
-		SKILL3 = 150
+		SKILL1 = 30,
+		SKILL2 = 30,
+		SKILL3 = 60
 	};
 	enum Radius
 	{
@@ -59,9 +59,9 @@ class Mage :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2 = 100,
-		SKILL3 = 100
+		SKILL1 =30,
+		SKILL2 = 30,
+		SKILL3 = 30
 	};
 	enum Radius
 	{
@@ -87,9 +87,9 @@ class Paladin :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2 = 100,
-		SKILL3 = 200
+		SKILL1 = 30,
+		SKILL2 = 30,
+		SKILL3 = 60
 	};
 	enum Radius
 	{
@@ -115,9 +115,9 @@ class Ranger :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2 = 100,
-		SKILL3 = 200
+		SKILL1 = 30,
+		SKILL2 = 30,
+		SKILL3 = 60
 	};
 	enum Radius
 	{
@@ -141,9 +141,9 @@ class Cavalier :public Player
 private:
 	enum Damage
 	{
-		SKILL1 = 100,
-		SKILL2 = 100,
-		SKILL3 = 200
+		SKILL1 = 30,
+		SKILL2 = 30,
+		SKILL3 = 60
 	};
 	enum Radius
 	{

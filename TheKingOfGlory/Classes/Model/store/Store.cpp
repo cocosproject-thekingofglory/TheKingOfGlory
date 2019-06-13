@@ -168,6 +168,6 @@ void Store::destroy()
 {
 
 	runAnimation("blast", this);
-	listener->setEnabled(true);
+	listener->setEnabled(false);
 
 }

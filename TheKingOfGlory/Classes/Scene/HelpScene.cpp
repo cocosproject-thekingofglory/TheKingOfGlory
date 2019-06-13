@@ -19,18 +19,23 @@ bool HelpScene::init()
 	}
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
-	Sprite * bg = Sprite::create("Pictures/Background/HelpBackground.png");
+	Sprite * bg = Sprite::create("Pictures/Background/WhiteBackground.png");
 	bg->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
 	this->addChild(bg, -1);
 
+
 	auto label1 = createLabel("God travels across the boundless universe in an ark.");
 	label1->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.8f));
+	label1->setColor(Color3B::BLACK);
 	auto label2 = createLabel("They use powerful force in the universe to create heroes.");
-	label2->setPosition(Vec2(visibleSize.width * 0, visibleSize.height * 0.75f));
+	label2->setPosition(Vec2(visibleSize.width * 0, visibleSize.height * 0.74f));
+	label2->setColor(Color3B::BLACK);
 	auto label3 = createLabel("To survive or to destroy, the road ahead is changeable.");
-	label3->setPosition(Vec2(visibleSize.width * 0.06f, visibleSize.height * 0.70f));
+	label3->setPosition(Vec2(visibleSize.width * 0.06f, visibleSize.height * 0.68f));
+	label3->setColor(Color3B::BLACK);
 	auto label4 = createLabel("Go fight! Heros.");
-	label4->setPosition(Vec2(visibleSize.width * 0.4f, visibleSize.height * 0.65f));
+	label4->setPosition(Vec2(visibleSize.width * 0.4f, visibleSize.height * 0.62f));
+	label4->setColor(Color3B::BLACK);
 	auto label5 = createLabel("Operational mode:");
 	auto label6 = createLabel("Mouse Click: Move,Attack,LaunchSkill");
 	auto label7 = createLabel("Key Q: SkillOne");
@@ -41,6 +46,11 @@ bool HelpScene::init()
 	label7->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.40f));
 	label8->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.35f));
 	label9->setPosition(Vec2(visibleSize.width * 0.1f, visibleSize.height * 0.30f));
+	label5->setColor(Color3B::BLACK);
+	label6->setColor(Color3B::BLACK);
+	label7->setColor(Color3B::BLACK);
+	label8->setColor(Color3B::BLACK);
+	label9->setColor(Color3B::BLACK);
 
 	this->addChild(label1);
 	this->addChild(label2);
@@ -51,6 +61,19 @@ bool HelpScene::init()
 	this->addChild(label7);
 	this->addChild(label8);
 	this->addChild(label9);
+
+	auto label = createLabel("Key A: Attack");
+	label->setPosition(Vec2(visibleSize.width * 0.6f, visibleSize.height * 0.40f));
+	label->setColor(Color3B::BLACK);
+	this->addChild(label);
+	label = createLabel("Key R: SkillRecover");
+	label->setPosition(Vec2(visibleSize.width * 0.6f, visibleSize.height * 0.35f));
+	label->setColor(Color3B::BLACK);
+	this->addChild(label);
+	label = createLabel("Key S: SkillSpeedUp");
+	label->setPosition(Vec2(visibleSize.width * 0.6f, visibleSize.height * 0.30f));
+	label->setColor(Color3B::BLACK);
+	this->addChild(label);
 
 	addChild(createText());
 
@@ -67,8 +90,9 @@ cocos2d::Menu* HelpScene::createText()
 
 	const auto visibleSize = Director::getInstance()->getVisibleSize();
 
-	backButton->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.2f);
+	backButton->setPosition(visibleSize.width * 0.5f, visibleSize.height * 0.15f);
 	static_cast<Label*>(backButton->getLabel())->enableGlow(Color4B(0, 0, 0, 255 * 0.6f));
+	static_cast<Label*>(backButton->getLabel())->setColor(Color3B(173 ,216,230));
 
 	buttons->addChild(backButton, 1);
 	buttons->setPosition(0, 0);
@@ -79,7 +103,7 @@ cocos2d::Menu* HelpScene::createText()
 void HelpScene::onEnter()
 {
 	Layer::onEnter();
-	GameAudio::getInstance()->playBgm("Sound/HelpScene.mp3");
+	GameAudio::getInstance()->playBgm("Sounds/HelpScene.mp3");
 }
 
 void HelpScene::menuOkCallback(cocos2d::Ref * pSender)

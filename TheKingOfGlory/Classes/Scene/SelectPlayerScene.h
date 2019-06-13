@@ -9,6 +9,7 @@ class SelectPlayerScene :public cocos2d::Layer
 {
 private:
 	bool isOnline;
+	bool selected;
 	Client * _client;
 	Server * _server;
 	cocos2d::Label* connectionMsg;
