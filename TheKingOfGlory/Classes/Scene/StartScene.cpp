@@ -3,6 +3,7 @@
 #include "Util/GameAudio.h"
 #include "SelectScene.h"
 #include "SettingsScene.h"
+#include "HelpScene.h"
 #include "GameScene.h"
 USING_NS_CC;
 using namespace CocosDenshion;
@@ -12,7 +13,7 @@ void StartScene::onEnter()
 {
 	Layer::onEnter();
 
-	//播放背景音乐
+	//播放背景音乐 音效
 	GameAudio::getInstance()->playBgm("Sounds/StartBgm.mp3");
 
 }
@@ -59,7 +60,7 @@ void StartScene::createHelpButton()
 	auto HelpButton = MenuItemLabel::create(Label::createWithTTF("Help", text_Font, text_Size),
 		[](Ref* pSender) {
 		GameAudio::getInstance()->playEffect("Sounds/ButtonClick.wav");
-		//Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
+		Director::getInstance()->pushScene(TransitionFade::create(1, HelpScene::createScene()));
 	});
 	HelpButton->setColor(label_Color);
 	auto menu = Menu::createWithItem(HelpButton);
