@@ -438,7 +438,7 @@ void Manager::scheduleCreateSoldier()
 	time_soldier = 0;
 	if (isOnline&&mode == Mode::Five)
 	{
-		if (_soldierList[RED].size() < 30)
+		if (_soldierList[RED].size() < 15)
 		{
 			for (int i = 0; i < 3; ++i)
 			{
@@ -449,7 +449,7 @@ void Manager::scheduleCreateSoldier()
 
 
 		}
-		if (_soldierList[BLUE].size() < 30)
+		if (_soldierList[BLUE].size() < 15)
 		{
 			for (int i = 0; i < 3; ++i)
 			{
@@ -461,14 +461,14 @@ void Manager::scheduleCreateSoldier()
 	}
 	else
 	{
-		if (_soldierList[RED].size() < 10)
+		if (_soldierList[RED].size() < 5)
 		{
 			auto soldier_red = createSoldier(RED_SOLDIER_FILENAME, RED, 0);
 			soldier_red->startMove();
 			GameMap::getCurrentMap()->addSprite(soldier_red, GameMap::Type::Soldier_Red);
 
 		}
-		if (_soldierList[BLUE].size() < 10)
+		if (_soldierList[BLUE].size() < 5)
 		{
 			auto soldier_blue = createSoldier(BLUE_SOLDIER_FILENAME, BLUE, 0);
 			soldier_blue->startMove();
@@ -481,7 +481,7 @@ void Manager::scheduleCreateSoldier()
 void Manager::scheduleCreateGunCar()
 {
 	time_gunCar++;
-	if (time_gunCar < 10)
+	if (time_gunCar < 5)
 		return;
 	time_gunCar = 0;
 	if (isOnline&&mode == Mode::Five)
@@ -637,27 +637,28 @@ void Manager::scheduleDeadDetect()
 	{
 		if (_towerList[i].empty())
 		{
-			unschedule("CreateSoldier");
-			unschedule("CreateGunCar");
-			unschedule("CreateWildMonster");
-			unschedule("TowertAttack");
-			unschedule("UpdateSoldierAttack");
-			unschedule("UpdateGunCarAttack");
-			unschedule("WildMonstertAttack");
-			unschedule("PlayerAttack");
-			unschedule("Home");
-			unschedule("DeadDetect");
-			unschedule("BuffDetect");
-			playerManager->getLocalPlayer()->setMove(false);
-			playerManager->getLocalPlayer()->setAttack(false);
-			playerManager->getLocalPlayer()->setSkill(false);
-			playerManager->getLocalPlayer()->setStatus(Player::Status::STANDING);
-			bool isWin;
-			if (i == playerManager->getLocalPlayer()->getColor())
-				isWin = false;
+			if (isOnline)
+			{
+				flatbuffers::FlatBufferBuilder builder(1024);
+				using namespace GameMsg;
+				auto gameOver = CreateGameOver(builder,Color(i));
+
+				auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_GameOver, Date::Date_gameOver, gameOver.Union());
+				builder.Finish(msg);
+				uint8_t* buff = builder.GetBufferPointer();
+				size_t size = builder.GetSize();
+				socket_message message((const char*)buff, size);
+				Client::getInstance()->sendMessage(message);
+			}
 			else
-				isWin = true;
-			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
+			{
+				bool isWin;
+				if (i == playerManager->getLocalPlayer()->getColor())
+					isWin = false;
+				else
+					isWin = true;
+				toOver(isWin);
+			}
 			break;
 		}
 	}
@@ -831,6 +832,26 @@ void Manager::AIHero()
 			}
 		}
 	}
+}
+
+void Manager::toOver(bool isWin)
+{
+	unschedule("CreateSoldier");
+	unschedule("CreateGunCar");
+	unschedule("CreateWildMonster");
+	unschedule("TowertAttack");
+	unschedule("UpdateSoldierAttack");
+	unschedule("UpdateGunCarAttack");
+	unschedule("WildMonstertAttack");
+	unschedule("PlayerAttack");
+	unschedule("Home");
+	unschedule("DeadDetect");
+	unschedule("BuffDetect");
+	playerManager->getLocalPlayer()->setMove(false);
+	playerManager->getLocalPlayer()->setAttack(false);
+	playerManager->getLocalPlayer()->setSkill(false);
+	playerManager->getLocalPlayer()->setStatus(Player::Status::STANDING);
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("ToOver", (void*)isWin);
 }
 
 bool Manager::insideAttack(SpriteBase* beAttack, SpriteBase* attack)

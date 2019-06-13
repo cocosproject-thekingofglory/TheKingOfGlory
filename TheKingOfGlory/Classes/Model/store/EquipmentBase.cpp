@@ -1,6 +1,7 @@
 #include "EquipmentBase.h"
 #include "../../Manager/Manager.h"
 #include "store.h"
+#include "Model/User.h"
 
 bool EquipmentBase::init(int id, Store*store)
 {
@@ -167,6 +168,21 @@ void EquipmentBase::buy()
 			_localplayer->addDamage(getDamage());
 			_localplayer->addDefend(getDefend());
 			_localplayer->addHPValue(getHP());
+
+			if(UserDefault::getInstance()->getBoolForKey("Network"))
+			{
+				flatbuffers::FlatBufferBuilder builder(1024);
+				using namespace GameMsg;
+				auto name = builder.CreateString(User::getInstance()->getName());
+				auto attribute = CreateAttribute(builder, name, getDamage(), getDefend(), getHP());
+
+				auto msg = CreateMsg(builder, MsgType::MsgType_MsgType_Attribute, Date::Date_attribute, attribute.Union());
+				builder.Finish(msg);
+				uint8_t* buff = builder.GetBufferPointer();
+				size_t size = builder.GetSize();
+				socket_message message((const char*)buff, size);
+				Client::getInstance()->sendMessage(message);
+			}
 
 			std::string equipName;
 			equipName.append(StringUtils::format("%d.png", _id));

@@ -1,4 +1,5 @@
 ﻿#include "Client.h"
+#include "Controller/GameController.h"
 using namespace boost::asio;
 using boost::system::error_code;
 
@@ -8,6 +9,13 @@ Client* Client::create(std::string ip, int port)
 	s->thread_ = new boost::thread(boost::bind(&io_service::run, &s->io_service_));
 	//	s->thread_->detach();
 	return s;
+}
+
+Client * Client::getInstance()
+{
+	auto client = dynamic_cast<GameController*>(cocos2d::Director::getInstance()->getRunningScene()->
+		getChildByName("GameScene")->getChildByName("GameController"))->gameClient;
+	return client;
 }
 
 Client::Client(std::string ip, int port) : socket_(io_service_),

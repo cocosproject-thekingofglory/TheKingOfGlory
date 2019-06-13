@@ -68,6 +68,7 @@ public:
 	void scheduleHomeRecover();
 	void scheduleBuffDetect();
 	void AIHero();
+	void toOver(bool isWin);
 
 	virtual bool init();
 	Vector<Soldier*> _soldierList[2];

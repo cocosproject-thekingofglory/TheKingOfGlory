@@ -13,6 +13,7 @@ using boost::asio::ip::tcp;
 
 typedef std::deque<socket_message> message_queue;
 
+class GameController;
 class Client
 {
 
@@ -20,6 +21,7 @@ public:
 	using _Callback = std::function<void(const void*)>;
 
 	static Client* create(std::string ip, int port);
+	static Client* getInstance();
 	Client(std::string ip, int port);
 	//void write(const socket_message& msg);
 	void close();

@@ -32,7 +32,6 @@ void LoadingScene::loadResources()
 {
 	
 
-	//����Ϸ��Դ�ļ������ValueVector��
 	ValueVector spriteSheets, effects, musics;
 
 	spriteSheets.push_back(Value("Pictures/Player/warrior/warrior_move_down.plist"));
@@ -393,12 +392,11 @@ void LoadingScene::loadResources()
 
 	effects.push_back(Value("Sounds/LoginClick.wav"));
 	effects.push_back(Value("Sounds/ButtonClick.wav"));
-	effects.push_back(Value("Sounds/Win.wav"));
-	effects.push_back(Value("Sounds/Lose.wav"));
+
 
 	sourceCount = spriteSheets.size() + effects.size() + musics.size();
 
-	progress_Interval = 100 / sourceCount;
+	progress_Interval = 50.0 / sourceCount;
 	
 	loadSpriteSheets(spriteSheets);
 	loadMusic(musics);
@@ -460,7 +458,7 @@ void LoadingScene::loadSpriteSheets(ValueVector spriteFiles)
 void LoadingScene::progressUpdate()
 {
 	if (--sourceCount) {
-		progress->setPercentage(100.0f - (progress_Interval * sourceCount));
+		progress->setPercentage(50.0f - (progress_Interval * sourceCount));
 	}
 	else {
 		auto pft = ProgressFromTo::create(0.5f, progress->getPercentage(), 100);

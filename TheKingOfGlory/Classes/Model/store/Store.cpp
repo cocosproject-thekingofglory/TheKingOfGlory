@@ -164,7 +164,7 @@ void Store::removeBg()
 	Director::getInstance()->getRunningScene()->getChildByName("GameScene")->removeChild(_bg, true);
 }
 
-void Store::destory()
+void Store::destroy()
 {
 
 	runAnimation("blast", this);

@@ -267,7 +267,7 @@ void Server::loop_process()
 			{
 				auto name = builder.CreateString(players.at(i).first);
 				auto color = Color(i % 2);
-				auto role = RoleType(players.at(i).second);
+				auto role =players.at(i).second;
 				Players.push_back(CreatePlayer(builder, name, color, role));
 			}
 			auto gameInit = CreateGameInit(builder, time(NULL), builder.CreateVector(Players));
