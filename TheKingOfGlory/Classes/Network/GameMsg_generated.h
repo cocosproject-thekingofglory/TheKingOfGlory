@@ -20,9 +20,11 @@ struct PlayerAttack;
 
 struct PlayerSkill;
 
-struct PlayerExit;
-
 struct ChatMsg;
+
+struct Attribute;
+
+struct GameOver;
 
 struct Msg;
 
@@ -33,12 +35,13 @@ enum MsgType {
   MsgType_MsgType_PlayerAttack = 3,
   MsgType_MsgType_PlayerSkill = 4,
   MsgType_MsgType_ChatMsg = 5,
-  MsgType_MsgType_PlayerExit = 6,
+  MsgType_MsgType_Attribute = 6,
+  MsgType_MsgType_GameOver = 7,
   MsgType_MIN = MsgType_MsgType_None,
-  MsgType_MAX = MsgType_MsgType_PlayerExit
+  MsgType_MAX = MsgType_MsgType_GameOver
 };
 
-inline const MsgType (&EnumValuesMsgType())[7] {
+inline const MsgType (&EnumValuesMsgType())[8] {
   static const MsgType values[] = {
     MsgType_MsgType_None,
     MsgType_MsgType_GameInit,
@@ -46,7 +49,8 @@ inline const MsgType (&EnumValuesMsgType())[7] {
     MsgType_MsgType_PlayerAttack,
     MsgType_MsgType_PlayerSkill,
     MsgType_MsgType_ChatMsg,
-    MsgType_MsgType_PlayerExit
+    MsgType_MsgType_Attribute,
+    MsgType_MsgType_GameOver
   };
   return values;
 }
@@ -59,14 +63,15 @@ inline const char * const *EnumNamesMsgType() {
     "MsgType_PlayerAttack",
     "MsgType_PlayerSkill",
     "MsgType_ChatMsg",
-    "MsgType_PlayerExit",
+    "MsgType_Attribute",
+    "MsgType_GameOver",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameMsgType(MsgType e) {
-  if (e < MsgType_MsgType_None || e > MsgType_MsgType_PlayerExit) return "";
+  if (e < MsgType_MsgType_None || e > MsgType_MsgType_GameOver) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesMsgType()[index];
 }
@@ -140,39 +145,6 @@ inline const char *EnumNameColor(Color e) {
   return EnumNamesColor()[index];
 }
 
-enum RoleType {
-  RoleType_Warrior = 0,
-  RoleType_Mage = 1,
-  RoleType_Archer = 2,
-  RoleType_MIN = RoleType_Warrior,
-  RoleType_MAX = RoleType_Archer
-};
-
-inline const RoleType (&EnumValuesRoleType())[3] {
-  static const RoleType values[] = {
-    RoleType_Warrior,
-    RoleType_Mage,
-    RoleType_Archer
-  };
-  return values;
-}
-
-inline const char * const *EnumNamesRoleType() {
-  static const char * const names[] = {
-    "Warrior",
-    "Mage",
-    "Archer",
-    nullptr
-  };
-  return names;
-}
-
-inline const char *EnumNameRoleType(RoleType e) {
-  if (e < RoleType_Warrior || e > RoleType_Archer) return "";
-  const size_t index = static_cast<size_t>(e);
-  return EnumNamesRoleType()[index];
-}
-
 enum Date {
   Date_NONE = 0,
   Date_gameInit = 1,
@@ -180,12 +152,13 @@ enum Date {
   Date_playerAttack = 3,
   Date_playerSkill = 4,
   Date_chatMsg = 5,
-  Date_playerExit = 6,
+  Date_attribute = 6,
+  Date_gameOver = 7,
   Date_MIN = Date_NONE,
-  Date_MAX = Date_playerExit
+  Date_MAX = Date_gameOver
 };
 
-inline const Date (&EnumValuesDate())[7] {
+inline const Date (&EnumValuesDate())[8] {
   static const Date values[] = {
     Date_NONE,
     Date_gameInit,
@@ -193,7 +166,8 @@ inline const Date (&EnumValuesDate())[7] {
     Date_playerAttack,
     Date_playerSkill,
     Date_chatMsg,
-    Date_playerExit
+    Date_attribute,
+    Date_gameOver
   };
   return values;
 }
@@ -206,14 +180,15 @@ inline const char * const *EnumNamesDate() {
     "playerAttack",
     "playerSkill",
     "chatMsg",
-    "playerExit",
+    "attribute",
+    "gameOver",
     nullptr
   };
   return names;
 }
 
 inline const char *EnumNameDate(Date e) {
-  if (e < Date_NONE || e > Date_playerExit) return "";
+  if (e < Date_NONE || e > Date_gameOver) return "";
   const size_t index = static_cast<size_t>(e);
   return EnumNamesDate()[index];
 }
@@ -242,8 +217,12 @@ template<> struct DateTraits<ChatMsg> {
   static const Date enum_value = Date_chatMsg;
 };
 
-template<> struct DateTraits<PlayerExit> {
-  static const Date enum_value = Date_playerExit;
+template<> struct DateTraits<Attribute> {
+  static const Date enum_value = Date_attribute;
+};
+
+template<> struct DateTraits<GameOver> {
+  static const Date enum_value = Date_gameOver;
 };
 
 bool VerifyDate(flatbuffers::Verifier &verifier, const void *obj, Date type);
@@ -283,8 +262,8 @@ struct Player FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   Color color() const {
     return static_cast<Color>(GetField<int8_t>(VT_COLOR, 0));
   }
-  RoleType role() const {
-    return static_cast<RoleType>(GetField<int8_t>(VT_ROLE, 0));
+  int8_t role() const {
+    return GetField<int8_t>(VT_ROLE, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -305,8 +284,8 @@ struct PlayerBuilder {
   void add_color(Color color) {
     fbb_.AddElement<int8_t>(Player::VT_COLOR, static_cast<int8_t>(color), 0);
   }
-  void add_role(RoleType role) {
-    fbb_.AddElement<int8_t>(Player::VT_ROLE, static_cast<int8_t>(role), 0);
+  void add_role(int8_t role) {
+    fbb_.AddElement<int8_t>(Player::VT_ROLE, role, 0);
   }
   explicit PlayerBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -324,7 +303,7 @@ inline flatbuffers::Offset<Player> CreatePlayer(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> name = 0,
     Color color = Color_Red,
-    RoleType role = RoleType_Warrior) {
+    int8_t role = 0) {
   PlayerBuilder builder_(_fbb);
   builder_.add_name(name);
   builder_.add_role(role);
@@ -336,7 +315,7 @@ inline flatbuffers::Offset<Player> CreatePlayerDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *name = nullptr,
     Color color = Color_Red,
-    RoleType role = RoleType_Warrior) {
+    int8_t role = 0) {
   auto name__ = name ? _fbb.CreateString(name) : 0;
   return GameMsg::CreatePlayer(
       _fbb,
@@ -582,56 +561,6 @@ inline flatbuffers::Offset<PlayerSkill> CreatePlayerSkillDirect(
       type);
 }
 
-struct PlayerExit FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_NAME = 4
-  };
-  const flatbuffers::String *name() const {
-    return GetPointer<const flatbuffers::String *>(VT_NAME);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_NAME) &&
-           verifier.VerifyString(name()) &&
-           verifier.EndTable();
-  }
-};
-
-struct PlayerExitBuilder {
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
-    fbb_.AddOffset(PlayerExit::VT_NAME, name);
-  }
-  explicit PlayerExitBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  PlayerExitBuilder &operator=(const PlayerExitBuilder &);
-  flatbuffers::Offset<PlayerExit> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<PlayerExit>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<PlayerExit> CreatePlayerExit(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> name = 0) {
-  PlayerExitBuilder builder_(_fbb);
-  builder_.add_name(name);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<PlayerExit> CreatePlayerExitDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *name = nullptr) {
-  auto name__ = name ? _fbb.CreateString(name) : 0;
-  return GameMsg::CreatePlayerExit(
-      _fbb,
-      name__);
-}
-
 struct ChatMsg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NAME = 4,
@@ -696,6 +625,132 @@ inline flatbuffers::Offset<ChatMsg> CreateChatMsgDirect(
       msg__);
 }
 
+struct Attribute FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_NAME = 4,
+    VT_DAMAGE = 6,
+    VT_DEFEND = 8,
+    VT_HP = 10
+  };
+  const flatbuffers::String *name() const {
+    return GetPointer<const flatbuffers::String *>(VT_NAME);
+  }
+  float damage() const {
+    return GetField<float>(VT_DAMAGE, 0.0f);
+  }
+  float defend() const {
+    return GetField<float>(VT_DEFEND, 0.0f);
+  }
+  float hp() const {
+    return GetField<float>(VT_HP, 0.0f);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyOffset(verifier, VT_NAME) &&
+           verifier.VerifyString(name()) &&
+           VerifyField<float>(verifier, VT_DAMAGE) &&
+           VerifyField<float>(verifier, VT_DEFEND) &&
+           VerifyField<float>(verifier, VT_HP) &&
+           verifier.EndTable();
+  }
+};
+
+struct AttributeBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_name(flatbuffers::Offset<flatbuffers::String> name) {
+    fbb_.AddOffset(Attribute::VT_NAME, name);
+  }
+  void add_damage(float damage) {
+    fbb_.AddElement<float>(Attribute::VT_DAMAGE, damage, 0.0f);
+  }
+  void add_defend(float defend) {
+    fbb_.AddElement<float>(Attribute::VT_DEFEND, defend, 0.0f);
+  }
+  void add_hp(float hp) {
+    fbb_.AddElement<float>(Attribute::VT_HP, hp, 0.0f);
+  }
+  explicit AttributeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  AttributeBuilder &operator=(const AttributeBuilder &);
+  flatbuffers::Offset<Attribute> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<Attribute>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<Attribute> CreateAttribute(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    flatbuffers::Offset<flatbuffers::String> name = 0,
+    float damage = 0.0f,
+    float defend = 0.0f,
+    float hp = 0.0f) {
+  AttributeBuilder builder_(_fbb);
+  builder_.add_hp(hp);
+  builder_.add_defend(defend);
+  builder_.add_damage(damage);
+  builder_.add_name(name);
+  return builder_.Finish();
+}
+
+inline flatbuffers::Offset<Attribute> CreateAttributeDirect(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    const char *name = nullptr,
+    float damage = 0.0f,
+    float defend = 0.0f,
+    float hp = 0.0f) {
+  auto name__ = name ? _fbb.CreateString(name) : 0;
+  return GameMsg::CreateAttribute(
+      _fbb,
+      name__,
+      damage,
+      defend,
+      hp);
+}
+
+struct GameOver FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_WINCOLOR = 4
+  };
+  Color wincolor() const {
+    return static_cast<Color>(GetField<int8_t>(VT_WINCOLOR, 0));
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<int8_t>(verifier, VT_WINCOLOR) &&
+           verifier.EndTable();
+  }
+};
+
+struct GameOverBuilder {
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_wincolor(Color wincolor) {
+    fbb_.AddElement<int8_t>(GameOver::VT_WINCOLOR, static_cast<int8_t>(wincolor), 0);
+  }
+  explicit GameOverBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  GameOverBuilder &operator=(const GameOverBuilder &);
+  flatbuffers::Offset<GameOver> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<GameOver>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<GameOver> CreateGameOver(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    Color wincolor = Color_Red) {
+  GameOverBuilder builder_(_fbb);
+  builder_.add_wincolor(wincolor);
+  return builder_.Finish();
+}
+
 struct Msg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_MSG = 4,
@@ -727,8 +782,11 @@ struct Msg FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   const ChatMsg *data_as_chatMsg() const {
     return data_type() == Date_chatMsg ? static_cast<const ChatMsg *>(data()) : nullptr;
   }
-  const PlayerExit *data_as_playerExit() const {
-    return data_type() == Date_playerExit ? static_cast<const PlayerExit *>(data()) : nullptr;
+  const Attribute *data_as_attribute() const {
+    return data_type() == Date_attribute ? static_cast<const Attribute *>(data()) : nullptr;
+  }
+  const GameOver *data_as_gameOver() const {
+    return data_type() == Date_gameOver ? static_cast<const GameOver *>(data()) : nullptr;
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
@@ -760,8 +818,12 @@ template<> inline const ChatMsg *Msg::data_as<ChatMsg>() const {
   return data_as_chatMsg();
 }
 
-template<> inline const PlayerExit *Msg::data_as<PlayerExit>() const {
-  return data_as_playerExit();
+template<> inline const Attribute *Msg::data_as<Attribute>() const {
+  return data_as_attribute();
+}
+
+template<> inline const GameOver *Msg::data_as<GameOver>() const {
+  return data_as_gameOver();
 }
 
 struct MsgBuilder {
@@ -825,8 +887,12 @@ inline bool VerifyDate(flatbuffers::Verifier &verifier, const void *obj, Date ty
       auto ptr = reinterpret_cast<const ChatMsg *>(obj);
       return verifier.VerifyTable(ptr);
     }
-    case Date_playerExit: {
-      auto ptr = reinterpret_cast<const PlayerExit *>(obj);
+    case Date_attribute: {
+      auto ptr = reinterpret_cast<const Attribute *>(obj);
+      return verifier.VerifyTable(ptr);
+    }
+    case Date_gameOver: {
+      auto ptr = reinterpret_cast<const GameOver *>(obj);
       return verifier.VerifyTable(ptr);
     }
     default: return false;

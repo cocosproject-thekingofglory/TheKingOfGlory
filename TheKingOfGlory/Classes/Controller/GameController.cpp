@@ -51,6 +51,8 @@ bool GameController::init(Client* client, Server*server)
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerAttack, GameController::onPlayerAttack, gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_PlayerSkill, GameController::onPlayerSkill, gameClient);
 		CLIENT_ON(GameMsg::MsgType_MsgType_ChatMsg, GameController::onChatMsg, gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_Attribute, GameController::onAttribute, gameClient);
+		CLIENT_ON(GameMsg::MsgType_MsgType_GameOver, GameController::onGameOver, gameClient);
 
 		schedule(CC_CALLBACK_0(GameController::processMsg,this),0.05f,"ProcessMsg");
 
@@ -345,10 +347,16 @@ void GameController::onEnter()
 
 void GameController::toOver(cocos2d::EventCustom* event)
 {
-	bool isWin = static_cast<bool>(event->getUserData());
-	Director::getInstance()->getEventDispatcher()->removeEventListenersForType(EventListener::Type::KEYBOARD);
-	GameAudio::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
-	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver",(void*)isWin);
+	if (isGaming)
+	{
+		isGaming = false;
+		bool isWin = static_cast<bool>(event->getUserData());
+		Director::getInstance()->getEventDispatcher()->removeEventListener(keyListener);
+		Director::getInstance()->getEventDispatcher()->removeEventListener(touchListener);
+		//GameAudio::getInstance()->playEffect(isWin?"Sounds/Win.wav": "Sounds/Lose.wav");
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("GameOver", (void*)isWin);
+	}
+
 }
 
 void GameController::sendEmptyMsg()
@@ -406,6 +414,7 @@ void GameController::onGameInit(const void * msg)
 		}
 	}
 	hasSend = true;
+	isGaming = true;
 	schedule(CC_CALLBACK_0(GameController::sendEmptyMsg, this), 0.01f,"SendEmpty");
 
 }
@@ -461,6 +470,23 @@ void GameController::onChatMsg(const void * msg)
 	chatBox->addChatText(text);
 	chatBox->setIndex(0);
 	chatBox->updateLayout();
+}
+
+void GameController::onAttribute(const void * msg)
+{
+	auto data = GameMsg::GetMsg(msg)->data_as_attribute();
+	auto name = std::string(data->name()->c_str());
+	auto player = manager->playerManager->getPlayer(name);
+	player->addDamage(data->damage());
+	player->addDefend(data->defend());
+	player->addHPValue(data->hp());
+}
+
+void GameController::onGameOver(const void * msg)
+{
+	auto data = GameMsg::GetMsg(msg)->data_as_gameOver();
+	int color = static_cast<int>(data->wincolor());
+	manager->toOver(manager->playerManager->getLocalPlayer()->getColor()!=color);
 }
 
 void GameController::initGame(float delta)

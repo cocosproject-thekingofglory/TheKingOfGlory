@@ -35,7 +35,7 @@ private:
 
 	void createBg();
 	void removeBg();
-	void destory();
+	void destroy();
 	Size _visibleSize;
 	Sprite* _bg;
 	Button* _closeButton;

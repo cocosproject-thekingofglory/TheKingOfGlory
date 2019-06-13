@@ -7,11 +7,10 @@
 #include "Network/Client.h"
 #include "Network/ChatBox.h"
 
+class Client;
 class GameController:public cocos2d::Layer
 {
 public:
-	bool isOnline;
-	bool hasSend;
 	Server* gameServer;
 	Client* gameClient;
 	Manager* manager;
@@ -23,6 +22,9 @@ public:
 	cocos2d::Vector<Skill*>& getSkillList() { return _skillList; }
 
 private:
+	bool isOnline;
+	bool hasSend;
+	bool isGaming;
 	GameMap* map;
 	cocos2d::Vector<Skill*> _skillList;
 	cocos2d::EventListenerTouchOneByOne* touchListener;
@@ -43,5 +45,7 @@ private:
 	void onPlayerAttack(const void* msg);
 	void onPlayerSkill(const void* msg);
 	void onChatMsg(const void* msg);
+	void onAttribute(const void* msg);
+	void onGameOver(const void* msg);
 
 };
