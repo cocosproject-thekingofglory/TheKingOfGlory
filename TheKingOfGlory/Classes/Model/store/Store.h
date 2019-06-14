@@ -24,7 +24,7 @@ public:
 
 	//CREATE_FUNC(Store);
 private:
-	EventListenerTouchOneByOne* listener;
+	EventListenerTouchOneByOne* listener=nullptr;
 	void createListener();
 	void onTouchEnded(Touch*touch, Event*event);
 	bool onTouchBegan(Touch*touch, Event*event);

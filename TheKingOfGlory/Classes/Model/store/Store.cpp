@@ -1,5 +1,6 @@
 #include "Store.h"
 #include "../../Manager/Manager.h"
+#include "Model/User.h"
 
 bool Store::init(int color)
 {
@@ -9,7 +10,8 @@ bool Store::init(int color)
 	}
 	_visibleSize = Director::getInstance()->getVisibleSize();
 
-	createListener();
+	if(color==User::getInstance()->getColor())
+		createListener();
 
 	return true;
 }
@@ -168,6 +170,7 @@ void Store::destroy()
 {
 
 	runAnimation("blast", this);
-	listener->setEnabled(false);
+	if(listener)
+		listener->setEnabled(false);
 
 }

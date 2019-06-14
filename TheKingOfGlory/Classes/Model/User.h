@@ -19,10 +19,14 @@ public:
     void setName(const std::string& name) { this->name = name; };
     std::string getName() const { return name; };
 
+	void setColor(int color) { this->color = color; }
+	int getColor() { return color; }
+
 private:
     User() {};
 
 	int role;
+	int color;
     std::string name;
 };
 

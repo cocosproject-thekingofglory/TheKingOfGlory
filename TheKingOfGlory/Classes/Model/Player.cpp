@@ -274,7 +274,7 @@ void Player::skillRecover()
 	{
 		stopMove();
 		setStatus(Status::SKILLRECOVER);
-		auto skill = SkillBase::create("skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor() ^ 1, PLAYER_SKILLRECOVER_VALUE);
+		auto skill = SkillBase::create(this, "skillrecover (1).png", "skillrecover", 18, 3.0f, this->getColor() ^ 1, PLAYER_SKILLRECOVER_VALUE);
 		GameMap::getCurrentMap()->addSprite(skill);
 		skill->setPosition(this->getPosition());
 
@@ -402,7 +402,7 @@ void Player::revival()
 	setDirection(Direction::RIGHTUP);
 	setStatus(Player::Status::STANDING);
 
-	setNowHPValue(PLAYER_HPVALUE);
+	setNowHPValue(getHPValue());
 	updateHPBar();
 
 	if (getColor() == RED)

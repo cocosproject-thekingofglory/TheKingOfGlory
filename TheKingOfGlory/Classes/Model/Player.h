@@ -13,7 +13,7 @@ using namespace ui;
 //基础属性
 const float PLAYER_ATTACK_RADIUS = 20;
 const float PLAYER_DAMAGE = 200.0;
-const float PLAYER_SKILLRECOVER_VALUE = -100.0;
+const float PLAYER_SKILLRECOVER_VALUE = -500.0;
 const float PLAYER_HPVALUE = 3500;
 const float PLAYER_MOVE_SPEED =6.0;
 const int PLAYER_ATTACK_INTERVAL = 200;

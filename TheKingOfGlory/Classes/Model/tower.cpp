@@ -21,7 +21,7 @@ bool Tower::init(int color, TYPE type)
 	setColor(color);
 	setType(type);
 
-	if (_type == TOWER)
+	if (_type == TOWER||_type==STORE)
 	{
 		setAttackRadius(TOWER_ATTACK_RADIUS);
 		setHPValue(TOWER_HPVALUE);

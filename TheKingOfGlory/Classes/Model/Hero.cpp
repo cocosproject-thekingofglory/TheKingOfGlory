@@ -57,7 +57,7 @@ void Warrior::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
+		auto skill = SkillBase::create(this,"skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
 		this->addChild(skill, -1);
 		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
@@ -73,7 +73,7 @@ void Warrior::skill2()
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
-		auto skill = SkillBase::create("skillsword (1).png", "skillsword" ,21, 3.0f, getColor(), Damage::SKILL2);
+		auto skill = SkillBase::create(this, "skillsword (1).png", "skillsword" ,21, 3.0f, getColor(), Damage::SKILL2);
 		GameMap::getCurrentMap()->addSprite(skill);
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -97,7 +97,7 @@ void Warrior::skill3()
 		stopMove();
 		setStatus(Status::SKILL3);
 		{
-			auto skill = SkillBase::create("skillfenghuangL (1).png", "skillfenghuangL", 17, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillfenghuangL (1).png", "skillfenghuangL", 17, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -106,7 +106,7 @@ void Warrior::skill3()
 			skill->setScale(1.5);
 		}
 		{
-			auto skill = SkillBase::create("skillfenghuangR (1).png", "skillfenghuangR", 17, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillfenghuangR (1).png", "skillfenghuangR", 17, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -173,7 +173,7 @@ void Aviator::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skillring (1).png", "skillring", 5, 5.0f, getColor(), Damage::SKILL1);
+		auto skill = SkillBase::create(this, "skillring (1).png", "skillring", 5, 5.0f, getColor(), Damage::SKILL1);
 		GameMap::getCurrentMap()->addSprite(skill);
 		skill->setPosition(this->getPosition());
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -194,7 +194,7 @@ void Aviator::skill2()
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
-		auto skill = SkillBase::create("skillbone (1).png","skillbone",16,3.0f,getColor(),Damage::SKILL2);
+		auto skill = SkillBase::create(this, "skillbone (1).png","skillbone",16,3.0f,getColor(),Damage::SKILL2);
 		GameMap::getCurrentMap()->addSprite(skill);
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -220,7 +220,7 @@ void Aviator::skill3()
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
 		for (int i = 0; i < 8; i++)
 		{
-			auto skill = SkillBase::create("skillstab (1).png", "skillstab", 17, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillstab (1).png", "skillstab", 17, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -339,7 +339,7 @@ void Mage::skill1()
 		{
 			for (int i = 0; i < 4; i++)
 			{
-				auto skill = SkillBase::create("skillball (1).png", "skillball", 19, 5.0f, getColor(), Damage::SKILL1);
+				auto skill = SkillBase::create(this, "skillball (1).png", "skillball", 19, 5.0f, getColor(), Damage::SKILL1);
 				GameMap::getCurrentMap()->addSprite(skill);
 				skill->setPosition(this->getPosition());
 				int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -370,7 +370,7 @@ void Mage::skill2()
 			{
 				if (_attackTargetList.at(i)->getNowHPValue() >= 0.0)
 				{
-					auto skill = SkillBase::create("skillwater (1).png", "skillwater", 15, 3.0f, getColor(), Damage::SKILL2);
+					auto skill = SkillBase::create(this, "skillwater (1).png", "skillwater", 15, 3.0f, getColor(), Damage::SKILL2);
 					GameMap::getCurrentMap()->addSprite(skill);
 					auto pos = _attackTargetList.at(i)->getPosition();
 					skill->setPosition(pos);
@@ -381,7 +381,7 @@ void Mage::skill2()
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1} };
 		for (int i =0; i < 4 - _attackTargetList.size(); i++)
 		{
-			auto skill = SkillBase::create("skillwater (1).png", "skillwater", 15, 3.0f, getColor(), Damage::SKILL2);
+			auto skill = SkillBase::create(this, "skillwater (1).png", "skillwater", 15, 3.0f, getColor(), Damage::SKILL2);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -407,7 +407,7 @@ void Mage::skill3()
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
 		for (int i = 0; i < 8; i++)
 		{
-			auto skill = SkillBase::create("skillfog (1).png", "skillfog", 15, 5.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillfog (1).png", "skillfog", 15, 5.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -574,7 +574,7 @@ void Paladin::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skillwaterdragon1 (1).png", "skillwaterdragon1", 19, 3.0f, getColor(), Damage::SKILL1);
+		auto skill = SkillBase::create(this, "skillwaterdragon1 (1).png", "skillwaterdragon1", 19, 3.0f, getColor(), Damage::SKILL1);
 		GameMap::getCurrentMap()->addSprite(skill);
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -597,7 +597,7 @@ void Paladin::skill2()
 		setStatus(Status::SKILL2);
 		setStatus(Status::SKILL3);
 		{
-			auto skill = SkillBase::create("skillwaterdragonL (1).png", "skillwaterdragonL", 21, 3.0f, getColor(), Damage::SKILL2);
+			auto skill = SkillBase::create(this, "skillwaterdragonL (1).png", "skillwaterdragonL", 21, 3.0f, getColor(), Damage::SKILL2);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -606,7 +606,7 @@ void Paladin::skill2()
 			skill->setScale(1.5);
 		}
 		{
-			auto skill = SkillBase::create("skillwaterdragonR (1).png", "skillwaterdragonR", 21, 3.0f, getColor(), Damage::SKILL2);
+			auto skill = SkillBase::create(this, "skillwaterdragonR (1).png", "skillwaterdragonR", 21, 3.0f, getColor(), Damage::SKILL2);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -642,7 +642,7 @@ void Paladin::skill3()
 		}
 		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL3))*0.1f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
-			auto skill = SkillBase::create("skillblackdragon (1).png", "skillblackdragon", 19, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillblackdragon (1).png", "skillblackdragon", 19, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -775,7 +775,7 @@ void Ranger::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
+		auto skill = SkillBase::create(this, "skilllight (1).png", "skilllight", 18, 3.0f, getColor(), Damage::SKILL1);
 		this->addChild(skill, -1);
 		auto sequence = Sequence::create(DelayTime::create(1.4f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
@@ -791,7 +791,7 @@ void Ranger::skill2()
 	{
 		stopMove();
 		setStatus(Status::SKILL2);
-		auto skill = SkillBase::create("skillknife (1).png", "skillknife", 21, 3.0f, getColor(), Damage::SKILL2);
+		auto skill = SkillBase::create(this, "skillknife (1).png", "skillknife", 21, 3.0f, getColor(), Damage::SKILL2);
 		GameMap::getCurrentMap()->addSprite(skill);
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -815,7 +815,7 @@ void Ranger::skill3()
 		stopMove();
 		setStatus(Status::SKILL3);
 		{
-			auto skill = SkillBase::create("skillstrike (1).png", "skillstrike", 20, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillstrike (1).png", "skillstrike", 20, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -824,7 +824,7 @@ void Ranger::skill3()
 			skill->setScale(1.5);
 		}
 		{
-			auto skill = SkillBase::create("skillstrike (1).png", "skillstrike", 20, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skillstrike (1).png", "skillstrike", 20, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -911,7 +911,7 @@ void Cavalier::skill1()
 	{
 		stopMove();
 		setStatus(Status::SKILL1);
-		auto skill = SkillBase::create("skilldragonsun (1).png", "skilldragonsun", 17, 3.0f, getColor(), Damage::SKILL1);
+		auto skill = SkillBase::create(this, "skilldragonsun (1).png", "skilldragonsun", 17, 3.0f, getColor(), Damage::SKILL1);
 		GameMap::getCurrentMap()->addSprite(skill);
 
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };
@@ -936,7 +936,7 @@ void Cavalier::skill2()
 		int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1} };
 		for (int i = 0; i < 4 - _attackTargetList.size(); i++)
 		{
-			auto skill = SkillBase::create("skillfire (1).png", "skillfire", 19, 3.0f, getColor(), Damage::SKILL2);
+			auto skill = SkillBase::create(this, "skillfire (1).png", "skillfire", 19, 3.0f, getColor(), Damage::SKILL2);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			auto pos = this->getPosition();
@@ -975,7 +975,7 @@ void Cavalier::skill3()
 
 		auto sequence = Sequence::create(DelayTime::create(_animationFrameNum.at(int(Status::SKILL3))*0.1f), CallFunc::create([=]() {
 			this->setStatus(Status::STANDING);
-			auto skill = SkillBase::create("skilldragonflower (1).png", "skilldragonflower", 19, 3.0f, getColor(), Damage::SKILL3);
+			auto skill = SkillBase::create(this, "skilldragonflower (1).png", "skilldragonflower", 19, 3.0f, getColor(), Damage::SKILL3);
 			GameMap::getCurrentMap()->addSprite(skill);
 
 			int ds[][2] = { {-1,0},{1,0},{0,1},{0,-1},{-1,-1},{-1,1},{1,-1},{1,1} };

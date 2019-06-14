@@ -6,11 +6,11 @@ USING_NS_CC;
 
 
 
-SkillBase * SkillBase::create(const std::string & spriteName, const std::string & animationName,
+SkillBase * SkillBase::create(SpriteBase* attacker,const std::string & spriteName, const std::string & animationName,
 	int animationNum, int delay,int color, float damage)
 {
 	auto skill = new SkillBase();
-	if (skill&&skill->initWithSpriteFrameName(spriteName) && skill->init(animationName ,animationNum,delay,color, damage))
+	if (skill&&skill->initWithSpriteFrameName(spriteName) && skill->init(attacker,animationName ,animationNum,delay,color, damage))
 	{
 		skill->autorelease();
 		return skill;
@@ -19,11 +19,12 @@ SkillBase * SkillBase::create(const std::string & spriteName, const std::string 
 	return nullptr;
 }
 
-bool SkillBase::init(const std::string & animationName, int animationNum, int delay,int color, float damage)
+bool SkillBase::init(SpriteBase* attacker, const std::string & animationName, int animationNum, int delay,int color, float damage)
 {
 	_color = color;
 	_damage = damage;
 	_animationName = animationName;
+	_attacker = attacker;
 
 	initAnimation(animationName, animationNum);
 	runAnimation(animationName, this);
@@ -175,16 +176,15 @@ void SkillBase::remove()
 }
 void SkillBase::killedTarget(SpriteBase*target)
 {
-	auto localPlayer = Manager::getInstance()->playerManager->getLocalPlayer();
-	localPlayer->addEXP(target->getKillExperience());
-	localPlayer->addMoney(target->getKillMoney());
+	dynamic_cast<Player*>(_attacker)->addEXP(target->getKillExperience());
+	dynamic_cast<Player*>(_attacker)->addMoney(target->getKillMoney());
 
 	std::string stip;
 	stip.append(StringUtils::format("+ %d", target->getKillMoney()));
 	auto tip = Tip::create(stip, 1.0, Color4B::BLUE);
-	tip->setPosition(Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height / 2));
-	Vec2 to = Vec2(localPlayer->getContentSize().width / 2, localPlayer->getContentSize().height);
+	tip->setPosition(Vec2(_attacker->getContentSize().width / 2, _attacker->getContentSize().height / 2));
+	Vec2 to = Vec2(_attacker->getContentSize().width / 2, _attacker->getContentSize().height);
 	auto moveup = MoveTo::create(1.0, to);
 	tip->runAction(moveup);
-	localPlayer->addChild(tip);
+	_attacker->addChild(tip);
 }
