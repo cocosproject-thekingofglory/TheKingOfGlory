@@ -10,8 +10,7 @@ bool Store::init(int color)
 	}
 	_visibleSize = Director::getInstance()->getVisibleSize();
 
-	if(color==User::getInstance()->getColor())
-		createListener();
+	createListener();
 
 	return true;
 }
@@ -38,7 +37,8 @@ void Store::createListener()
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 9);
 
 	auto customListener = EventListenerCustom::create("GameStart", [=](cocos2d::EventCustom*) {
-		listener->setEnabled(true);
+		if (getColor() == User::getInstance()->getColor())
+			listener->setEnabled(true);
 	});
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(customListener, 1);
 }

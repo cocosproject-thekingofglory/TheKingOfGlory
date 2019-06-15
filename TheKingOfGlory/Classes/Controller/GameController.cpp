@@ -402,7 +402,7 @@ void GameController::onGameInit(const void * msg)
 		if (name == User::getInstance()->getName())
 		{
 			auto hero=manager->playerManager->createLocalPlayer(name, role, color);
-
+			User::getInstance()->setColor(color);
 
 			GameMap::getCurrentMap()->addSprite(hero,(color)?GameMap::Type::Player_Blue: GameMap::Type::Player_Red);
 			GameMap::getCurrentMap()->addCenterSprite(hero);

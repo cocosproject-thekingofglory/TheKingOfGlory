@@ -39,7 +39,6 @@ Player* PlayerManager::createPlayer(const std::string& id, int role,int color)
 	{
 		player->isLocal(false);
 		this->_playerList.insert(id, player);
-		User::getInstance()->setColor(color);
 		return player;
 	}
 
