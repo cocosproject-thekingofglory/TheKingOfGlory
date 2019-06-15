@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>warrior_behit_left (1).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{77,74}</string>
+                <key>spriteSourceSize</key>
+                <string>{77,74}</string>
+                <key>textureRect</key>
+                <string>{{0,0},{77,74}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>warrior_behit_left (2).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{68,83}</string>
+                <key>spriteSourceSize</key>
+                <string>{68,83}</string>
+                <key>textureRect</key>
+                <string>{{77,0},{68,83}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>warrior_behit_left (3).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{69,76}</string>
+                <key>spriteSourceSize</key>
+                <string>{69,76}</string>
+                <key>textureRect</key>
+                <string>{{154,0},{69,76}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>warrior_behit_left (4).png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{70,71}</string>
+                <key>spriteSourceSize</key>
+                <string>{70,71}</string>
+                <key>textureRect</key>
+                <string>{{231,0},{70,71}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>3</integer>
+            <key>pixelFormat</key>
+            <string>RGBA8888</string>
+            <key>premultiplyAlpha</key>
+            <false/>
+            <key>realTextureFileName</key>
+            <string>warrior_behit_left.png</string>
+            <key>size</key>
+            <string>{308,83}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:16d69e825c04333e74b36cb146c909ca:1d67c2162f57a85d2160f26a7401e689:6c4111bdefa73962ca6e2971392b5acc$</string>
+            <key>textureFileName</key>
+            <string>warrior_behit_left.png</string>
+        </dict>
+    </dict>
+</plist>
