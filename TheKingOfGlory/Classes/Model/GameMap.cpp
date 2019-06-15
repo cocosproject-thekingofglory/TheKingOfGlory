@@ -88,7 +88,7 @@ void GameMap::setMap(const std::string& mapName)
 			pathR.push_back(pathM1);
 			for (int i = 1; i <= 4; ++i)
 			{
-				pathR.push_back(pathLayer->getObject("pathL" + std::to_string(i)));
+				pathR.push_back(pathLayer->getObject("pathR" + std::to_string(i)));
 			}
 			pathR.push_back(pathLayer->getObject("pathM6"));
 			soldier_red_path.push_back(pathR);
